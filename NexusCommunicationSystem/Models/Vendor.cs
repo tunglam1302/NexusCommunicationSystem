@@ -11,5 +11,13 @@ namespace NexusCommunicationSystem.Models
         [Required]
         public string Address { get; set; }
         public virtual ICollection<Equipment> Equipments { get; set; }
+
+        public Vendor()
+        { }
+        public Vendor(string name, string address)
+        {
+            Name = name;
+            Address = address;
+        }
     }
 }

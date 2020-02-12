@@ -1,11 +1,13 @@
-﻿namespace NexusCommunicationSystem.Migrations
+﻿using NexusCommunicationSystem.Models;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Linq;
+
+namespace NexusCommunicationSystem.Migrations
 {
-    using NexusCommunicationSystem.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
+   
 
     internal sealed class Configuration : DbMigrationsConfiguration<NexusCommunicationSystem.Models.NexusCommunicationSystemContext>
     {
@@ -28,54 +30,26 @@
 
         protected override void Seed(NexusCommunicationSystem.Models.NexusCommunicationSystemContext context)
         {
-            //AddAccount("Tran", "An");
-            //AddAccount("Tran", "Binh");
-            //AddAccount("Tran", "Tuan");
-            //AddAccount("Nguyen", "Can");
-            //AddAccount("Dang", "Trung");
+            listVendor.Add(new Vendor("Mobilephone", "Cau Giay, Hanoi"));
+            listVendor.Add(new Vendor("FPT", "Minh Khai, Hanoi"));
+            listVendor.Add(new Vendor("Viettel", "Hoang Mai, Hanoi"));
 
-            //AddAccountRole("User");
-            //AddAccountRole("Admin");
+            context.Vendors.AddRange(listVendor);
+            context.SaveChanges();
 
-            //AddNews("Maintain your Finance and Technology Expertise", "Join us at our events to watch pitches by companies deploying the latest technology, watch our video library of over 400 videos, and follow our newsletters with valuable information on the latest reports and happenings in the scene.");
+            listEquipment.Add(new Equipment("router", 10000, 5, context.Vendors.Where(v => v.Id == 1).Single()));
+            listEquipment.Add(new Equipment("modem", 20000, 2, context.Vendors.Where(v => v.Id == 2).Single()));
+            listEquipment.Add(new Equipment("labor", 30000, 3, context.Vendors.Where(v => v.Id == 3).Single()));
 
-            ////context.Accounts.AddRange(listAccount);
-            ////context.AccountRoles.AddRange(listAccountRole);
-            //context.News.AddRange(listNews);
-            //context.SaveChanges();
+            context.Equipments.AddRange(listEquipment);
+            context.SaveChanges();
+
+            listServicePackage.Add(new ServicePackage(PaymentPeriod.Monthly));
+            listServicePackage.Add(new ServicePackage(PaymentPeriod.Yearly));
+            listServicePackage.Add(new ServicePackage(PaymentPeriod.HalfYearly));
+
+            context.ServicePackages.AddRange(listServicePackage);
+            context.SaveChanges();
         }
-
-        //private void AddAccount(string firstName, string lastName)
-        //{
-        //    listAccount.Add(new Account
-        //    {
-        //        FirstName = firstName,
-        //        LastName = lastName,
-        //        CreatedAt = DateTime.Now,
-        //        Status = Account.AccountStatus.Active,
-
-        //    });
-        //}
-
-        //private void AddAccountRole(string description)
-        //{
-        //    listAccountRole.Add(new AccountRole
-        //    {
-        //        Description = description,
-        //        CreatedAt = DateTime.Now,
-        //        Status = AccountRole.AccountRoleStatus.Active,
-        //    });
-        //}
-
-        //private void AddNews(string title, string content)
-        //{
-        //    listNews.Add(new News
-        //    {
-        //        Title = title,
-        //        Content = content,
-        //        PublishedAt = DateTime.Now,
-        //        Status = News.AuthorStatus.Active,
-        //    });
-        //}
     }
 }
