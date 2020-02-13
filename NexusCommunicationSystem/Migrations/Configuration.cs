@@ -16,7 +16,7 @@ namespace NexusCommunicationSystem.Migrations
         List<Customer> listCustomer = new List<Customer>();
         List<Equipment> listEquipment = new List<Equipment>();
         List<Feedback> listFeedback = new List<Feedback>();
-        List<Order> listOrder = new List<Order>();
+        List<Contract> listOrder = new List<Contract>();
         List<RetailStore> listRetailStore = new List<RetailStore>();
         List<Service> listService = new List<Service>();
         List<Service_Equipment> listService_Equipment = new List<Service_Equipment>();

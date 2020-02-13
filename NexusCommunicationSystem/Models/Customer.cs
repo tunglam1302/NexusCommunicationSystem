@@ -16,6 +16,6 @@ namespace NexusCommunicationSystem.Models
         public AccountRole UserRole { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public virtual ICollection<Feedback> Feedbacks { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Contract> Orders { get; set; }
     }
 }

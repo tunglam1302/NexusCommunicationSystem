@@ -11,7 +11,7 @@ namespace NexusCommunicationSystem.Models
         [Required]
         public string Image { get; set; }
         public string Description { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Contract> Orders { get; set; }
         public virtual ICollection<Service_Equipment> Service_Equipments { get; set; }
     }
 }

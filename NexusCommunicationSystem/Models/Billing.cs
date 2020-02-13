@@ -13,6 +13,6 @@ namespace NexusCommunicationSystem.Models
         public string Account { get; set; } 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual Contract Order { get; set; }
     }
 }

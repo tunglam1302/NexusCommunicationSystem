@@ -7,13 +7,13 @@ namespace NexusCommunicationSystem.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class InitialCreate3 : IMigrationMetadata
+    public sealed partial class InitialCreate4 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate3));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate4));
         
         string IMigrationMetadata.Id
         {
-            get { return "202002121648150_InitialCreate3"; }
+            get { return "202002131425271_InitialCreate4"; }
         }
         
         string IMigrationMetadata.Source

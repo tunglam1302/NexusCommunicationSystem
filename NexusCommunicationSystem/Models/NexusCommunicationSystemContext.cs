@@ -16,7 +16,7 @@ namespace NexusCommunicationSystem.Models
         public System.Data.Entity.DbSet<NexusCommunicationSystem.Models.Customer> Customers { get; set; }
         public System.Data.Entity.DbSet<NexusCommunicationSystem.Models.Equipment> Equipments { get; set; }
         public System.Data.Entity.DbSet<NexusCommunicationSystem.Models.Feedback> Feedbacks { get; set; }
-        public System.Data.Entity.DbSet<NexusCommunicationSystem.Models.Order> Orders { get; set; }
+        public System.Data.Entity.DbSet<NexusCommunicationSystem.Models.Contract> Orders { get; set; }
         public System.Data.Entity.DbSet<NexusCommunicationSystem.Models.RetailStore> RetailStores { get; set; }
         public System.Data.Entity.DbSet<NexusCommunicationSystem.Models.Service> Services { get; set; }
         public System.Data.Entity.DbSet<NexusCommunicationSystem.Models.Service_Equipment> Service_Equipments { get; set; }
