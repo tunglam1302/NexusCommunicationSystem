@@ -24,7 +24,19 @@ namespace NexusCommunicationSystem
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/fullcalendar.css",
+                      "~/Content/site.css",
+                      "~/admin-lte/css/AdminLTE.css",
+                      "~/admin-lte/css/skins/skin-blue.css",
+                      "~/admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css"));
+            bundles.Add(new ScriptBundle("~/admin-lte/js").Include(
+                "~/admin-lte/js/app.js",
+                "~/admin-lte/plugins/fastclick/fastclick.js",
+                "~/admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
+            ));
+            bundles.Add(new ScriptBundle("~/bundles/fullcalendar").Include(
+                "~/Scripts/moment.js",
+                "~/Scripts/fullcalendar/fullcalendar.js"));
         }
     }
 }
