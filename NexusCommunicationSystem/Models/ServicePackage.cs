@@ -12,7 +12,7 @@ namespace NexusCommunicationSystem.Models
         public virtual ICollection<Contract> Orders { get; set; }
         public ServicePackage()
         { }
-        public ServicePackage(PaymentPeriod paymentPeriod)
+        public ServicePackage(PaymentPeriod paymentPeriod, string description = null)
         {
             PaymentPeriod = paymentPeriod;
         }

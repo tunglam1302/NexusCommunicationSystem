@@ -50,6 +50,21 @@ namespace NexusCommunicationSystem.Migrations
 
             context.ServicePackages.AddRange(listServicePackage);
             context.SaveChanges();
+
+            listService.Add(new Service("Landline","abc"));
+            listService.Add(new Service("Broadband","abc"));
+            listService.Add(new Service("DialUp","abc"));
+
+            context.Services.AddRange(listService);
+            context.SaveChanges();
+
+            listService_Equipment.Add(new Service_Equipment(2, context.Services.Where(s => s.Id == 1).Single(), context.Equipments.Where(e => e.Id == 3).Single()));
+            listService_Equipment.Add(new Service_Equipment(1, context.Services.Where(s => s.Id == 2).Single(), context.Equipments.Where(e => e.Id == 2).Single()));
+            listService_Equipment.Add(new Service_Equipment(3, context.Services.Where(s => s.Id == 3).Single(), context.Equipments.Where(e => e.Id == 1).Single()));
+            listService_Equipment.Add(new Service_Equipment(4, context.Services.Where(s => s.Id == 1).Single(), context.Equipments.Where(e => e.Id == 3).Single()));
+
+            context.Service_Equipments.AddRange(listService_Equipment);
+            context.SaveChanges();
         }
     }
 }
