@@ -2,47 +2,66 @@
 
 @{
     ViewBag.Title = "Create";
+    var equipments = ViewBag.Equipments;
 }
 
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Service</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        <div class="col-md-5">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <img id="preview" src="#" class="hidden img-thumbnail" style="width: 100px" alt="Alternate Text" />
-                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-                <div style="margin-top: 5px">
-                    <button type="button" id="upload_widget" class="btn btn-primary">Upload files</button>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <img id="preview" src="#" class="hidden img-thumbnail" style="width: 100px" alt="Alternate Text" />
+                    @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                    <div style="margin-top: 5px">
+                        <button type="button" id="upload_widget" class="btn btn-primary">Upload files</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        <div class="col-md-7">
+            <input class="btn btn-primary" type="button" value="Insert Equipmnet" name="equipmentInsert" id="equipmentInsert"/>
+            <table class="myTable" id="myTable">
+                    <tr>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Equipment
+                        </th>
+                        <th></th>
+                    </tr>
+                
 
+            </table>
+        </div>
 
 
         <div class="form-group">
@@ -57,7 +76,8 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
-@section Scripts {
+@section Scripts
+{
     <script type="text/javascript">
         var myWidget = cloudinary.createUploadWidget({
             cloudName: 'truonghusk17',
@@ -76,6 +96,27 @@
         document.getElementById("upload_widget").addEventListener("click", function () {
             myWidget.open();
         }, false);
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+           
+            $(document).on('click', '#equipmentInsert', function () {
+                var equipments = '@Html.Raw(equipments)';
+                var myEquipments = JSON.parse(equipments);
+                
+                $('#myTable tbody').append('<tr><td><input type="number" /></td><td><select class="myEquipments"></select></td><td><input type="button" value="Delete" name="deleteRow" id="deleteRow"/></td></tr>');
+                var mySelect = $('#myEquipments');
+                $('option').remove();
+                $.each(myEquipments, function (val, text) {
+                    $('<option></option>').val(val).html(text).appendTo('.myEquipments')
+                })
+            })
+
+            $(document).on('click','#deleteRow',function () {
+                $(this).closest('tr').remove();
+            });
+        });
     </script>
 }
 

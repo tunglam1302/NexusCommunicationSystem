@@ -6,110 +6,107 @@ using NexusCommunicationSystem.Models;
 
 namespace NexusCommunicationSystem.Controllers
 {
-    public class ServicesController : Controller
+    public class Service_EquipmentController : Controller
     {
         private NexusCommunicationSystemContext db = new NexusCommunicationSystemContext();
 
-        // GET: Services
+        // GET: Service_Equipment
         public ActionResult Index()
         {
-            return View(db.Services.ToList());
+            return View(db.Service_Equipments.ToList());
         }
 
-        // GET: Services/Details/5
+        // GET: Service_Equipment/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Service service = db.Services.Find(id);
-            if (service == null)
+            Service_Equipment service_Equipment = db.Service_Equipments.Find(id);
+            if (service_Equipment == null)
             {
                 return HttpNotFound();
             }
-            return View(service);
+            return View(service_Equipment);
         }
 
-        // GET: Services/Create
+        // GET: Service_Equipment/Create
         public ActionResult Create()
         {
-            var equipments = db.Equipments.ToList();
-            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(equipments.ToDictionary(x => x.Id, x => x.Name));
-            ViewBag.Equipments = jsonString;
             return View();
         }
 
-        // POST: Services/Create
+        // POST: Service_Equipment/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Image,Description")] Service service)
+        public ActionResult Create([Bind(Include = "Id,Quantity")] Service_Equipment service_Equipment)
         {
             if (ModelState.IsValid)
             {
-                db.Services.Add(service);
+                db.Service_Equipments.Add(service_Equipment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(service);
+            return View(service_Equipment);
         }
 
-        // GET: Services/Edit/5
+        // GET: Service_Equipment/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Service service = db.Services.Find(id);
-            if (service == null)
+            Service_Equipment service_Equipment = db.Service_Equipments.Find(id);
+            if (service_Equipment == null)
             {
                 return HttpNotFound();
             }
-            return View(service);
+            return View(service_Equipment);
         }
 
-        // POST: Services/Edit/5
+        // POST: Service_Equipment/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Image,Description")] Service service)
+        public ActionResult Edit([Bind(Include = "Id,Quantity")] Service_Equipment service_Equipment)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(service).State = EntityState.Modified;
+                db.Entry(service_Equipment).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(service);
+            return View(service_Equipment);
         }
 
-        // GET: Services/Delete/5
+        // GET: Service_Equipment/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Service service = db.Services.Find(id);
-            if (service == null)
+            Service_Equipment service_Equipment = db.Service_Equipments.Find(id);
+            if (service_Equipment == null)
             {
                 return HttpNotFound();
             }
-            return View(service);
+            return View(service_Equipment);
         }
 
-        // POST: Services/Delete/5
+        // POST: Service_Equipment/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Service service = db.Services.Find(id);
-            db.Services.Remove(service);
+            Service_Equipment service_Equipment = db.Service_Equipments.Find(id);
+            db.Service_Equipments.Remove(service_Equipment);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
