@@ -22,6 +22,14 @@ namespace NexusCommunicationSystem.Models
             Image = image;
             Description = description;
         }
+
+        public Service(int id, string name, string image, string description = null)
+        {
+            Id = id;
+            Name = name;
+            Image = image;
+            Description = description;
+        }
     }
 
     
