@@ -1,0 +1,149 @@
+
+
+@keyframes scaleAnimation {
+  0% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes drawCircle {
+  0% {
+    stroke-dashoffset: 151px;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes drawCheck {
+  0% {
+    stroke-dashoffset: 36px;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#successAnimationCircle {
+  stroke-dasharray: 151px 151px;
+  stroke: #FFF;
+}
+
+#successAnimationCheck {
+  stroke-dasharray: 36px 36px;
+  stroke: #FFF;
+}
+
+#successAnimationResult {
+  fill: #FFF;
+  opacity: 0;
+}
+
+#successAnimation.animated {
+  animation: 1s ease-out 0s 1 both scaleAnimation;
+}
+
+  #successAnimationCircle {
+    animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both drawCircle,
+               0.3s linear 0.9s 1 both fadeOut;
+  }
+  
+  #successAnimationCheck {
+    animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both drawCheck,
+               0.3s linear 0.9s 1 both fadeOut;
+  }
+  
+  #successAnimationResult {
+    animation: 0.3s linear 0.9s both fadeIn;
+  }
+
+
+ .sm-navbar {
+	 display: flex;
+	 justify-content: space-between;
+	 padding-bottom: 0;
+	 height: 100px;
+   align-items: center;
+   width:54%;
+   margin:auto
+}
+ .sm-logo {
+	 display: flex;
+	 height: 100px;
+	 width: 100px;
+	 justify-content: center;
+	 align-items: center;
+	 transition: all 0.4s ease;
+	 border-bottom: 3px solid transparent;
+}
+ .sm-logo:hover {
+	 transition: all 0.4s ease;
+	 cursor: pointer;
+}
+ .sm-logo:hover a {
+	 color: #003e83;
+	 transition: all 0.4s ease;
+	 border-bottom: 3px solid #fdc62d;
+}
+ .sm-logo a {
+	 font-size: 2em;
+	 color: #fdc62d;
+}
+
+ .sm-nav-menu {
+	 display: flex;
+	 margin-right: 30px;
+	 list-style-type: none;
+	 flex-direction: row;
+	 justify-content: flex-end;
+}
+ .sm-nav-menu li {
+	 text-align: center;
+	 margin: 20px auto;
+	 text-transform: uppercase;
+	 font-size: 0.8em;
+	 letter-spacing: 2px;
+	 margin: 0;
+}
+ .sm-nav-menu .nav-links {
+	 margin-left: 50px;
+	 margin-right: 20px;
+	 color:white;
+	 padding: 8px;
+	 transition: all 0.4s ease;
+	 display: inline-block;
+	 border-bottom: 3px solid #fdc62d;
+}
+.sm-nav-menu .full-border {
+  border: 3px solid #fdc62d;
+}
+ .sm-nav-menu .nav-links:hover {
+	 background: #fdc62d;
+	 padding: 8px;
+	 transition: all 0.4s ease;
+	 transform: scale(1.1);
+}
+ 
