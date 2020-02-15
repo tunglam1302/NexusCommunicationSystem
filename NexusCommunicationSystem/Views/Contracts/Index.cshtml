@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NexusCommunicationSystem.Models.Order>
+﻿@model IEnumerable<NexusCommunicationSystem.Models.Contract>
 
 @{
     ViewBag.Title = "Index";
@@ -27,13 +27,13 @@
             @Html.DisplayNameFor(model => model.TotalAmount)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PaidAmount)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.AmountDue)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DateToLatestPayment)
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NextPaymentAt)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ChargeForReplacementDone)
@@ -62,13 +62,13 @@
             @Html.DisplayFor(modelItem => item.TotalAmount)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.PaidAmount)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.AmountDue)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DateToLatestPayment)
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NextPaymentAt)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ChargeForReplacementDone)
