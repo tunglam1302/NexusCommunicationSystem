@@ -14,5 +14,14 @@
             Service = service;
             Equipment = equipment;
         }
+
+        public Service_Equipment(int id, int quantity, Service service, Equipment equipment)
+        {
+            Id = id;
+            Quantity = quantity;
+            Service = service;
+            Equipment = equipment;
+
+        }
     }
 }
