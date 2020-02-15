@@ -9,7 +9,7 @@ namespace NexusCommunicationSystem.Models
         [Required]
         public PaymentPeriod PaymentPeriod { get; set; }
         public string Description { get; set; }
-        public virtual ICollection<Contract> Orders { get; set; }
+        public virtual ICollection<Service> Services { get; set; }
         public ServicePackage()
         { }
         public ServicePackage(PaymentPeriod paymentPeriod, string description = null)
