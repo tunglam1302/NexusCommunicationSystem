@@ -12,6 +12,7 @@ namespace NexusCommunicationSystem.Models
         public string Image { get; set; }
         public string Description { get; set; }
         public int TotalAmount { get; set; }
+        public int ServicePackageId { get; set; }
         public virtual ICollection<Contract> Contracts { get; set; }
         public virtual ICollection<Service_Equipment> Service_Equipments { get; set; }
 
@@ -19,12 +20,13 @@ namespace NexusCommunicationSystem.Models
 
         public Service() { }
 
-        public Service(string name, string image, ServicePackage servicePackage = null, string description = null)
+        public Service(string name, string image, ServicePackage servicePackage, string description = null)
         {
             Name = name;
             Image = image;
             Description = description;
             ServicePackage = servicePackage;
+            ServicePackageId = servicePackage.Id;
         }
 
         public Service(int id, string name, string image, string description = null,ServicePackage servicePackage = null)
@@ -34,6 +36,7 @@ namespace NexusCommunicationSystem.Models
             Image = image;
             Description = description;
             ServicePackage = servicePackage;
+            ServicePackageId = servicePackage.Id;
         }
     }
 

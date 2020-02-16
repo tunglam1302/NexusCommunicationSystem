@@ -15,6 +15,7 @@ namespace NexusCommunicationSystem.Models
         public string FeedBack { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public AccountRole UserRole { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+        public int RetailStoreId { get; set; }
         public virtual RetailStore RetailStore { get; set; }
         public virtual ICollection<Contract> Orders { get; set; }
     }

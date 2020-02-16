@@ -53,15 +53,15 @@ namespace NexusCommunicationSystem.Controllers
         [HttpPost]
         public ActionResult Create(string equipments, string serviceId, string serviceName, string serviceImage, string serviceDescription)
         {
-            int myServiceId = int.Parse(serviceId);
-            var service = new Service(myServiceId,serviceName, serviceImage, serviceDescription);
-            db.Services.Add(service);
-            db.SaveChanges();
+            //int myServiceId = int.Parse(serviceId);
+            //var service = new Service(myServiceId,serviceName, serviceImage, serviceDescription);
+            //db.Services.Add(service);
+            //db.SaveChanges();
 
-            InsertService_Equipment(equipments, service);
+            //InsertService_Equipment(equipments, service);
 
-            return View("~Views/Services/Index.cshtml");
-            //return RedirectToAction("Index");
+            //return View("~Views/Services/Index.cshtml");
+            return RedirectToAction("Index");
         }
 
         // GET: Services/Edit/5

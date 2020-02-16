@@ -21,6 +21,11 @@ namespace NexusCommunicationSystem.Models
         public float ChargeForReplacementDone { get; set; }
         public float Discounts { get; set; }
 
+        public int CustomerId { get; set; }
+        public int ServiceId { get; set; }
+        public int RetailStoreId { get; set; }
+        public int AccountId { get; set; }
+
         public virtual Customer Customer { get; set; }
         public virtual Service Service { get; set; }
         public virtual RetailStore RetailStore { get; set; }

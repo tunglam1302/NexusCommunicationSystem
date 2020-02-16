@@ -8,6 +8,7 @@ namespace NexusCommunicationSystem.Models
 {
     public class RetailStore
     {
+        [Key]
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
