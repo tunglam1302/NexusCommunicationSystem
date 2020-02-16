@@ -44,9 +44,9 @@ namespace NexusCommunicationSystem.Migrations
             context.Equipments.AddRange(listEquipment);
             context.SaveChanges();
 
-            listServicePackage.Add(new ServicePackage(PaymentPeriod.Monthly));
-            listServicePackage.Add(new ServicePackage(PaymentPeriod.Yearly));
-            listServicePackage.Add(new ServicePackage(PaymentPeriod.HalfYearly));
+            listServicePackage.Add(new ServicePackage("Monthly"));
+            listServicePackage.Add(new ServicePackage("Yearly"));
+            listServicePackage.Add(new ServicePackage("HalfYearly"));
 
             context.ServicePackages.AddRange(listServicePackage);
             context.SaveChanges();

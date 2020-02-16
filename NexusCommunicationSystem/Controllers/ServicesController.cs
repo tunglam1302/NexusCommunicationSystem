@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 using NexusCommunicationSystem.Models;
 
 namespace NexusCommunicationSystem.Controllers
@@ -17,7 +17,8 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Services
         public ActionResult Index()
         {
-            return View(db.Services.ToList());
+            var services = db.Services.Include(s => s.ServicePackage);
+            return View(services.ToList());
         }
 
         // GET: Services/Details/5
@@ -38,12 +39,7 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Services/Create
         public ActionResult Create()
         {
-            var id = db.Services.OrderByDescending(s => s.Id).FirstOrDefault().Id+1;
-
-            var equipments = db.Equipments.ToList();
-            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(equipments.ToDictionary(x => x.Id, x => x.Name));
-            ViewBag.Equipments = jsonString;
-            ViewBag.Id = id;
+            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name");
             return View();
         }
 
@@ -51,17 +47,18 @@ namespace NexusCommunicationSystem.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult Create(string equipments, string serviceId, string serviceName, string serviceImage, string serviceDescription)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,Name,Image,Description,TotalAmount,ServicePackageId")] Service service)
         {
-            //int myServiceId = int.Parse(serviceId);
-            //var service = new Service(myServiceId,serviceName, serviceImage, serviceDescription);
-            //db.Services.Add(service);
-            //db.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                db.Services.Add(service);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
 
-            //InsertService_Equipment(equipments, service);
-
-            //return View("~Views/Services/Index.cshtml");
-            return RedirectToAction("Index");
+            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", service.ServicePackageId);
+            return View(service);
         }
 
         // GET: Services/Edit/5
@@ -76,6 +73,7 @@ namespace NexusCommunicationSystem.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", service.ServicePackageId);
             return View(service);
         }
 
@@ -84,7 +82,7 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Image,Description")] Service service)
+        public ActionResult Edit([Bind(Include = "Id,Name,Image,Description,TotalAmount,ServicePackageId")] Service service)
         {
             if (ModelState.IsValid)
             {
@@ -92,6 +90,7 @@ namespace NexusCommunicationSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", service.ServicePackageId);
             return View(service);
         }
 
@@ -119,27 +118,6 @@ namespace NexusCommunicationSystem.Controllers
             db.Services.Remove(service);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        private void InsertService_Equipment(string equipments, Service service)
-        {
-            var jss = new JavaScriptSerializer();
-            dynamic myEquipments = jss.DeserializeObject(equipments);
-            foreach (Dictionary<string,object> equipment in myEquipments)
-            {
-                object equipmentFromDictionary;
-                object quantityFromDictionary; 
-                equipment.TryGetValue("key",out equipmentFromDictionary);
-                equipment.TryGetValue("value",out quantityFromDictionary);
-
-                int quantity = Convert.ToInt32(quantityFromDictionary);
-
-                var myEquipment = db.Equipments.Where(e => e.Id == quantity).First();
-
-                var serviceEquipment = new Service_Equipment(quantity, service, myEquipment);
-                db.Service_Equipments.Add(serviceEquipment);
-            }
-            
         }
 
         protected override void Dispose(bool disposing)
