@@ -30,7 +30,7 @@ namespace NexusCommunicationSystem.Models
             ServicePackageId = servicePackage.Id;
         }
 
-        public Service(int id, string name, string image, string description = null,ServicePackage servicePackage = null)
+        public Service(int id, string name, string image,ServicePackage servicePackage, string description = null)
         {
             Id = id;
             Name = name;
