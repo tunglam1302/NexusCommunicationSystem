@@ -8,6 +8,7 @@ namespace NexusCommunicationSystem.Models
 {
     public class Contract
     {
+        [Key]
         public int Id { get; set; }
         [Required]
         public OrderStatus OrderStatus { get; set; }
@@ -24,12 +25,10 @@ namespace NexusCommunicationSystem.Models
         public int CustomerId { get; set; }
         public int ServiceId { get; set; }
         public int RetailStoreId { get; set; }
-        public int AccountId { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Service Service { get; set; }
         public virtual RetailStore RetailStore { get; set; }
-        public virtual Account Account { get; set; }
         public virtual ICollection<Billing> Billings { get; set; }
     }
 

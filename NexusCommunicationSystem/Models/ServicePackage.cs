@@ -5,6 +5,7 @@ namespace NexusCommunicationSystem.Models
 {
     public class ServicePackage
     {
+        [Key]
         public int Id { get; set; }
         [Required]
         public PaymentPeriod PaymentPeriod { get; set; }

@@ -17,6 +17,5 @@ namespace NexusCommunicationSystem.Models
 
         public int RetailStoreId { get; set; }
         public virtual RetailStore RetailStore { get; set; }
-        public virtual ICollection<Contract> Orders { get; set; }
     }
 }
