@@ -472,11 +472,6 @@
     <Content Include="Views\Service_Equipment\Details.cshtml" />
     <Content Include="Views\Service_Equipment\Edit.cshtml" />
     <Content Include="Views\Service_Equipment\Index.cshtml" />
-    <Content Include="Views\ServicePackages\Create.cshtml" />
-    <Content Include="Views\ServicePackages\Delete.cshtml" />
-    <Content Include="Views\ServicePackages\Details.cshtml" />
-    <Content Include="Views\ServicePackages\Edit.cshtml" />
-    <Content Include="Views\ServicePackages\Index.cshtml" />
     <Content Include="Views\Vendors\Create.cshtml" />
     <Content Include="Views\Vendors\Delete.cshtml" />
     <Content Include="Views\Vendors\Details.cshtml" />
@@ -494,6 +489,11 @@
     <Content Include="Views\Services\Index.cshtml" />
     <Content Include="Views\Shared\AdminLayout.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\ServicePackages\Create.cshtml" />
+    <Content Include="Views\ServicePackages\Delete.cshtml" />
+    <Content Include="Views\ServicePackages\Details.cshtml" />
+    <Content Include="Views\ServicePackages\Edit.cshtml" />
+    <Content Include="Views\ServicePackages\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -534,7 +534,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53074</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44339/</IISUrl>
+          <IISUrl>https://localhost:44338/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
