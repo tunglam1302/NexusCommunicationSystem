@@ -57,24 +57,31 @@ namespace NexusCommunicationSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Image,Description,TotalAmount,ServicePackageId")] Service service)
         {
-            var equipmentCookie = Request.Cookies["example"].Value.ToString();
-            var equipments = equipmentCookie
-                .Replace("%5B", "[")
-                .Replace("%7B", "{")
-                .Replace("%22", "\"")
-                .Replace("%3A", ":")
-                .Replace("%2C", ",")
-                .Replace("%7D", "}")
-                .Replace("%5D", "]").ToString().ToLower();
+            var errorCookie = Request.Cookies["error"].Value.ToString();
+            int numberOfErrorCookie = Int32.Parse(errorCookie);
+            Request.Cookies["error"].Expires = DateTime.Now.AddDays(-1);
 
-            if (ModelState.IsValid)
+            if (numberOfErrorCookie == 0)
             {
-                db.Services.Add(service);
-                db.SaveChanges();
-                InsertService_Equipment(equipments, service);
-                return RedirectToAction("Index");
+                var equipmentCookie = Request.Cookies["example"].Value.ToString();
+                Request.Cookies["example"].Expires = DateTime.Now.AddDays(-1);
+                var equipments = equipmentCookie
+                    .Replace("%5B", "[")
+                    .Replace("%7B", "{")
+                    .Replace("%22", "\"")
+                    .Replace("%3A", ":")
+                    .Replace("%2C", ",")
+                    .Replace("%7D", "}")
+                    .Replace("%5D", "]").ToString().ToLower();
+
+                if (ModelState.IsValid)
+                {
+                    db.Services.Add(service);
+                    db.SaveChanges();
+                    InsertService_Equipment(equipments, service);
+                    return RedirectToAction("Index");
+                }
             }
-            
             ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", service.ServicePackageId);
             return View(service);
         }
@@ -103,6 +110,14 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Services/Edit/5
         public ActionResult Edit(int? id)
         {
+            var myEquipments = db.Equipments.ToList();
+            var myEquipmentJsonString = Newtonsoft.Json.JsonConvert.SerializeObject(myEquipments.ToDictionary(x => x.Id, x => x.Name));
+            ViewBag.MyEquipmentJsonString = myEquipmentJsonString;
+
+            var myService_Equipments = db.Service_Equipments.Where(e => e.Service.Id == id).ToList();
+            var myService_EquipmentsIEnumrable = myService_Equipments.AsEnumerable();
+            ViewBag.MyService_EquipmentsJsonString = myService_EquipmentsIEnumrable;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -123,11 +138,28 @@ namespace NexusCommunicationSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Image,Description,TotalAmount,ServicePackageId")] Service service)
         {
-            if (ModelState.IsValid)
+            var errorCookie = Request.Cookies["error"].Value.ToString();
+            int numberOfErrorCookie = Int32.Parse(errorCookie);
+            Request.Cookies["error"].Expires = DateTime.Now.AddDays(-1);
+
+            if (numberOfErrorCookie == 0)
             {
-                db.Entry(service).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var equipmentCookie = Request.Cookies["example"].Value.ToString();
+                Request.Cookies["example"].Expires = DateTime.Now.AddDays(-1);
+                var equipments = equipmentCookie
+                    .Replace("%5B", "[")
+                    .Replace("%7B", "{")
+                    .Replace("%22", "\"")
+                    .Replace("%3A", ":")
+                    .Replace("%2C", ",")
+                    .Replace("%7D", "}")
+                    .Replace("%5D", "]").ToString().ToLower();
+                if (ModelState.IsValid)
+                {
+                    db.Entry(service).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
             ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", service.ServicePackageId);
             return View(service);

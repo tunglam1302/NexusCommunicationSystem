@@ -70,7 +70,7 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+            <input type="submit" value="Create" class="btn btn-default" id="Create"/>
         </div>
     </div>
 </div>
@@ -155,13 +155,7 @@
                 avaiableEquipments.push(text);
             })
 
-            $(document).on('click', '#abc', function (e) {
-                //var id = $('#Id').val();
-                //var name = $('#Name').val();
-                //var image = $('#Image').val();
-                //var description = $('#Description').val();
-                //var totalAmount = $('#TotalAmount').val();
-                //var serverPackageId = $('#ServerPackageId').val();
+            $(document).on('click', '#Create', function (e) {
                 var dictionary = [];
                 var dictionaryEquipment = [];
 
@@ -179,13 +173,13 @@
 
                 if (count > 0) {
                     alert("Equipments need to be: " + avaiableEquipments.join(", "));
+                    $.cookie("error", count);
                     count = 0;
                 }
                 else {
                     
                     var jsonEquipments = JSON.stringify(dictionary);
                     $.cookie("example", jsonEquipments);
-                    //$.post('/Services/Create/', { equipments: jsonEquipments, serviceId: id, serviceName: name, serviceImage: image, serviceDescription: description, serviceTotalAmount: totalAmount, serviceServerPackageId: serverPackageId });
                 }
             });
 
