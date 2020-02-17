@@ -28,7 +28,7 @@ namespace NexusCommunicationSystem.Models
 
         public virtual Customer Customer { get; set; }
         public virtual Service Service { get; set; }
-        public virtual RetailStore RetailStore { get; set; }
+        public virtual Account Account { get; set; }
         public virtual ICollection<Billing> Billings { get; set; }
     }
 
