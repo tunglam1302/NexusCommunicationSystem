@@ -1,8 +1,12 @@
-﻿using System.Data.Entity;
+﻿using NexusCommunicationSystem.Models;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using NexusCommunicationSystem.Models;
+using System.Web.Script.Serialization;
 
 namespace NexusCommunicationSystem.Controllers
 {
@@ -13,7 +17,8 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Services
         public ActionResult Index()
         {
-            return View(db.Services.ToList());
+            var services = db.Services.Include(s => s.ServicePackage);
+            return View(services.ToList());
         }
 
         // GET: Services/Details/5
@@ -34,6 +39,14 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Services/Create
         public ActionResult Create()
         {
+            var id = db.Services.OrderByDescending(s => s.Id).FirstOrDefault().Id + 1;
+            ViewBag.Id = id;
+
+            var myEquipments = db.Equipments.ToList();
+            var myEquipmentJsonString = Newtonsoft.Json.JsonConvert.SerializeObject(myEquipments.ToDictionary(x => x.Id, x => x.Name));
+            ViewBag.MyEquipmentJsonString = myEquipmentJsonString;
+
+            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name");
             return View();
         }
 
@@ -42,21 +55,69 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Image,Description")] Service service)
+        public ActionResult Create([Bind(Include = "Id,Name,Image,Description,TotalAmount,ServicePackageId")] Service service)
         {
-            if (ModelState.IsValid)
+            var errorCookie = Request.Cookies["error"].Value.ToString();
+            int numberOfErrorCookie = Int32.Parse(errorCookie);
+            Request.Cookies["error"].Expires = DateTime.Now.AddDays(-1);
+
+            if (numberOfErrorCookie == 0)
             {
-                db.Services.Add(service);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var equipmentCookie = Request.Cookies["example"].Value.ToString();
+                Request.Cookies["example"].Expires = DateTime.Now.AddDays(-1);
+                var equipments = equipmentCookie
+                    .Replace("%5B", "[")
+                    .Replace("%7B", "{")
+                    .Replace("%22", "\"")
+                    .Replace("%3A", ":")
+                    .Replace("%2C", ",")
+                    .Replace("%7D", "}")
+                    .Replace("%5D", "]").ToString().ToLower();
+
+                if (ModelState.IsValid)
+                {
+                    db.Services.Add(service);
+                    db.SaveChanges();
+                    InsertService_Equipment(equipments, service);
+                    return RedirectToAction("Index");
+                }
+            }
+            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", service.ServicePackageId);
+            return View(service);
+        }
+
+        private void InsertService_Equipment(string equipments, Service service)
+        {
+            var jss = new JavaScriptSerializer();
+            dynamic myEquipments = jss.DeserializeObject(equipments);
+            foreach (Dictionary<string, object> equipment in myEquipments)
+            {
+                object equipmentFromDictionary;
+                object quantityFromDictionary;
+                equipment.TryGetValue("key", out equipmentFromDictionary);
+                equipment.TryGetValue("value", out quantityFromDictionary);
+
+                int quantity = Convert.ToInt32(quantityFromDictionary);
+
+                var myEquipment = db.Equipments.Where(e => e.Id == quantity).First();
+
+                var serviceEquipment = new Service_Equipment(quantity, service, myEquipment);
+                db.Service_Equipments.Add(serviceEquipment);
             }
 
-            return View(service);
         }
 
         // GET: Services/Edit/5
         public ActionResult Edit(int? id)
         {
+            var myEquipments = db.Equipments.ToList();
+            var myEquipmentJsonString = Newtonsoft.Json.JsonConvert.SerializeObject(myEquipments.ToDictionary(x => x.Id, x => x.Name));
+            ViewBag.MyEquipmentJsonString = myEquipmentJsonString;
+
+            var myService_Equipments = db.Service_Equipments.Where(e => e.Service.Id == id).ToList();
+            var myService_EquipmentsIEnumrable = myService_Equipments.AsEnumerable();
+            ViewBag.MyService_EquipmentsJsonString = myService_EquipmentsIEnumrable;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -66,6 +127,7 @@ namespace NexusCommunicationSystem.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", service.ServicePackageId);
             return View(service);
         }
 
@@ -74,14 +136,32 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Image,Description")] Service service)
+        public ActionResult Edit([Bind(Include = "Id,Name,Image,Description,TotalAmount,ServicePackageId")] Service service)
         {
-            if (ModelState.IsValid)
+            var errorCookie = Request.Cookies["error"].Value.ToString();
+            int numberOfErrorCookie = Int32.Parse(errorCookie);
+            Request.Cookies["error"].Expires = DateTime.Now.AddDays(-1);
+
+            if (numberOfErrorCookie == 0)
             {
-                db.Entry(service).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var equipmentCookie = Request.Cookies["example"].Value.ToString();
+                Request.Cookies["example"].Expires = DateTime.Now.AddDays(-1);
+                var equipments = equipmentCookie
+                    .Replace("%5B", "[")
+                    .Replace("%7B", "{")
+                    .Replace("%22", "\"")
+                    .Replace("%3A", ":")
+                    .Replace("%2C", ",")
+                    .Replace("%7D", "}")
+                    .Replace("%5D", "]").ToString().ToLower();
+                if (ModelState.IsValid)
+                {
+                    db.Entry(service).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", service.ServicePackageId);
             return View(service);
         }
 

@@ -1,0 +1,26 @@
+﻿@model NexusCommunicationSystem.Models.ServicePackage
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ServicePackage</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentPeriod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentPeriod)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

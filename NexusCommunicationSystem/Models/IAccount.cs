@@ -9,6 +9,7 @@ namespace NexusCommunicationSystem.Models
 {
     public interface IAccount
     {
+        [Key]
          int Id { get; set; }
         [Required]
          string FirstName { get; set; }

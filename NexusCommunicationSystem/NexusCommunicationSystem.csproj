@@ -127,14 +127,24 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AccountsController.cs" />
+    <Compile Include="Controllers\BillingsController.cs" />
+    <Compile Include="Controllers\ContractsController.cs" />
+    <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\EquipmentsController.cs" />
+    <Compile Include="Controllers\FeedbacksController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RetailStoresController.cs" />
+    <Compile Include="Controllers\ServicePackagesController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
+    <Compile Include="Controllers\Service_EquipmentController.cs" />
+    <Compile Include="Controllers\VendorsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202002121648150_InitialCreate3.cs" />
-    <Compile Include="Migrations\202002121648150_InitialCreate3.Designer.cs">
-      <DependentUpon>202002121648150_InitialCreate3.cs</DependentUpon>
+    <Compile Include="Migrations\202002131425271_InitialCreate4.cs" />
+    <Compile Include="Migrations\202002131425271_InitialCreate4.Designer.cs">
+      <DependentUpon>202002131425271_InitialCreate4.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Billing.cs" />
@@ -144,7 +154,7 @@
     <Compile Include="Models\Feedback.cs" />
     <Compile Include="Models\IAccount.cs" />
     <Compile Include="Models\NexusCommunicationSystemContext.cs" />
-    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\Contract.cs" />
     <Compile Include="Models\RetailStore.cs" />
     <Compile Include="Models\Service.cs" />
     <Compile Include="Models\ServicePackage.cs" />
@@ -405,6 +415,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Service\CreateService.js" />
     <Content Include="Scripts\tether.js" />
     <Content Include="Scripts\tether.min.js" />
     <Content Include="Web.config" />
@@ -421,6 +432,61 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Accounts\Create.cshtml" />
+    <Content Include="Views\Accounts\Delete.cshtml" />
+    <Content Include="Views\Service_Equipment\Create.cshtml" />
+    <Content Include="Views\Service_Equipment\Delete.cshtml" />
+    <Content Include="Views\Service_Equipment\Details.cshtml" />
+    <Content Include="Views\Service_Equipment\Edit.cshtml" />
+    <Content Include="Views\Service_Equipment\Index.cshtml" />
+    <Content Include="Views\Accounts\Details.cshtml" />
+    <Content Include="Views\Accounts\Edit.cshtml" />
+    <Content Include="Views\Accounts\Index.cshtml" />
+    <Content Include="Views\Billings\Create.cshtml" />
+    <Content Include="Views\Billings\Delete.cshtml" />
+    <Content Include="Views\Billings\Details.cshtml" />
+    <Content Include="Views\Billings\Edit.cshtml" />
+    <Content Include="Views\Billings\Index.cshtml" />
+    <Content Include="Views\Customers\Create.cshtml" />
+    <Content Include="Views\Customers\Delete.cshtml" />
+    <Content Include="Views\Customers\Details.cshtml" />
+    <Content Include="Views\Customers\Edit.cshtml" />
+    <Content Include="Views\Customers\Index.cshtml" />
+    <Content Include="Views\Equipments\Create.cshtml" />
+    <Content Include="Views\Equipments\Delete.cshtml" />
+    <Content Include="Views\Equipments\Details.cshtml" />
+    <Content Include="Views\Equipments\Edit.cshtml" />
+    <Content Include="Views\Equipments\Index.cshtml" />
+    <Content Include="Views\Feedbacks\Create.cshtml" />
+    <Content Include="Views\Feedbacks\Delete.cshtml" />
+    <Content Include="Views\Feedbacks\Details.cshtml" />
+    <Content Include="Views\Feedbacks\Edit.cshtml" />
+    <Content Include="Views\Feedbacks\Index.cshtml" />
+    <Content Include="Views\RetailStores\Create.cshtml" />
+    <Content Include="Views\RetailStores\Delete.cshtml" />
+    <Content Include="Views\RetailStores\Details.cshtml" />
+    <Content Include="Views\RetailStores\Edit.cshtml" />
+    <Content Include="Views\RetailStores\Index.cshtml" />
+    <Content Include="Views\Service_Equipment\Create.cshtml" />
+    <Content Include="Views\Service_Equipment\Delete.cshtml" />
+    <Content Include="Views\Service_Equipment\Details.cshtml" />
+    <Content Include="Views\Service_Equipment\Edit.cshtml" />
+    <Content Include="Views\Service_Equipment\Index.cshtml" />
+    <Content Include="Views\ServicePackages\Create.cshtml" />
+    <Content Include="Views\ServicePackages\Delete.cshtml" />
+    <Content Include="Views\ServicePackages\Details.cshtml" />
+    <Content Include="Views\ServicePackages\Edit.cshtml" />
+    <Content Include="Views\ServicePackages\Index.cshtml" />
+    <Content Include="Views\Vendors\Create.cshtml" />
+    <Content Include="Views\Vendors\Delete.cshtml" />
+    <Content Include="Views\Vendors\Details.cshtml" />
+    <Content Include="Views\Vendors\Edit.cshtml" />
+    <Content Include="Views\Vendors\Index.cshtml" />
+    <Content Include="Views\Contracts\Create.cshtml" />
+    <Content Include="Views\Contracts\Delete.cshtml" />
+    <Content Include="Views\Contracts\Details.cshtml" />
+    <Content Include="Views\Contracts\Edit.cshtml" />
+    <Content Include="Views\Contracts\Index.cshtml" />
     <Content Include="Views\Services\Create.cshtml" />
     <Content Include="Views\Services\Delete.cshtml" />
     <Content Include="Views\Services\Details.cshtml" />
@@ -446,8 +512,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202002121648150_InitialCreate3.resx">
-      <DependentUpon>202002121648150_InitialCreate3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202002131425271_InitialCreate4.resx">
+      <DependentUpon>202002131425271_InitialCreate4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

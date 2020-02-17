@@ -6,8 +6,9 @@ using System.Web;
 
 namespace NexusCommunicationSystem.Models
 {
-    public class Order
+    public class Contract
     {
+        [Key]
         public int Id { get; set; }
         [Required]
         public OrderStatus OrderStatus { get; set; }
@@ -15,17 +16,19 @@ namespace NexusCommunicationSystem.Models
         public DateTime UpdatedAt { get; set; }
         public float SecurityDeposit { get; set; }
         public double TotalAmount { get; set; }
-        public double PaidAmount { get; set; }
         public double AmountDue { get; set; }
-        public DateTime DateToLatestPayment { get; set; }
+        public int Amount { get; set; }
+        public DateTime NextPaymentAt { get; set; }
         public float ChargeForReplacementDone { get; set; }
         public float Discounts { get; set; }
+
+        public int CustomerId { get; set; }
+        public int ServiceId { get; set; }
+        public int RetailStoreId { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Service Service { get; set; }
         public virtual RetailStore RetailStore { get; set; }
-        public virtual Account Account { get; set; }
-        public virtual ServicePackage ServicePackage { get; set; }
         public virtual ICollection<Billing> Billings { get; set; }
     }
 

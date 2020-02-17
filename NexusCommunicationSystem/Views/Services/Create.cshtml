@@ -2,55 +2,193 @@
 
 @{
     ViewBag.Title = "Create";
+    var equipments = ViewBag.MyEquipmentJsonString;
+    var id = ViewBag.Id;
 }
 
 <h2>Create</h2>
 
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Service</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-            </div>
-        </div>
+<div class="form-horizontal col-md-5">
+    <h4>Service</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group" style="display:none">
+        @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Id, new { @Value = id, @class = "form-control", @id = "Id" })
         </div>
+    </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @id = "Name" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <img id="preview" src="#" class="hidden img-thumbnail" style="width: 100px" alt="Alternate Text" />
+            @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control", @id = "Image" } })
+            @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+            <div style="margin-top: 5px">
+                <button type="button" id="upload_widget" class="btn btn-primary">Upload files</button>
             </div>
         </div>
     </div>
-}
 
-<div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @id = "Description" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TotalAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount" } })
+            @Html.ValidationMessageFor(model => model.TotalAmount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ServicePackageId, "ServicePackageId", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("ServicePackageId", null, htmlAttributes: new { @class = "form-control", @id = "ServerPackageId" })
+            @Html.ValidationMessageFor(model => model.ServicePackageId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" id="Create"/>
+        </div>
+    </div>
+</div>
+
+    <div class="col-md-7">
+        <input class="btn btn-primary" type="button" value="Insert Equipmnet" name="equipmentInsert" id="equipmentInsert" />
+        <table class="myTable" id="myTable">
+            <tr>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Equipment
+                </th>
+                <th></th>
+            </tr>
+
+
+        </table>
+    </div>
+  }
+
+<div class="col-md-12">
     @Html.ActionLink("Back to List", "Index")
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        var myWidget = cloudinary.createUploadWidget({
+            cloudName: 'truonghusk17',
+            uploadPreset: 'bk9ejmql'
+        }, (error, result) => {
+            if (!error && result && result.event === "success") {
+                var imgLink = result.info.secure_url;
+                document.querySelector("input[name='Image']").value = imgLink;
+                var imgPreview = document.getElementById("preview");
+                imgPreview.src = imgLink;
+                imgPreview.classList.remove("hidden");
+            }
+        }
+        )
+
+        document.getElementById("upload_widget").addEventListener("click", function () {
+            myWidget.open();
+        }, false);
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(document).on('click', '#equipmentInsert', function () {
+                var equipments = '@Html.Raw(equipments)';
+                var myEquipments = JSON.parse(equipments);
+                var avaiableEquipments = [];
+
+                $('#myTable tbody').append('<tr><td><input type="number" class="quantity"/></td><td><input class="tags"></td><td><input type="button" value="Delete" name="deleteRow" id="deleteRow"/></td></tr>');
+
+                $.each(myEquipments, function (val, text) {
+                avaiableEquipments.push(text);
+                })
+
+                $('.tags').autocomplete({
+                  source: avaiableEquipments
+                });
+            })
+
+            $(document).on('click','#deleteRow',function () {
+                $(this).closest('tr').remove();
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var equipments = '@Html.Raw(equipments)';
+            var myEquipments = JSON.parse(equipments);
+            var avaiableEquipments = [];
+            var count = 0;
+
+            $.each(myEquipments, function (val, text) {
+                avaiableEquipments.push(text);
+            })
+
+            $(document).on('click', '#Create', function (e) {
+                var dictionary = [];
+                var dictionaryEquipment = [];
+
+                $.each($('#myTable > tbody > tr').has('td'), function () {
+                    var quantity = $(this).find('.quantity').val();
+                    var equipment = $(this).find('.tags').val();
+                    dictionary.push({
+                        key : equipment,
+                        value: quantity,
+                    });
+                    dictionaryEquipment.push(equipment);
+                })
+
+                dictionaryEquipment.forEach(checkEquipment);
+
+                if (count > 0) {
+                    alert("Equipments need to be: " + avaiableEquipments.join(", "));
+                    $.cookie("error", count);
+                    count = 0;
+                }
+                else {
+                    
+                    var jsonEquipments = JSON.stringify(dictionary);
+                    $.cookie("example", jsonEquipments);
+                }
+            });
+
+            function checkEquipment(item, index) {
+                if (avaiableEquipments.includes(item) == false) {
+                    count++;
+                };
+            }
+        })
+    </script>
+
 }
