@@ -159,6 +159,10 @@
             var equipments = '@Html.Raw(equipments)';
             var myEquipments = JSON.parse(equipments);
             var avaiableEquipments = [];
+            var cookies = $.cookie();
+            for(var cookie in cookies) {
+               $.removeCookie(cookie);
+            }
             var count = 0;
 
             $.each(myEquipments, function (val, text) {

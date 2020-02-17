@@ -2,11 +2,12 @@
 
 @{
     ViewBag.Title = "Details";
+    IEnumerable<NexusCommunicationSystem.Models.Service_Equipment> myService_Equipments = ViewBag.MyService_EquipmentsJsonString;
 }
 
 <h2>Details</h2>
 
-<div>
+<div class="col-md-5">
     <h4>Service</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -51,8 +52,41 @@
         </dd>
 
     </dl>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<div class="col-md-7">
+    <input class="btn btn-primary" type="button" value="Insert Equipmnet" name="equipmentInsert" id="equipmentInsert" />
+    <table class="myTable" id="myTable">
+        <tr>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Equipment
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in myService_Equipments)
+        {
+            <tr>
+                <td>
+                    <input type="number" class="quantity" value="@item.Quantity" />
+                </td>
+                <td>
+                    <input class="tags" value="@item.Equipment.Name">
+                </td>
+                <td>
+                    <input type="button" value="Delete" name="deleteRow" id="deleteRow" />
+                </td>
+            </tr>
+        }
+
+
+    </table>
+</div>
+
+

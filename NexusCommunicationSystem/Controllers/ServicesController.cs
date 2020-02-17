@@ -24,6 +24,10 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Services/Details/5
         public ActionResult Details(int? id)
         {
+            var myService_Equipments = db.Service_Equipments.Where(e => e.Service.Id == id).ToList();
+            var myService_EquipmentsIEnumrable = myService_Equipments.AsEnumerable();
+            ViewBag.MyService_EquipmentsJsonString = myService_EquipmentsIEnumrable;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -57,14 +61,14 @@ namespace NexusCommunicationSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Image,Description,TotalAmount,ServicePackageId")] Service service)
         {
-            var errorCookie = Request.Cookies["error"].Value.ToString();
-            int numberOfErrorCookie = Int32.Parse(errorCookie);
-            Request.Cookies["error"].Expires = DateTime.Now.AddDays(-1);
 
-            if (numberOfErrorCookie == 0)
+            var myEquipments = db.Equipments.ToList();
+            var myEquipmentJsonString = Newtonsoft.Json.JsonConvert.SerializeObject(myEquipments.ToDictionary(x => x.Id, x => x.Name));
+            ViewBag.MyEquipmentJsonString = myEquipmentJsonString;
+
+            if (Request.Cookies["error"] == null)
             {
                 var equipmentCookie = Request.Cookies["example"].Value.ToString();
-                Request.Cookies["example"].Expires = DateTime.Now.AddDays(-1);
                 var equipments = equipmentCookie
                     .Replace("%5B", "[")
                     .Replace("%7B", "{")
@@ -138,14 +142,17 @@ namespace NexusCommunicationSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Image,Description,TotalAmount,ServicePackageId")] Service service)
         {
-            var errorCookie = Request.Cookies["error"].Value.ToString();
-            int numberOfErrorCookie = Int32.Parse(errorCookie);
-            Request.Cookies["error"].Expires = DateTime.Now.AddDays(-1);
+            var myService_Equipments = db.Service_Equipments.Where(e => e.Service.Id == service.Id).ToList();
+            var myService_EquipmentsIEnumrable = myService_Equipments.AsEnumerable();
+            ViewBag.MyService_EquipmentsJsonString = myService_EquipmentsIEnumrable;
 
-            if (numberOfErrorCookie == 0)
+            var myEquipments = db.Equipments.ToList();
+            var myEquipmentJsonString = Newtonsoft.Json.JsonConvert.SerializeObject(myEquipments.ToDictionary(x => x.Id, x => x.Name));
+            ViewBag.MyEquipmentJsonString = myEquipmentJsonString;
+
+            if (Request.Cookies["error"]==null)
             {
                 var equipmentCookie = Request.Cookies["example"].Value.ToString();
-                Request.Cookies["example"].Expires = DateTime.Now.AddDays(-1);
                 var equipments = equipmentCookie
                     .Replace("%5B", "[")
                     .Replace("%7B", "{")
