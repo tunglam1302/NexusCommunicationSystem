@@ -15,5 +15,14 @@ namespace NexusCommunicationSystem.Models
         public DateTime UpdatedAt { get; set; }
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
+
+        public Feedback() { }
+        public Feedback(string content, Customer customer) {
+            Content = content;
+            CreatedAt = DateTime.Now;
+            UpdatedAt = DateTime.Now;
+            Customer = customer;
+            CustomerId = Customer.Id;
+        }
     }
 }
