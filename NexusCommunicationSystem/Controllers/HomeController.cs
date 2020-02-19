@@ -19,11 +19,10 @@ namespace NexusCommunicationSystem.Controllers
         public ActionResult Index()
         {
             var model = new DataViewModel();
-            model.Services = db.Services.ToList();
+            model.Services = db.Services.Take(5).ToList();
             model.ServicePackages = db.ServicePackages.ToList();
             return View(model);
         }
-
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

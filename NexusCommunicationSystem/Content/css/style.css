@@ -99,34 +99,35 @@ h1 {
 	-ms-border-top-right-radius: 5px;
 	-o-border-top-right-radius: 5px;
 }
-.top-two{
+.pricing
+.top-2{
 	background:#0099e5;
 }
-.top-three{
+.top-3{
 	background:#792ffd;
 } 
-.top-four{ 
+.top-4{ 
 	background:#F17E18;
 } 
-.top-five{ 
+.top-5{ 
 	background:#00C872;
 } 
-.top-six{ 
+.top-6{ 
 	background:#e0274a;
 } 
-.pricing.pricing-two:before { 
+.pricing.pricing-2:before { 
     background: #0099e5; 
 }
-.pricing.pricing-three:before { 
+.pricing.pricing-3:before { 
     background: #792ffd; 
 }
-.pricing.pricing-four:before { 
+.pricing.pricing-4:before { 
     background: #F17E18; 
 }
-.pricing.pricing-five:before { 
+.pricing.pricing-5:before { 
     background: #00C872; 
 }
-.pricing.pricing-six:before { 
+.pricing.pricing-6:before { 
     background: #e0274a; 
 }
 .pricing:hover:before{
@@ -209,23 +210,23 @@ h1 {
     -ms-transform: scale(1.05);
     z-index: 1; 
 } 
-.pricing.pricing-two .agileits-buy a{
+.pricing.pricing-2 .agileits-buy a{
 	background-color: #0099e5;
 	border-color: #0099e5;
 }
-.pricing.pricing-three .agileits-buy a{
+.pricing.pricing-3 .agileits-buy a{
 	background-color: #792ffd;
 	border-color: #792ffd;
 }
-.pricing.pricing-four .agileits-buy a{
+.pricing.pricing-4 .agileits-buy a{
 	background-color: #F17E18;
 	border-color: #F17E18;
 }
-.pricing.pricing-five .agileits-buy a{
+.pricing.pricing-5 .agileits-buy a{
 	background-color: #00C872;
 	border-color: #00C872;
 }
-.pricing.pricing-six .agileits-buy a{
+.pricing.pricing-6 .agileits-buy a{
 	background-color: #e0274a;
 	border-color: #e0274a;
 }

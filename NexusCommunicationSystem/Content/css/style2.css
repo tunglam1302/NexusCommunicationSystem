@@ -91,7 +91,7 @@ input[type="submit"],a{
 	text-align:center;
 	color:#fff;
 	font-size:2.5em;
-	margin-bottom:1.5em;
+	margin-bottom:0.5em;
 }
 /*-- //main --*/
 .w3_agile_main_grids{
@@ -339,7 +339,7 @@ input[type="submit"],a{
 }
 @media (max-width: 1080px){
 	.main h1 {
-		margin-bottom: 1em;
+		margin-bottom: 0.5em;
 	}
 	.w3_agileits_main_grid_left_grid h3 {
 		font-size: 2.7em;

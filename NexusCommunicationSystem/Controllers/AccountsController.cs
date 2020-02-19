@@ -19,7 +19,11 @@ namespace NexusCommunicationSystem.Controllers
         {
             return View(db.Accounts.ToList());
         }
-
+        //Tracking page
+        public ActionResult Track()
+        {
+            return View();
+        }
         // GET: Accounts/Details/5
         public ActionResult Details(int? id)
         {
