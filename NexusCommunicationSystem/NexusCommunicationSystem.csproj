@@ -141,9 +141,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202002131425271_InitialCreate4.cs" />
-    <Compile Include="Migrations\202002131425271_InitialCreate4.Designer.cs">
-      <DependentUpon>202002131425271_InitialCreate4.cs</DependentUpon>
+    <Compile Include="Migrations\202002171514364_InitialCreate22.cs" />
+    <Compile Include="Migrations\202002171514364_InitialCreate22.Designer.cs">
+      <DependentUpon>202002171514364_InitialCreate22.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Billing.cs" />
@@ -491,6 +491,10 @@
     <Content Include="Views\Services\Details.cshtml" />
     <Content Include="Views\Services\Edit.cshtml" />
     <Content Include="Views\Services\Index.cshtml" />
+    <Content Include="Views\Customers\Login.cshtml" />
+    <Content Include="Views\Customers\Register.cshtml" />
+    <Content Include="Views\Accounts\Login.cshtml" />
+    <Content Include="Views\Accounts\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -509,8 +513,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202002131425271_InitialCreate4.resx">
-      <DependentUpon>202002131425271_InitialCreate4.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202002171514364_InitialCreate22.resx">
+      <DependentUpon>202002171514364_InitialCreate22.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

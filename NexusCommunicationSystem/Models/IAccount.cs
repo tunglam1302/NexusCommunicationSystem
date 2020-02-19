@@ -19,7 +19,6 @@ namespace NexusCommunicationSystem.Models
          string Email { get; set; }
         [Required]
          string UserPassword { get; set; }
-         string FeedBack { get; set; }
         [Required]
          AccountRole UserRole { get; set; }
     }

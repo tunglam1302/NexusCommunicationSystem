@@ -1,0 +1,30 @@
+﻿@model NexusCommunicationSystem.Models.Customer
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+    <form action="@Url.Action("Login", "Accounts")" method="post">
+
+        <div>
+            Email
+            <input name="email" id="email" value="" />
+        </div>
+        <div>
+            UserPassword
+            <input name="userPassword" id="userPassword" value="" />
+        </div>
+        <div>
+            <input type="submit" value="Submit" />
+        </div>
+    </form>
+</body>
+</html>

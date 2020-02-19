@@ -17,7 +17,7 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Contracts
         public ActionResult Index()
         {
-            return View(db.Orders.ToList());
+            return View(db.Contracts.ToList());
         }
 
         // GET: Contracts/Details/5
@@ -27,7 +27,7 @@ namespace NexusCommunicationSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contract contract = db.Orders.Find(id);
+            Contract contract = db.Contracts.Find(id);
             if (contract == null)
             {
                 return HttpNotFound();
@@ -50,7 +50,7 @@ namespace NexusCommunicationSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Orders.Add(contract);
+                db.Contracts.Add(contract);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +65,7 @@ namespace NexusCommunicationSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contract contract = db.Orders.Find(id);
+            Contract contract = db.Contracts.Find(id);
             if (contract == null)
             {
                 return HttpNotFound();
@@ -96,7 +96,7 @@ namespace NexusCommunicationSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contract contract = db.Orders.Find(id);
+            Contract contract = db.Contracts.Find(id);
             if (contract == null)
             {
                 return HttpNotFound();
@@ -109,8 +109,8 @@ namespace NexusCommunicationSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Contract contract = db.Orders.Find(id);
-            db.Orders.Remove(contract);
+            Contract contract = db.Contracts.Find(id);
+            db.Contracts.Remove(contract);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

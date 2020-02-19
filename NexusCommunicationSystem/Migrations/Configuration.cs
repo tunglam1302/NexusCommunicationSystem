@@ -16,7 +16,7 @@ namespace NexusCommunicationSystem.Migrations
         List<Customer> listCustomer = new List<Customer>();
         List<Equipment> listEquipment = new List<Equipment>();
         List<Feedback> listFeedback = new List<Feedback>();
-        List<Contract> listOrder = new List<Contract>();
+        List<Contract> listContract = new List<Contract>();
         List<RetailStore> listRetailStore = new List<RetailStore>();
         List<Service> listService = new List<Service>();
         List<Service_Equipment> listService_Equipment = new List<Service_Equipment>();
@@ -135,6 +135,49 @@ namespace NexusCommunicationSystem.Migrations
             listService_Equipment.Add(new Service_Equipment(4, context.Services.Where(s => s.Id == 1).Single(), context.Equipments.Where(e => e.Id == 3).Single()));
 
             context.Service_Equipments.AddRange(listService_Equipment);
+            context.SaveChanges();
+
+            listRetailStore.Add(new RetailStore("FPT Software", "Duy Tan", "023467555"));
+            listRetailStore.Add(new RetailStore("Viettel", "Kim Ma", "023467556"));
+            listRetailStore.Add(new RetailStore("Mobiphone", "Nhan Chinh", "023467557"));
+
+            context.RetailStores.AddRange(listRetailStore);
+            context.SaveChanges();
+
+            listAccount.Add(new Account(context.RetailStores.Where(r=>r.Id==1).Single(),"Chung","Tran","chung@gmail.com","123",AccountRole.AccountDepartment));
+            listAccount.Add(new Account(context.RetailStores.Where(r=>r.Id==2).Single(),"Truong","Dang","truong@gmail.com","123",AccountRole.Admin));
+            listAccount.Add(new Account(context.RetailStores.Where(r=>r.Id==3).Single(),"Vy","Pham","vy@gmail.com","123",AccountRole.EmployeeOfRetailOutlet));
+            listAccount.Add(new Account(context.RetailStores.Where(r=>r.Id==1).Single(),"Linh","Nguyen","linh@gmail.com","123",AccountRole.TechnicalPeople));
+
+            context.Accounts.AddRange(listAccount);
+            context.SaveChanges();
+
+            listCustomer.Add(new Customer("Trung", "Nguyen", "trung@gmail.com", "123", AccountRole.User));
+            listCustomer.Add(new Customer("Dai", "Nguyen", "dai@gmail.com", "123", AccountRole.User));
+            listCustomer.Add(new Customer("Nam", "Nguyen", "nam@gmail;com", "123", AccountRole.User));
+
+            context.Customers.AddRange(listCustomer);
+            context.SaveChanges();
+
+            listFeedback.Add(new Feedback("good", context.Customers.Where(c => c.Id == 1).Single()));
+            listFeedback.Add(new Feedback("so so", context.Customers.Where(c => c.Id == 2).Single()));
+            listFeedback.Add(new Feedback("very good", context.Customers.Where(c => c.Id == 3).Single()));
+
+            context.Feedbacks.AddRange(listFeedback);
+            context.SaveChanges();
+
+            listContract.Add(new Contract(OrderStatus.Pending,0.3,2000000,100000,5,new DateTime(2019,1,1),0.1,0.1,context.Customers.Where(c=>c.Id==1).Single(),context.Services.Where(s=>s.Id==1).Single(),context.Accounts.Where(a=>a.Id==1).Single()));
+            listContract.Add(new Contract(OrderStatus.Pending,0.3,2000000,100000,5,new DateTime(2019,1,1),0.1,0.1,context.Customers.Where(c=>c.Id==2).Single(),context.Services.Where(s=>s.Id==2).Single(),context.Accounts.Where(a=>a.Id==2).Single()));
+            listContract.Add(new Contract(OrderStatus.Pending,0.3,2000000,100000,5,new DateTime(2019,1,1),0.1,0.1,context.Customers.Where(c=>c.Id==3).Single(),context.Services.Where(s=>s.Id==3).Single(),context.Accounts.Where(a=>a.Id==3).Single()));
+
+            context.Contracts.AddRange(listContract);
+            context.SaveChanges();
+
+            listBilling.Add(new Billing(context.Contracts.Where(o => o.Id == 1).Single()));
+            listBilling.Add(new Billing(context.Contracts.Where(o => o.Id == 2).Single()));
+            listBilling.Add(new Billing(context.Contracts.Where(o => o.Id == 3).Single()));
+
+            context.Billings.AddRange(listBilling);
             context.SaveChanges();
         }
     }
