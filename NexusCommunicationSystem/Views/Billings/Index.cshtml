@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
 <h2>Index</h2>
@@ -11,9 +12,6 @@
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Account)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.CreatedAt)
         </th>
@@ -25,9 +23,6 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Account)
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.CreatedAt)
         </td>

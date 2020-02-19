@@ -123,5 +123,43 @@ namespace NexusCommunicationSystem.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ProcessRegister(string firstName, string lastName, string email, string userPassword)
+        {
+            var customer = new Customer()
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                UserPassword = userPassword,
+            };
+            db.Customers.Add(customer);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(string email, string userPassword)
+        {
+            Customer customer = db.Customers.Where(c=>c.Email == email && c.UserPassword == userPassword).Single();
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+            Session["Customer"] = customer;
+
+            return RedirectToAction("Index");
+        }
     }
 }

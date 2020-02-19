@@ -1,0 +1,37 @@
+﻿@model NexusCommunicationSystem.Models.Customer
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Register</title>
+</head>
+<body>
+    <form action="@Url.Action("ProcessRegister", "Customers")" method="post">
+        <div>
+            First Name
+            <input name="firstName" id="firstName" value="" />
+        </div>
+        <div>
+            Last Name
+            <input name="lastName" id="lastName" value="" />
+        </div>
+        <div>
+            Email
+            <input name="email" id="email" value="" />
+        </div>
+        <div>
+            UserPassword
+            <input name="userPassword" id="userPassword" value="" />
+        </div>
+        <div>
+            <input type="submit" value="Submit" />
+        </div>
+    </form>
+</body>
+</html>

@@ -9,6 +9,7 @@ namespace NexusCommunicationSystem.Models
 {
     public interface IAccount
     {
+        [Key]
          int Id { get; set; }
         [Required]
          string FirstName { get; set; }
@@ -18,7 +19,6 @@ namespace NexusCommunicationSystem.Models
          string Email { get; set; }
         [Required]
          string UserPassword { get; set; }
-         string FeedBack { get; set; }
         [Required]
          AccountRole UserRole { get; set; }
     }

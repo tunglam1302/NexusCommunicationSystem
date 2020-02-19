@@ -8,6 +8,7 @@ namespace NexusCommunicationSystem.Models
 {
     public class RetailStore
     {
+        [Key]
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
@@ -17,6 +18,15 @@ namespace NexusCommunicationSystem.Models
         public string Telephone { get; set; }
 
         public virtual ICollection<Account> Accounts { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
+
+        public RetailStore()
+        { }
+
+        public RetailStore(string name, string address, string telephone)
+        {
+            Name = name;
+            Address = address;
+            Telephone = telephone;
+        }
     }
 }
