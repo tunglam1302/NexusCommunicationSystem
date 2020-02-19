@@ -1,58 +1,67 @@
-﻿@model IEnumerable<NexusCommunicationSystem.Models.Account>
+﻿@model PagedList.IPagedList<NexusCommunicationSystem.Models.Account>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var limit = ViewBag.limit is int ? (int)ViewBag.limit : 10;
+    var keyword = ViewBag.Keyword;
 }
 
 <h2>Index</h2>
 
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<div>
+    <form method="post" action="/Accounts/Index">
+        <p style="font-weight: bold">Search accounts</p>
+        <input style="max-width: 320px" class="form-control" type="text" name="keyword" placeholder="Search by email" value="@ViewBag.Keyword" /><br />
+    </form>
+
+</div>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserPassword)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserRole)
-        </th>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Email</th>
+        <th>UserPassword</th>
+        <th>UserRole</th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserPassword)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserRole)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserPassword)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserRole)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
+<br />
+@if (Model.PageCount > 1)
+{
+    <div>Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</div>
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page, limit = limit, keyword }))
+}
