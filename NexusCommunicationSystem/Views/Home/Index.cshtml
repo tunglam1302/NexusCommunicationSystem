@@ -48,158 +48,39 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		</ul>
 	</nav>
 	<div class="main">
-		<h1>Dial-up services</h1>
-		<div class="main-agileinfo">
-			<div id="owl-demo" class="owl-carousel owl-theme">
-				<!-- owl-carousel -->
-				<div class="item">
-					<div class="pricing pricing-two">
-						<div class="pricing-top top-two">
-							<h3>Basic</h3>
-							<p>$50 / month</p>
-						</div>
-						<div class="pricing-bottom">
-							<p>Manicure treatment</p>
-							<p>Hair cut</p>
-							<p>Back massage</p>
-							<p>Day make up</p>
-							<p class="w3agile">-</p>
-							<div class="agileits-buy">
-								<a class="popup-with-zoom-anim" href="#small-dialog">Buy Now</a>
+		@foreach (var item in Model.Services)
+		{
+		<h1>@item.Name</h1>
+			<div class="main-agileinfo">
+				<div id="owl-demo" class="owl-carousel owl-theme">
+					<!-- owl-carousel -->
+					@foreach (var package in Model.ServicePackages)
+					{
+						<div class="item">
+							<div class="pricing pricing-two">
+								<div class="pricing-top top-two">
+									<h3>@package.PaymentPeriod</h3>
+									<p>$50 / month</p>
+								</div>
+								<div class="pricing-bottom">
+									<p>Manicure treatment</p>
+									<p>Hair cut</p>
+									<p>Back massage</p>
+									<p>Day make up</p>
+									<p class="w3agile">-</p>
+									<div class="agileits-buy">
+										<a class="popup-with-zoom-anim" href="#small-dialog">Buy Now</a>
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
+					}
 				</div>
-				<div class="item">
-					<div class="pricing">
-						<div class="pricing-top">
-							<h3>Standard</h3>
-							<p>$62 / month</p>
-						</div>
-						<div class="pricing-bottom">
-							<p>Nail styling</p>
-							<p>Spa Therapy</p>
-							<p>Hot Stone massage</p>
-							<p>Makeup</p>
-							<p>Fashion stylist</p>
-							<div class="agileits-buy">
-								<a class="popup-with-zoom-anim" href="#small-dialog">Buy Now</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="item">
-					<div class="pricing pricing-four">
-						<div class="pricing-top top-four">
-							<h3>Special</h3>
-							<p>$100 / month</p>
-						</div>
-						<div class="pricing-bottom wthree">
-							<p>Body massage</p>
-							<p>Nail Cutting and styling</p>
-							<p>Spa Therapy</p>
-							<p>Hair Styling</p>
-							<p>Bridal makeup</p>
-							<div class="agileits-buy">
-								<a class="popup-with-zoom-anim" href="#small-dialog">Buy Now</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="item">
-					<div class="pricing pricing-three agileits">
-						<div class="pricing-top top-three">
-							<h3>Bridal</h3>
-							<p>$150 / 2 Weeks</p>
-						</div>
-						<div class="pricing-bottom">
-							<p>Hair caring</p>
-							<p>Oriental Body Glow</p>
-							<p>Spa Facials</p>
-							<p>Bridal Makeup</p>
-							<p>Manicure & Pedicure</p>
-							<div class="agileits-buy">
-								<a class="popup-with-zoom-anim" href="#small-dialog">Buy Now</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="item">
-					<div class="pricing pricing-five">
-						<div class="pricing-top top-five">
-							<h3>Stay & Dine</h3>
-							<p>$160 / month</p>
-						</div>
-						<div class="pricing-bottom w3ls">
-							<p>Nail styling</p>
-							<p>Spa Therapy</p>
-							<p>Makeup</p>
-							<p class="w3agile agileits">-</p>
-							<p>Hot Stone massage</p>
-							<div class="agileits-buy">
-								<a class="popup-with-zoom-anim" href="#small-dialog">Buy Now</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="item">
-					<div class="pricing pricing-six">
-						<div class="pricing-top top-six">
-							<h3>Ultimate</h3>
-							<p>$200 / 3 Weeks</p>
-						</div>
-						<div class="pricing-bottom w3ls">
-							<p>Hair caring</p>
-							<p>Oriental Body Glow</p>
-							<p>Spa Facials</p>
-							<p>Bridal Makeup</p>
-							<p>Manicure & Pedicure</p>
-							<div class="agileits-buy">
-								<a class="popup-with-zoom-anim" href="#small-dialog">Buy Now</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="item">
-					<div class="pricing pricing-two">
-						<div class="pricing-top top-two">
-							<h3>Basic2</h3>
-							<p>$50 / month</p>
-						</div>
-						<div class="pricing-bottom w3layouts">
-							<p>Manicure treatment</p>
-							<p>Hair cut</p>
-							<p>Back massage</p>
-							<p>Day make up</p>
-							<p class="w3agile">-</p>
-							<div class="agileits-buy">
-								<a class="popup-with-zoom-anim" href="#small-dialog">Buy Now</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="item">
-					<div class="pricing w3layouts">
-						<div class="pricing-top ">
-							<h3>Standard2</h3>
-							<p>$62 / month</p>
-						</div>
-						<div class="pricing-bottom">
-							<p>Nail styling</p>
-							<p>Spa Therapy</p>
-							<p>Hot Stone massage</p>
-							<p>Makeup</p>
-							<p>Fashion stylist</p>
-							<div class="agileits-buy">
-								<a class="popup-with-zoom-anim" href="#small-dialog">Buy Now</a>
-							</div>
-						</div>
-					</div>
-				</div>
+				<!-- //owl-carousel -->
 			</div>
-			<!-- //owl-carousel -->
-		</div>
-	</div>
+        }
+
+			
 	<!-- //main -->
 	<!-- pop-up-grid -->
 	<div id="small-dialog" class="w3_agile_main_grids mfp-hide">
@@ -309,7 +190,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<script src="~/Content/js/owl.carousel.js"></script>
 		<script>
 			$(document).ready(function () {
-				$("#owl-demo").owlCarousel({
+				$(".owl-carousel").owlCarousel({
 
 					autoPlay: 3000, //Set AutoPlay to 3 seconds
 					items: 3,
