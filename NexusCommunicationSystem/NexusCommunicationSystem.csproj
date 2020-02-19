@@ -55,6 +55,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -141,9 +143,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202002171514364_InitialCreate22.cs" />
-    <Compile Include="Migrations\202002171514364_InitialCreate22.Designer.cs">
-      <DependentUpon>202002171514364_InitialCreate22.cs</DependentUpon>
+    <Compile Include="Migrations\202002190625312_InitialCreate.cs" />
+    <Compile Include="Migrations\202002190625312_InitialCreate.Designer.cs">
+      <DependentUpon>202002190625312_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Billing.cs" />
@@ -513,8 +515,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202002171514364_InitialCreate22.resx">
-      <DependentUpon>202002171514364_InitialCreate22.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202002190625312_InitialCreate.resx">
+      <DependentUpon>202002190625312_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
