@@ -3,7 +3,7 @@ namespace NexusCommunicationSystem.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialCreate : DbMigration
+    public partial class init : DbMigration
     {
         public override void Up()
         {
@@ -18,6 +18,7 @@ namespace NexusCommunicationSystem.Migrations
                         UserPassword = c.String(),
                         UserRole = c.Int(nullable: false),
                         RetailStoreId = c.Int(nullable: false),
+                        AccountId = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.RetailStores", t => t.RetailStoreId, cascadeDelete: true)
@@ -73,6 +74,7 @@ namespace NexusCommunicationSystem.Migrations
                         Email = c.String(),
                         UserPassword = c.String(),
                         UserRole = c.Int(nullable: false),
+                        AccountId = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             

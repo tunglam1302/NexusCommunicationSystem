@@ -128,7 +128,7 @@ input[type="submit"],a{
     letter-spacing: 3px;
 }
 .w3_agileits_main_grid_left_grid h3 span{
-	font-size: .5em;
+	
 }
 .w3_agileits_main_grid_left_grid p{
 	font-size:1em;
@@ -162,11 +162,15 @@ input[type="submit"],a{
 	font-weight:600;
 	text-transform:uppercase;
 	text-align: left;
+	display:flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
 }
 .agileinfo_main_grid_left_grid ul li i{
 	padding-right: 1em;
     color: #212121;
-    width: 20%;
     text-align: center;
 }
 .agileinfo_main_grid_left_grid ul li:last-child{
