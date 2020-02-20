@@ -1,7 +1,227 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
+
+body {
+    font-size: 14px;
+    font-family: Arial;
+    background-color: #FAFAFA;
+}
+
+a {
+    text-decoration: none;
+}
+
+#coin-h {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1E2126;
+    padding: 10px 30px;
+}
+
+    #coin-h .tit-h {
+        color: rgb(240, 185, 11);
+        font-weight: bold;
+        text-transform: uppercase;
+        margin  : 0 !important;
+        padding: 0 !important;
+    }
+
+    #coin-h .login-h {
+        cursor: pointer;
+        padding: 4px 16px;
+        border-radius: 4px;
+        background-color: rgb(240, 185, 11);
+        border: none;
+    }
+
+        #coin-h .login-h:hover {
+            background-color: rgb(243, 205, 46);
+        }
+
+        #coin-h .login-h .login-t {
+            line-height: 20px;
+        }
+
+#coin-c {
+    padding: 30px 20px;
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+    #coin-c .cc-s {
+        cursor: pointer;
+        line-height: 20px;
+        background: rgb(51, 51, 51);
+        border-radius: 3px;
+        padding: 11px 11px 11px 16px;
+        width: max-content;
+        position: relative;
+    }
+
+        #coin-c .cc-s a {
+            color: #FFFFFF;
+        }
+
+        #coin-c .cc-s .cc-drop {
+            display: none;
+        }
+
+            #coin-c .cc-s .cc-drop a {
+                display: block;
+                padding-top: 20px;
+            }
+
+                #coin-c .cc-s .cc-drop a:hover {
+                    color: rgb(243, 205, 46);
+                }
+
+        #coin-c .cc-s:hover .cc-drop {
+            display: block;
+        }
+
+#coin-b {
+    background-color: #e9ebee;
+    padding-bottom: 50px;
+}
+
+    #coin-b .d-menu {
+        position: relative;
+    }
+
+    #coin-b .coin-news {
+        padding: 20px 0;
+    }
+
+        #coin-b .coin-news .cnews-tit {
+            text-align: center;
+        }
+
+            #coin-b .coin-news .cnews-tit .cnews-l {
+                text-decoration: none;
+                color: rgb(33, 40, 51);
+            }
+
+                #coin-b .coin-news .cnews-tit .cnews-l:hover {
+                    text-decoration: none;
+                    color: rgb(243, 205, 46);
+                }
+
+    #coin-b .coin-t {
+        padding: 0 20px;
+    }
+
+        #coin-b .coin-t .coin-p-table {
+            width: 100%;
+            background-color: rgb(255, 255, 255);
+            text-align: left;
+            border-collapse: collapse;
+        }
+
+            #coin-b .coin-t .coin-p-table .tr-t th {
+                padding-left: 32px;
+                padding-top: 16px;
+                padding-bottom: 16px;
+                line-height: 18px;
+                color: rgb(132, 142, 156);
+                font-weight: normal;
+            }
+
+            #coin-b .coin-t .coin-p-table .tr-b td {
+                border-top: 1px solid rgb(242, 242, 242);
+                padding-left: 32px;
+                padding-top: 16px;
+                padding-bottom: 16px;
+                font-size: 18px;
+            }
+
+                #coin-b .coin-t .coin-p-table .tr-b td:first-child {
+                    font-weight: bold;
+                    color: rgb(132, 142, 156);
+                }
+
+                #coin-b .coin-t .coin-p-table .tr-b td:last-child {
+                    color: rgb(234, 0, 112);
+                }
+
+#coin-f {
+    padding: 30px 0;
+    background-color: #1E2126;
+    border-top: 1px solid rgba(242,242,242,0.1);
+}
+
+    #coin-f .cf-t {
+        text-align: center;
+        font-size: 12px;
+        line-height: 16px;
+        color: #848E9C;
+    }
+
+#coin-m {
+    padding: 100px 0;
+}
+
+    #coin-m .cm-t {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 50px;
+    }
+
+    #coin-m .cm-f {
+        width: 50%;
+        margin: 0 auto;
+        padding: 40px 50px;
+        border-radius: 2px;
+        background-color: #fff;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.08), 0px 0px 2px rgba(0,0,0,0.08);
+    }
+
+}
+
+.cm-f-u p {
+    color: #48515D;
+    font-size: 24px;
+}
+
+.cm-f-u input {
+    display: block;
+    font-size: 16px;
+    margin-top: 10px;
+    width: 100%;
+    max-width :unset !important;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    outline: none;
+    margin-bottom: 15px;
+}
+
+.c-sub {
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #212833;
+    background-color: #F0B90B;
+    border-radius: 4px;
+    padding: 4px 8px;
+    line-height: 30px;
+}
+
+.cm-f-r {
+    width: 100%;
+    margin-top: 40px;
+    text-align: center;
+}
+
+    .cm-f-r a {
+        color: #f0b90b;
+    }
+
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
