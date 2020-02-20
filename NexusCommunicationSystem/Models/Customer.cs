@@ -16,6 +16,7 @@ namespace NexusCommunicationSystem.Models
 
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Contract> Orders { get; set; }
+        public string AccountId { get;set; }
 
         public Customer() { }
 
@@ -26,6 +27,7 @@ namespace NexusCommunicationSystem.Models
             Email = email;
             UserPassword = userPassword;
             UserRole = accountRole;
+            AccountId = this.Id.ToString();
         }
     }
 }

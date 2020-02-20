@@ -38,6 +38,9 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Contracts/Create
         public ActionResult Create()
         {
+            ViewBag.ServiceId = new SelectList(db.Services, "Id", "Name");
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "AccountId");
+            ViewBag.AccountId = new SelectList(db.Accounts, "Id", "AccountId");
             return View();
         }
 
@@ -46,7 +49,7 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,OrderStatus,CreatedAt,UpdatedAt,SecurityDeposit,TotalAmount,AmountDue,Amount,NextPaymentAt,ChargeForReplacementDone,Discounts")] Contract contract)
+        public ActionResult Create([Bind(Include = "Id,OrderStatus,CreatedAt,UpdatedAt,SecurityDeposit,TotalAmount,AmountDue,Quantity,NextPaymentAt,ChargeForReplacementDone,Discounts")] Contract contract)
         {
             if (ModelState.IsValid)
             {
