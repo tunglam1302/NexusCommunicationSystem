@@ -17,6 +17,7 @@ namespace NexusCommunicationSystem.Models
         public int RetailStoreId { get; set; }
         public virtual RetailStore RetailStore { get; set; }
         public virtual ICollection<Contract> Contracts { get; set; }
+        public string AccountId { get; set; }
 
         public Account() { }
 
@@ -28,6 +29,7 @@ namespace NexusCommunicationSystem.Models
             Email = email;
             UserPassword = userPassword;
             UserRole = userRole;
+            AccountId = this.Id.ToString();
         }
     }
 }

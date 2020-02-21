@@ -38,7 +38,11 @@ namespace NexusCommunicationSystem.Controllers
             var data = db.Accounts.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
             return View(data);
         }
-
+        //Tracking page
+        public ActionResult Track()
+        {
+            return View();
+        }
         // GET: Accounts/Details/5
         public ActionResult Details(int? id)
         {

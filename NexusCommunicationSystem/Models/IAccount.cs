@@ -12,6 +12,9 @@ namespace NexusCommunicationSystem.Models
         [Key]
          int Id { get; set; }
         [Required]
+        string AccountId { get; set; }
+        [Required]
+        
          string FirstName { get; set; }
         [Required]
          string LastName { get; set; }
