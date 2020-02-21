@@ -48,13 +48,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		</ul>
 	</nav>
 	<div class="main">
+		@{
+			string serviceJson = Model.GetServiceJSON();
+		}
+
+		<input id="serviceJson" type="hidden" value="@serviceJson" />
+		<input id="currentService" type="hidden" value=""/>
+		<input id="surrentPackage" type="hidden" value=""/>
 		@foreach (var item in Model.Services)
 		{
-		<h1>@item.Name</h1>
+			<h1>@item.Name</h1>
 			<div class="main-agileinfo">
 				<div id="owl-demo" class="owl-carousel owl-theme">
 					<!-- owl-carousel -->
 					@{int i = 1;}
+					@{string[] detail = item.Image.Split('/');}
 					@foreach (var package in Model.ServicePackages)
 					{
 						<div class="item">
@@ -66,13 +74,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								@{i++;
 								}
 								<div class="pricing-bottom">
-									<p>Fast Connection</p>
-									<p>Combo discount</p>
-									<p>From 100USD</p>
-									<p>24/7 support</p>
-									<p class="w3agile">-</p>
+								@foreach(var detailLine in detail){
+									<p>@detailLine</p>
+								}
 									<div class="agileits-buy">
-										<a class="popup-with-zoom-anim" href="#small-dialog">Buy Now</a>
+										<a class="popup-with-zoom-anim" href="#small-dialog" service-id="@item.Id" package-id="@package.Id">Buy Now</a>
 									</div>
 								</div>
 							</div>
@@ -81,168 +87,227 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				</div>
 				<!-- //owl-carousel -->
 			</div>
-        }
+		}
 
-			
-	<!-- //main -->
-	<!-- pop-up-grid -->
-	<div id="small-dialog" class="w3_agile_main_grids mfp-hide">
-		<div class="agile_main_grid_left">
-			<div class="w3_agileits_main_grid_left_grid">
-				<h2>Nexus Payment Form</h2>
-				<h3>$89.00 <span>USD</span></h3>
-				<p>total based on monthly rate</p>
-			</div>
-			<div class="agileinfo_main_grid_left_grid">
-				<h3>One time shipping free</h3>
-				<p>return if you do not like the end result</p>
-				<ul>
-					<li><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>Marketplace</li>
-					<li><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>Prices & Competition</li>
-					<li><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>Logistics</li>
-					<li><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>Guidance & Support</li>
-				</ul>
-				<a href="#" class="agileits_questions">If you have any questions ?</a>
-				<div class="w3layouts_help_desk">
-					<a href="#">help desk</a>
+
+		<!-- //main -->
+		<!-- pop-up-grid -->
+		<div id="small-dialog" class="w3_agile_main_grids mfp-hide">
+			<div class="agile_main_grid_left">
+				<div class="w3_agileits_main_grid_left_grid">
+					<h3>
+					<span id='original-price' style="text-decoration:line-through; text-decoration-color:grey;text-decoration-thickness: 1px"></span>
+					<p id='discount-price'></p>
+					</h3>
+					<p id='discount-text'></p>
 				</div>
-			</div>
-		</div>
-		<div class="agileits_w3layouts_main_grid_right">
-			<div class="wthree_main_grid_right_grid">
-				<div id='success_response'>
-					<svg id="successAnimation" xmlns="http://www.w3.org/2000/svg" width="70" height="70"
-						 viewBox="0 0 70 70">
-						<path id="successAnimationResult" fill="#D8D8D8"
-							  d="M35,60 C21.1928813,60 10,48.8071187 10,35 C10,21.1928813 21.1928813,10 35,10 C48.8071187,10 60,21.1928813 60,35 C60,48.8071187 48.8071187,60 35,60 Z M23.6332378,33.2260427 L22.3667622,34.7739573 L34.1433655,44.40936 L47.776114,27.6305926 L46.223886,26.3694074 L33.8566345,41.59064 L23.6332378,33.2260427 Z" />
-						<circle id="successAnimationCircle" cx="35" cy="35" r="24" stroke="#979797" stroke-width="2"
-								stroke-linecap="round" fill="transparent" />
-						<polyline id="successAnimationCheck" stroke="#979797" stroke-width="2"
-								  points="23 34 34 43 47 27" fill="transparent" />
-					</svg>
-					<h1 style='margin-top: 20px; font-size: 18px;'>Your order is complete. </h1>
-					<h1 style='margin-top: 20px; font-size: 18px;'>
-						Use Id D000001 to track your order <a style='color:#00968f' href="/Accounts/Track">here</a>
-					</h1>
-				</div>
-				<div id='order_form'>
-					<h3>fill the fields and proceed to payment</h3>
-					<div class="w3ls_main_grid_right_grid_form">
-						<form action="#" method="post">
-							<div class="w3l_main_grid_right_grid_form1">
-								<label>Location</label>
-								<select id="w3_agileits_select" class="w3layouts_select"
-										onchange="change_country(this.value)">
-									<option value="null">Long Bien</option>
-									<option value="null">Hai Ba Trung</option>
-									<option value="null">Hoan Kiem</option>
-									<option value="null">Cau Giay</option>
-									<option value="null">Thanh Xuan</option>
-								</select>
-							</div>
-							<div class="w3l_main_grid_right_grid_form1">
-								<label>Rent Period</label>
-								<select id="w3_agileits_select1" class="w3layouts_select"
-										onchange="change_country(this.value)">
-									<option value="null">Monthly</option>
-									<option value="null">Quarterly</option>
-									<option value="null">Hourly</option>
-								</select>
-							</div>
-							<div style="display:flex; width:100%">
-								<div style='flex:1' class="w3l_main_grid_right_grid_form2">
-									<label>Email</label>
-									<input type="email" name="Email" placeholder="Email" required>
-								</div>
-								<div style='flex:1' class="w3l_main_grid_right_grid_form2">
-									<label>Name</label>
-									<input type="text" name="Number" placeholder="Name" required>
-								</div>
-								<div style='flex:1' class="w3l_main_grid_right_grid_form2">
-									<label>Phone Number</label>
-									<input type="text" name="URL" placeholder="Phone Number" required>
-								</div>
-							</div>
-							<div>
-
-
-								<div class="clear"> </div>
-								<div class="w3_main_grid_right_grid_form_textarea">
-									<label>Additional request</label>
-									<textarea name="Message" placeholder="" required=""></textarea>
-								</div>
-								<div class="w3layouts_check">
-									<label class="checkbox">
-										<input type="checkbox" name="checkbox"><i> </i>I agree
-										to the
-										terms of services
-									</label>
-								</div>
-								<input id='order_submit_button' type="submit" value="Submit Payment Form">
-						</form>
+				<div class="agileinfo_main_grid_left_grid">
+					<h3>These equipments are included</h3>
+					<p>(Already in price)</p>
+					<ul id='equipment-display'>
+						
+					</ul>
+					<a href="#" class="agileits_questions">If you have any questions ?</a>
+					<div class="w3layouts_help_desk">
+						<a href="#">help desk</a>
 					</div>
 				</div>
-				<div class="clear"> </div>
 			</div>
-		</div>
-		<!-- //pop-up-grid -->
-		<!-- copyright -->
-		<!-- //copyright -->
-		<!-- js -->
-		<script src="~/Content/js/jquery-1.9.1.min.js"></script>
-		<script src="~/Content/js/owl.carousel.js"></script>
-		<script>
-			$(document).ready(function () {
-				$(".owl-carousel").owlCarousel({
+			<div class="agileits_w3layouts_main_grid_right">
+				<div class="wthree_main_grid_right_grid">
+					<div id='success_response'>
+						<svg id="successAnimation" xmlns="http://www.w3.org/2000/svg" width="70" height="70"
+							 viewBox="0 0 70 70">
+							<path id="successAnimationResult" fill="#D8D8D8"
+								  d="M35,60 C21.1928813,60 10,48.8071187 10,35 C10,21.1928813 21.1928813,10 35,10 C48.8071187,10 60,21.1928813 60,35 C60,48.8071187 48.8071187,60 35,60 Z M23.6332378,33.2260427 L22.3667622,34.7739573 L34.1433655,44.40936 L47.776114,27.6305926 L46.223886,26.3694074 L33.8566345,41.59064 L23.6332378,33.2260427 Z" />
+							<circle id="successAnimationCircle" cx="35" cy="35" r="24" stroke="#979797" stroke-width="2"
+									stroke-linecap="round" fill="transparent" />
+							<polyline id="successAnimationCheck" stroke="#979797" stroke-width="2"
+									  points="23 34 34 43 47 27" fill="transparent" />
+						</svg>
+						<h1 style='margin-top: 20px; font-size: 18px;'>Your order is complete. </h1>
+						<h1 style='margin-top: 20px; font-size: 18px;'>
+							Use Id D000001 to track your order <a style='color:#00968f' href="/Accounts/Track">here</a>
+						</h1>
+					</div>
+					<div id='order_form'>
+						<h3>fill the fields and proceed to payment</h3>
+						<div class="w3ls_main_grid_right_grid_form">
+							<form action="#" method="post">
+								<div class="w3l_main_grid_right_grid_form1">
+									<label>Retail Store</label>
+									<select id="select-store" class="w3layouts_select">
+										@foreach(var item in Model.RetailStores){
+										<option value="@item.Id">@item.Name</option>
+										}
+									</select>
+								</div>
+								<div class="w3l_main_grid_right_grid_form1">
+									<label>Rent Period</label>
+									<select id="select-period" class="w3layouts_select">
+									@foreach(var item in Model.ServicePackages){
+										<option value="@item.Id">@item.Name</option>
+									}
+									</select>
+								</div>
+																<div class="w3l_main_grid_right_grid_form1">
+									<label>Quantity</label>
+									<input style="height:40px;padding:0" min=0 type='number' id="select-quantity" class="w3layouts_select">
 
-					autoPlay: 3000, //Set AutoPlay to 3 seconds
-					items: 3,
-					itemsDesktop: [640, 5],
-					itemsDesktopSmall: [414, 4]
+									</input>
+								</div>
+								<div style="display:flex; width:100%">
+									<div style='flex:1' class="w3l_main_grid_right_grid_form2">
+										<label>Email</label>
+										<input type="email" name="Email" placeholder="Email" required>
+									</div>
+									<div style='flex:1' class="w3l_main_grid_right_grid_form2">
+										<label>Name</label>
+										<input type="text" name="Number" placeholder="Name" required>
+									</div>
+									<div style='flex:1' class="w3l_main_grid_right_grid_form2">
+										<label>Phone Number</label>
+										<input type="text" name="URL" placeholder="Phone Number" required>
+									</div>
+								</div>
+								<div>
 
+
+									<div class="clear"> </div>
+									<div class="w3_main_grid_right_grid_form_textarea">
+										<label>Additional request</label>
+										<textarea name="Message" placeholder="" required=""></textarea>
+									</div>
+									<div class="w3layouts_check">
+										<label class="checkbox">
+											<input type="checkbox" name="checkbox"><i> </i>I agree
+											to the
+											terms of services
+										</label>
+									</div>
+									<input id='order_submit_button' type="submit" value="Submit Payment Form">
+							</form>
+						</div>
+					</div>
+					<div class="clear"> </div>
+				</div>
+			</div>
+			<!-- //pop-up-grid -->
+			<!-- copyright -->
+			<!-- //copyright -->
+			<!-- js -->
+			<script src="~/Content/js/jquery-1.9.1.min.js"></script>
+			<script src="~/Content/js/owl.carousel.js"></script>
+			<script>
+				$(document).ready(function () {
+					$(".owl-carousel").owlCarousel({
+
+						autoPlay: 3000, //Set AutoPlay to 3 seconds
+						items: 3,
+						itemsDesktop: [640, 5],
+						itemsDesktopSmall: [414, 4]
+
+					});
 				});
-			});
-		</script>
-		<!-- //js -->
-		<!-- popup js -->
-		<script src="~/Content/js/jquery.magnific-popup.js" type="text/javascript"></script>
-		<script>
-			$(document).ready(function () {
-				$('.popup-with-zoom-anim').magnificPopup({
-					type: 'inline',
-					fixedContentPos: false,
-					fixedBgPos: true,
-					overflowY: 'auto',
-					closeBtnInside: true,
-					preloader: false,
-					midClick: true,
-					removalDelay: 300,
-					mainClass: 'my-mfp-zoom-in',
-					callbacks: {
-						open: function () {
-							$('#order_form').show()
-							$('#success_response').hide()
-							$('#successAnimation').removeAttr('class')
-						},
-						close: function () {
+			</script>
+			<!-- //js -->
+			<!-- popup js -->
+			<script src="~/Content/js/jquery.magnific-popup.js" type="text/javascript"></script>
+			<script>
+				$(document).ready(function () {
+					$('.popup-with-zoom-anim').magnificPopup({
+						type: 'inline',
+						fixedContentPos: false,
+						fixedBgPos: true,
+						overflowY: 'auto',
+						closeBtnInside: true,
+						preloader: false,
+						midClick: true,
+						removalDelay: 300,
+						mainClass: 'my-mfp-zoom-in',
+						callbacks: {
+							open: function () {
+								$('#order_form').show()
+								$('#success_response').hide()
+								$('#successAnimation').removeAttr('class')
+							},
+							close: function () {
+
+							}
 
 						}
-
-					}
+					});
 				});
-			});
-		</script>
-		<script>
-			$(document).ready(function () {
-				$('#order_submit_button').click(() => {
-					$('#order_form').hide()
-					$('#success_response').show()
-					$('#successAnimation').attr({ class: 'animated' })
-				})
+			</script>
+			<script>
+				$(document).ready(function () {
+					$('#order_submit_button').click(() => {
+						$('#order_form').hide()
+						$('#success_response').show()
+						$('#successAnimation').attr({ class: 'animated' })
+					})
 
-			});
-		</script>
-		<!-- //popup js -->
+				});
+			</script>
+			<!-- //popup js -->
+			<script>
+					$(document).ready(function () {
+					const serviceData = JSON.parse($('#serviceJson').val())
+					let serviceId = null
+					let packageId = null
+					console.log(serviceData)
+					$('.popup-with-zoom-anim').click(function(){
+						serviceId = $(this).attr('service-id')
+						packageId = $(this).attr('package-id')
+						$('#select-period').val(packageId)
+						let currentService = serviceData.find(service => service.Id ==serviceId)
+						let equipmentContent = currentService.Service_Equipments.map(({Equipment}) =>{
+							let content = `<li style="font-size:20px">
+							<i style="font-size:20px" class="fa fa-arrow-circle-o-right" aria-hidden="true">
+							</i>
+							<span style="padding-top:3px">${Equipment.Amount} ${Equipment.Name} - ${Equipment.Price} USD</span>
+							</li>`
+							return content
+						})
+						$('#equipment-display').append(equipmentContent)
+
+						$('#select-quantity').on('change', function(){
+							let value =$('#select-quantity').val()
+							let originPrice = 89
+							if(value == 0){
+								$('#discount-text').html('Total price')
+								$('#discount-price').html('$'+originPrice+'USD')
+								$('#original-price').html('')
+							}else{
+								const {discountPrice, percentage} = getDiscount(originPrice, value)
+								$('#discount-text').html(`You get ${percentage*100}% off`)
+								$('#discount-price').html('$'+discountPrice+'USD')
+								$('#original-price').html('$'+originPrice+'USD')
+							}
+						})
+						$('#select-quantity').val(0).change()
+					})
+
+				});
+
+				const getDiscount = (originPrice, quantity) =>{
+					
+					if(0<quantity && quantity < 10)
+					{
+					return {
+						discountPrice: Math.round(originPrice * 0.9),
+						percentage: 0.1
+					}
+					}
+					else if (quantity >=10){
+						console.log(quantity)
+						return{
+							discountPrice: Math.round(originPrice * 0.5),
+							percentage: 0.5
+						}
+					}
+				}
+			</script>
 </body>
 
 </html>
