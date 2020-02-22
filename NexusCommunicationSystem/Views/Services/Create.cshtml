@@ -124,10 +124,11 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-
             $(document).on('click', '#equipmentInsert', function () {
-                var equipments = '@Html.Raw(equipments)';
-                var myEquipments = JSON.parse(equipments);
+                
+                var equipments = @Html.Raw(equipments);
+                var myEquipments = equipments;
+                console.log(myEquipments);
                 var avaiableEquipments = [];
 
                 $('#myTable tbody').append('<tr><td><input type="number" class="quantity"/></td><td><input class="tags"></td><td><input type="button" value="Delete" name="deleteRow" id="deleteRow"/></td></tr>');
@@ -149,8 +150,8 @@
 
     <script>
         $(document).ready(function () {
-            var equipments = '@Html.Raw(equipments)';
-            var myEquipments = JSON.parse(equipments);
+            var equipments = @Html.Raw(equipments);
+            var myEquipments = equipments;
             var avaiableEquipments = [];
             var count = 0;
 

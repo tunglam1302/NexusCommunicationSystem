@@ -21,16 +21,17 @@ namespace NexusCommunicationSystem.Models
 
         public Service() { }
 
-        public Service(string name, string image, ServicePackage servicePackage, string description = null)
+        public Service(string name, string image, ServicePackage servicePackage, string description = null, int totalAmount = 0)
         {
             Name = name;
             Image = image;
             Description = description;
             ServicePackage = servicePackage;
             ServicePackageId = servicePackage.Id;
+            TotalAmount = totalAmount;
         }
 
-        public Service(int id, string name, string image,ServicePackage servicePackage, string description = null)
+        public Service(int id, string name, string image,ServicePackage servicePackage, string description = null, int totalAmount = 0)
         {
             Id = id;
             Name = name;
@@ -38,6 +39,7 @@ namespace NexusCommunicationSystem.Models
             Description = description;
             ServicePackage = servicePackage;
             ServicePackageId = servicePackage.Id;
+            TotalAmount = totalAmount;
         }
     }
 
