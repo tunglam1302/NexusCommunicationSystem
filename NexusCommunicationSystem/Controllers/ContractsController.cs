@@ -40,7 +40,8 @@ namespace NexusCommunicationSystem.Controllers
         {
             ViewBag.ServiceId = new SelectList(db.Services, "Id", "Name");
             ViewBag.CustomerId = new SelectList(db.Customers, "Id", "AccountId");
-            ViewBag.AccountId = new SelectList(db.Accounts, "Id", "AccountId");
+            ViewBag.RetailStoreId = new SelectList(db.RetailStores, "Id", "Name");
+            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name");
             return View();
         }
 
@@ -49,8 +50,10 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,OrderStatus,CreatedAt,UpdatedAt,SecurityDeposit,TotalAmount,AmountDue,Quantity,NextPaymentAt,ChargeForReplacementDone,Discounts")] Contract contract)
+        public ActionResult Create([Bind(Include = "Id,OrderStatus,SecurityDeposit,TotalAmount,AmountDue,Quantity,NextPaymentAt,Discounts")] Contract contract)
         {
+            contract.CreatedAt = DateTime.Now;
+            contract.UpdatedAt = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Contracts.Add(contract);
@@ -116,6 +119,36 @@ namespace NexusCommunicationSystem.Controllers
             db.Contracts.Remove(contract);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public double  CalculateContractValue(string ServiceId, string ServicePackageId, string Quantity, string Discounts, string SecurityDeposit)
+        {
+            double totalAmount = 0;
+
+            var servicePackageId = Int32.Parse(ServicePackageId);
+            
+            var quantity = Int32.Parse(Quantity);
+            var discount = double.Parse(Discounts);
+            var securityDeposit = Int32.Parse(SecurityDeposit);
+
+            var serviceId = Int32.Parse(ServiceId);
+            var service = db.Services.Where(s => s.Id == serviceId).Single();
+            var servicePrice = service.TotalAmount;
+
+            totalAmount = securityDeposit + servicePrice * quantity * (1 - discount);
+
+            return totalAmount;
+        }
+
+        public int GetServiceTotalAmount(string ServiceId)
+        {
+            int totalPrice = 0;
+            var thisServiceId = Int32.Parse(ServiceId);
+
+            var service = db.Services.Where(s => s.Id == thisServiceId).Single();
+            totalPrice = service.TotalAmount;
+
+            return totalPrice;
         }
 
         protected override void Dispose(bool disposing)

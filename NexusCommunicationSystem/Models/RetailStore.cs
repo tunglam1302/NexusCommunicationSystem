@@ -18,6 +18,7 @@ namespace NexusCommunicationSystem.Models
         public string Telephone { get; set; }
 
         public virtual ICollection<Account> Accounts { get; set; }
+        public virtual ICollection<Contract> Contracts { get; set; }
 
         public RetailStore()
         { }
