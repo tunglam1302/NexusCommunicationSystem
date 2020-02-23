@@ -17,8 +17,7 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Services
         public ActionResult Index()
         {
-            var services = db.Services.Include(s => s.ServicePackage);
-            return View(services.ToList());
+            return View(db.Services.ToList());
         }
 
         // GET: Services/Details/5
@@ -86,7 +85,6 @@ namespace NexusCommunicationSystem.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", service.ServicePackageId);
             return View(service);
         }
 
@@ -131,7 +129,6 @@ namespace NexusCommunicationSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", service.ServicePackageId);
             return View(service);
         }
 
@@ -168,7 +165,6 @@ namespace NexusCommunicationSystem.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", service.ServicePackageId);
             return View(service);
         }
 

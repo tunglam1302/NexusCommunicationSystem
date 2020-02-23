@@ -40,7 +40,8 @@ namespace NexusCommunicationSystem.Controllers
         {
             ViewBag.ServiceId = new SelectList(db.Services, "Id", "Name");
             ViewBag.CustomerId = new SelectList(db.Customers, "Id", "AccountId");
-            ViewBag.AccountId = new SelectList(db.Accounts, "Id", "AccountId");
+            ViewBag.RetailStoreId = new SelectList(db.RetailStores, "Id", "Name");
+            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name");
             return View();
         }
 
@@ -49,8 +50,16 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,OrderStatus,CreatedAt,UpdatedAt,SecurityDeposit,TotalAmount,AmountDue,Quantity,NextPaymentAt,ChargeForReplacementDone,Discounts")] Contract contract)
+        public ActionResult Create([Bind(Include = "Id,CreatedAt,UpdatedAt,OrderStatus,CustomerId,SecurityDeposit,TotalAmount,Quantity,Discounts,RetailStoreId,ServiceId,ServicePackageId")] Contract contract)
         {
+
+            contract.CreatedAt = DateTime.Now;
+            contract.UpdatedAt = DateTime.Now;
+            contract.OrderStatus = OrderStatus.Pending;
+            contract.CustomerId = 1;
+            //contract.NextPaymentAt;
+            //contract.AcceptedBy;
+
             if (ModelState.IsValid)
             {
                 db.Contracts.Add(contract);
@@ -73,6 +82,11 @@ namespace NexusCommunicationSystem.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.RetailStoreId = new SelectList(db.RetailStores, "Id", "Name", contract.RetailStoreId);
+            ViewBag.ServiceId = new SelectList(db.Services, "Id", "Name", contract.ServiceId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "AccountId", contract.CustomerId);
+            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", contract.ServicePackageId);
             return View(contract);
         }
 
@@ -81,14 +95,23 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,OrderStatus,CreatedAt,UpdatedAt,SecurityDeposit,TotalAmount,AmountDue,Amount,NextPaymentAt,ChargeForReplacementDone,Discounts")] Contract contract)
+        public ActionResult Edit([Bind(Include = "Id,CreatedAt,NextPaymentAt,UpdatedAt,OrderStatus,CustomerId,SecurityDeposit,TotalAmount,Quantity,Discounts,RetailStoreId,ServiceId,ServicePackageId")] Contract contract)
         {
+            contract.UpdatedAt = DateTime.Now;
+            contract.OrderStatus = OrderStatus.DirectTransfer;
+            contract.CustomerId = 1;
+            //contract.AcceptedBy;
+
             if (ModelState.IsValid)
             {
                 db.Entry(contract).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.RetailStoreId = new SelectList(db.RetailStores, "Id", "Name", contract.RetailStoreId);
+            ViewBag.ServiceId = new SelectList(db.Services, "Id", "Name", contract.ServiceId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "AccountId", contract.CustomerId);
+            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", contract.ServicePackageId);
             return View(contract);
         }
 
@@ -116,6 +139,71 @@ namespace NexusCommunicationSystem.Controllers
             db.Contracts.Remove(contract);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public double CalculateContractValue(string ServiceId, string ServicePackageId, string Quantity, string Discounts, string SecurityDeposit)
+        {
+            double totalAmount = 0;
+
+            var servicePackageId = Int32.Parse(ServicePackageId);
+            var servicePackage = db.ServicePackages.Where(sp => sp.Id == servicePackageId).Single();
+
+            var quantity = Int32.Parse(Quantity);
+            var discount = double.Parse(Discounts);
+            var securityDeposit = double.Parse(SecurityDeposit);
+
+            var serviceId = Int32.Parse(ServiceId);
+            var service = db.Services.Where(s => s.Id == serviceId).Single();
+            var servicePrice = CalculateServicePriceBasedOnServicePackage(service, servicePackage);
+                
+
+            totalAmount = securityDeposit + servicePrice * quantity * (1 - discount);
+
+            return totalAmount;
+        }
+
+        public int CalculateServicePriceBasedOnServicePackage(Service service, ServicePackage servicePackage)
+        {
+            var servicePrice = service.TotalAmount;
+
+            switch (servicePackage.Name)
+            {
+                case ("Monthly"):
+                    servicePrice += 5000;
+                    break;
+                case ("Quaterly"):
+                    servicePrice += 4000;
+                    break;
+                case ("HalfYearly"):
+                    servicePrice += 3000;
+                    break;
+                case ("Yearly"):
+                    servicePrice += 2000;
+                    break;
+                case ("HourlyBasis10"):
+                    servicePrice += 6000;
+                    break;
+                case ("HourlyBasis30"):
+                    servicePrice += 6300;
+                    break;
+                case ("HourlyBasis60"):
+                    servicePrice += 65000;
+                    break;
+                default:
+                    break;
+            }
+             return servicePrice;
+        }
+
+        public int GetServiceTotalAmount(string ServiceId)
+        {
+            int totalPrice = 0;
+            var thisServiceId = Int32.Parse(ServiceId);
+
+            var service = db.Services.Where(s => s.Id == thisServiceId).Single();
+            totalPrice = service.TotalAmount;
+
+            return totalPrice;
         }
 
         protected override void Dispose(bool disposing)

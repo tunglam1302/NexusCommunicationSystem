@@ -57,14 +57,6 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ServicePackageId, "ServicePackageId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ServicePackageId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ServicePackageId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" id="Save" />
             </div>
@@ -134,8 +126,7 @@
         $(document).ready(function () {
 
             $(document).on('click', '#equipmentInsert', function () {
-                var equipments = '@Html.Raw(equipments)';
-                var myEquipments = JSON.parse(equipments);
+                var myEquipments = @Html.Raw(equipments);
                 var avaiableEquipments = [];
 
                 $('#myTable tbody').append('<tr><td><input type="number" class="quantity"/></td><td><input class="tags"></td><td><input type="button" value="Delete" name="deleteRow" id="deleteRow"/></td></tr>');
@@ -157,8 +148,7 @@
 
     <script>
         $(document).ready(function () {
-            var equipments = '@Html.Raw(equipments)';
-            var myEquipments = JSON.parse(equipments);
+            var myEquipments = @Html.Raw(equipments);
             var avaiableEquipments = [];
             var cookies = $.cookie();
             for(var cookie in cookies) {

@@ -18,7 +18,7 @@
     </header>
     <div id="coin-m">
         <div class="cm-f">
-            <form action="@Url.Action("ProcessRegister", "Accounts")" method="post">
+            <form action="@Url.Action("ProcessRegister", "Customers")" method="post">
                 <div class="cm-f-u">
                     <p>
                         First Name
@@ -36,8 +36,10 @@
                         UserPassword
                         <input name="userPassword" id="userPassword" value="" />
                     </p>
-                    <input class="c-sub" type="submit" value="Submit" />
-                </div>
+                    <div>
+                        <input class="c-sub" type="submit" value="Submit" />
+                    </div>
+                    </div>
             </form>
         </div>
     </div>

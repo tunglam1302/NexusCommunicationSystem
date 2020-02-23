@@ -13,15 +13,9 @@ namespace NexusCommunicationSystem.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public int ContractId { get; set; }
-        public virtual Contract Contract { get; set; }
-        public Billing(){ }
-
-        public Billing(Contract contract)
-        {
+        public Billing(){
             CreatedAt = DateTime.Now;
             UpdatedAt = DateTime.Now;
-            Contract = contract;
-            ContractId = contract.Id;
         }
     }
 }

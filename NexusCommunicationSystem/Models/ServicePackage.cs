@@ -10,7 +10,7 @@ namespace NexusCommunicationSystem.Models
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
-        public virtual ICollection<Service> Services { get; set; }
+        public virtual ICollection<Contract> Contracts { get; set; }
         public ServicePackage()
         { }
         public ServicePackage(string name, string description = null)
