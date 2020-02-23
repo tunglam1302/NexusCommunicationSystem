@@ -120,6 +120,52 @@ namespace NexusCommunicationSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ProcessRegister(string firstName, string lastName, string email, string userPassword)
+        {
+            var account = new Account()
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                UserPassword = userPassword,
+            };
+            db.Accounts.Add(account);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(string email, string userPassword)
+        {
+            var account = db.Accounts.Where(c => c.Email == email && c.UserPassword == userPassword).Single();
+            if (account == null)
+            {
+                return HttpNotFound();
+            }
+            Session["Accounts"] = account;
+            Session["AccountName"] = account.FirstName;
+            Session["AccountId"] = account.Id;
+            var firstName = Session["AccountName"];
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Logout()
+        {
+            return null;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
