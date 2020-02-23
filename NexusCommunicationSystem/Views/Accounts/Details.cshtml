@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Details";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
 <h2>Details</h2>
@@ -11,6 +10,14 @@
     <h4>Account</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RetailStore.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RetailStore.Name)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
@@ -44,19 +51,19 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.FeedBack)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FeedBack)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.UserRole)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.UserRole)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccountId)
         </dd>
 
     </dl>

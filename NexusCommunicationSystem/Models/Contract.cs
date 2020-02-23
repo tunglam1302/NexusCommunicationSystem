@@ -12,12 +12,12 @@ namespace NexusCommunicationSystem.Models
         public int Id { get; set; }
         [Required]
         public OrderStatus OrderStatus { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         public double SecurityDeposit { get; set; }
         public double TotalAmount { get; set; }
         public int Quantity { get; set; }
-        public DateTime NextPaymentAt { get; set; }
+        public DateTime? NextPaymentAt { get; set; }
         public double Discounts { get; set; }
         public string AcceptedBy { get; set; }
 

@@ -75,7 +75,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.TotalAmount, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Service.TotalAmount, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
+                @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.TotalAmount, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -96,6 +96,24 @@
     <script type="text/javascript">
         var data;
         var serviceId;
+
+        $(document).ready(function () {
+            data = {
+                ServiceId: $('#ServiceId').val(),
+                ServicePackageId: $('#ServicePackageId').val(),
+                Quantity: $('#Quantity').val(),
+                Discounts: $('#Discounts').val(),
+                SecurityDeposit: $('#SecurityDeposit').val(),
+
+            }
+
+            serviceId = {
+                ServiceId: $('#ServiceId').val(),
+            }
+
+            TakeTotalAmountFromService();
+            CallAjaxForCalculation();
+        })
 
         $(document).on('change', '#ServiceId', function (e) {
             data = {

@@ -6,9 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using LinqKit;
-using Microsoft.Ajax.Utilities;
-using PagedList;
 using NexusCommunicationSystem.Models;
 
 namespace NexusCommunicationSystem.Controllers
@@ -18,31 +15,12 @@ namespace NexusCommunicationSystem.Controllers
         private NexusCommunicationSystemContext db = new NexusCommunicationSystemContext();
 
         // GET: Accounts
-        public ActionResult Index(String keyword, int? page, int? limit)
+        public ActionResult Index()
         {
-            if (page == null)
-            {
-                page = 1;
-            }
+            var accounts = db.Accounts.Include(a => a.RetailStore);
+            return View(accounts.ToList());
+        }
 
-            if (limit == null)
-            {
-                limit = 10;
-            }
-            var predicate = PredicateBuilder.New<Account>(true);
-            if (!keyword.IsNullOrWhiteSpace())
-            {
-                predicate = predicate.Or(f => f.Email.Contains(keyword));
-                ViewBag.Keyword = keyword;
-            }
-            var data = db.Accounts.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
-            return View(data);
-        }
-        //Tracking page
-        public ActionResult Track()
-        {
-            return View();
-        }
         // GET: Accounts/Details/5
         public ActionResult Details(int? id)
         {
@@ -61,6 +39,7 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Accounts/Create
         public ActionResult Create()
         {
+            ViewBag.RetailStoreId = new SelectList(db.RetailStores, "Id", "Name");
             return View();
         }
 
@@ -69,7 +48,7 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Email,UserPassword,FeedBack,UserRole")] Account account)
+        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Email,UserPassword,UserRole,RetailStoreId,AccountId")] Account account)
         {
             if (ModelState.IsValid)
             {
@@ -78,6 +57,7 @@ namespace NexusCommunicationSystem.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.RetailStoreId = new SelectList(db.RetailStores, "Id", "Name", account.RetailStoreId);
             return View(account);
         }
 
@@ -93,6 +73,7 @@ namespace NexusCommunicationSystem.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.RetailStoreId = new SelectList(db.RetailStores, "Id", "Name", account.RetailStoreId);
             return View(account);
         }
 
@@ -101,7 +82,7 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Email,UserPassword,FeedBack,UserRole")] Account account)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Email,UserPassword,UserRole,RetailStoreId,AccountId")] Account account)
         {
             if (ModelState.IsValid)
             {
@@ -109,6 +90,7 @@ namespace NexusCommunicationSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.RetailStoreId = new SelectList(db.RetailStores, "Id", "Name", account.RetailStoreId);
             return View(account);
         }
 
@@ -145,43 +127,6 @@ namespace NexusCommunicationSystem.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-        public ActionResult Register()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult ProcessRegister(string firstName, string lastName, string email, string userPassword)
-        {
-            var account = new Account()
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                Email = email,
-                UserPassword = userPassword,
-            };
-            db.Accounts.Add(account);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Login(string email, string userPassword)
-        {
-            Account account = db.Accounts.Where(c => c.Email == email && c.UserPassword == userPassword).Single();
-            if (account == null)
-            {
-                return HttpNotFound();
-            }
-            Session["Account"] = account;
-
-            return RedirectToAction("Index");
         }
     }
 }

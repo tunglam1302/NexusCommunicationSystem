@@ -50,10 +50,16 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,OrderStatus,SecurityDeposit,TotalAmount,AmountDue,Quantity,NextPaymentAt,Discounts")] Contract contract)
+        public ActionResult Create([Bind(Include = "Id,CreatedAt,UpdatedAt,OrderStatus,CustomerId,SecurityDeposit,TotalAmount,Quantity,Discounts,RetailStoreId,ServiceId,ServicePackageId")] Contract contract)
         {
+
             contract.CreatedAt = DateTime.Now;
             contract.UpdatedAt = DateTime.Now;
+            contract.OrderStatus = OrderStatus.Pending;
+            contract.CustomerId = 1;
+            //contract.NextPaymentAt;
+            //contract.AcceptedBy;
+
             if (ModelState.IsValid)
             {
                 db.Contracts.Add(contract);
@@ -76,6 +82,11 @@ namespace NexusCommunicationSystem.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.RetailStoreId = new SelectList(db.RetailStores, "Id", "Name", contract.RetailStoreId);
+            ViewBag.ServiceId = new SelectList(db.Services, "Id", "Name", contract.ServiceId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "AccountId", contract.CustomerId);
+            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", contract.ServicePackageId);
             return View(contract);
         }
 
@@ -84,14 +95,23 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,OrderStatus,CreatedAt,UpdatedAt,SecurityDeposit,TotalAmount,AmountDue,Amount,NextPaymentAt,ChargeForReplacementDone,Discounts")] Contract contract)
+        public ActionResult Edit([Bind(Include = "Id,CreatedAt,NextPaymentAt,UpdatedAt,OrderStatus,CustomerId,SecurityDeposit,TotalAmount,Quantity,Discounts,RetailStoreId,ServiceId,ServicePackageId")] Contract contract)
         {
+            contract.UpdatedAt = DateTime.Now;
+            contract.OrderStatus = OrderStatus.DirectTransfer;
+            contract.CustomerId = 1;
+            //contract.AcceptedBy;
+
             if (ModelState.IsValid)
             {
                 db.Entry(contract).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.RetailStoreId = new SelectList(db.RetailStores, "Id", "Name", contract.RetailStoreId);
+            ViewBag.ServiceId = new SelectList(db.Services, "Id", "Name", contract.ServiceId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "AccountId", contract.CustomerId);
+            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name", contract.ServicePackageId);
             return View(contract);
         }
 
@@ -129,7 +149,7 @@ namespace NexusCommunicationSystem.Controllers
             
             var quantity = Int32.Parse(Quantity);
             var discount = double.Parse(Discounts);
-            var securityDeposit = Int32.Parse(SecurityDeposit);
+            var securityDeposit = double.Parse(SecurityDeposit);
 
             var serviceId = Int32.Parse(ServiceId);
             var service = db.Services.Where(s => s.Id == serviceId).Single();
