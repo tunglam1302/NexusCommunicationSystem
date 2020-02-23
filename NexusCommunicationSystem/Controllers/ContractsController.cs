@@ -141,23 +141,58 @@ namespace NexusCommunicationSystem.Controllers
             return RedirectToAction("Index");
         }
 
-        public double  CalculateContractValue(string ServiceId, string ServicePackageId, string Quantity, string Discounts, string SecurityDeposit)
+        public double CalculateContractValue(string ServiceId, string ServicePackageId, string Quantity, string Discounts, string SecurityDeposit)
         {
             double totalAmount = 0;
 
             var servicePackageId = Int32.Parse(ServicePackageId);
-            
+            var servicePackage = db.ServicePackages.Where(sp => sp.Id == servicePackageId).Single();
+
             var quantity = Int32.Parse(Quantity);
             var discount = double.Parse(Discounts);
             var securityDeposit = double.Parse(SecurityDeposit);
 
             var serviceId = Int32.Parse(ServiceId);
             var service = db.Services.Where(s => s.Id == serviceId).Single();
-            var servicePrice = service.TotalAmount;
+            var servicePrice = CalculateServicePriceBasedOnServicePackage(service, servicePackage);
+                
 
             totalAmount = securityDeposit + servicePrice * quantity * (1 - discount);
 
             return totalAmount;
+        }
+
+        public int CalculateServicePriceBasedOnServicePackage(Service service, ServicePackage servicePackage)
+        {
+            var servicePrice = service.TotalAmount;
+
+            switch (servicePackage.Name)
+            {
+                case ("Monthly"):
+                    servicePrice += 5000;
+                    break;
+                case ("Quaterly"):
+                    servicePrice += 4000;
+                    break;
+                case ("HalfYearly"):
+                    servicePrice += 3000;
+                    break;
+                case ("Yearly"):
+                    servicePrice += 2000;
+                    break;
+                case ("HourlyBasis10"):
+                    servicePrice += 6000;
+                    break;
+                case ("HourlyBasis30"):
+                    servicePrice += 6300;
+                    break;
+                case ("HourlyBasis60"):
+                    servicePrice += 65000;
+                    break;
+                default:
+                    break;
+            }
+             return servicePrice;
         }
 
         public int GetServiceTotalAmount(string ServiceId)
