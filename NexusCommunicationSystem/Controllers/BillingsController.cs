@@ -6,7 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using LinqKit;
+using Microsoft.Ajax.Utilities;
 using NexusCommunicationSystem.Models;
+using PagedList;
 
 namespace NexusCommunicationSystem.Controllers
 {
@@ -15,9 +18,19 @@ namespace NexusCommunicationSystem.Controllers
         private NexusCommunicationSystemContext db = new NexusCommunicationSystemContext();
 
         // GET: Billings
-        public ActionResult Index()
+        public ActionResult Index(String keyword, int? page, int? limit)
         {
-            return View(db.Billings.ToList());
+            if (page == null)
+            {
+                page = 1;
+            }
+
+            if (limit == null)
+            {
+                limit = 10;
+            }
+            var data = db.Billings.ToPagedList(page.Value, limit.Value);
+            return View(data);
         }
 
         // GET: Billings/Details/5
