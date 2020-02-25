@@ -18,7 +18,7 @@ namespace NexusCommunicationSystem.Controllers
         private NexusCommunicationSystemContext db = new NexusCommunicationSystemContext();
 
         // GET: Billings
-        public ActionResult Index(String keyword, int? page, int? limit)
+        public ActionResult Index(int? page, int? limit)
         {
             if (page == null)
             {

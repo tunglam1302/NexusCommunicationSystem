@@ -15,13 +15,13 @@
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="hold-transition skin-blue sidebar-mini" style="padding: 0">
-    <div class="wrapper">
+    <div class="wrapper" style="margin-block-start: -20px;">
 
         <!-- Main Header -->
         <header class="main-header">
 
             <!-- Logo -->
-            <a href="index2.html" class="logo">
+            <a href="#" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini"><b>A</b>LT</span>
                 <!-- logo for regular state and mobile devices -->
@@ -118,17 +118,139 @@
                 <!-- /.search form -->
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu" data-widget="tree">
-                    <li class="header">HEADER</li>
-                    <li>@Html.ActionLink("Account", "Index", "Accounts")</li>
-                    <li>@Html.ActionLink("Billing", "Index", "Billings")</li>
-                    <li>@Html.ActionLink("Contract", "Index", "Contracts")</li>
-                    <li>@Html.ActionLink("Customer", "Index", "Customers")</li>
-                    <li>@Html.ActionLink("Equipments", "Index", "Equipments")</li>
-                    <li>@Html.ActionLink("Feedback", "Index", "Feedbacks")</li>
-                    <li>@Html.ActionLink("RetailStore", "Index", "RetailStores")</li>
-                    <li>@Html.ActionLink("Service Package", "Index", "ServicePackages")</li>
-                    <li>@Html.ActionLink("Service", "Index", "Services")</li>
-                    <li>@Html.ActionLink("Vendor", "Index", "Vendors")</li>
+                    <li class="header">MAIN NAVIGATION</li>
+                    <li class="active treeview">
+                        <a href="#">
+                            <i class="fa fa-user"></i>
+                            <span>Account</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active"><a href="/Accounts"><i class="fa fa-circle-o"></i> Index</a></li>
+                            <li class="active"><a href="/Accounts/Create"><i class="fa fa-circle-o"></i> Create</a></li>
+                            <li class="active"><a href="/Accounts/Login"><i class="fa fa-circle-o"></i> Login</a></li>
+                            <li class="active"><a href="/Accounts/Register"><i class="fa fa-circle-o"></i> Register</a></li>
+                        </ul>
+                    </li>
+                    <li class="active treeview">
+                        <a href="#">
+                            <i class="fa fa-money"></i>
+                            <span>Billings</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active"><a href="/Billings"><i class="fa fa-circle-o"></i> Index</a></li>
+                            <li class="active"><a href="/Billings/Create"><i class="fa fa-circle-o"></i> Create</a></li>
+                        </ul>
+                    </li>
+                    <li class="active treeview">
+                        <a href="#">
+                            <i class="fa fa-tablet"></i>
+                            <span>Contracts</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active"><a href="/Contracts"><i class="fa fa-circle-o"></i> Index</a></li>
+                            <li class="active"><a href="/Contracts/Create"><i class="fa fa-circle-o"></i> Create</a></li>
+                        </ul>
+                    </li>
+                    <li class="active treeview">
+                        <a href="#">
+                            <i class="fa fa-user"></i>
+                            <span>Customers</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active"><a href="/Customers"><i class="fa fa-circle-o"></i> Index</a></li>
+                            <li class="active"><a href="/Customers/Create"><i class="fa fa-circle-o"></i> Create</a></li>
+                        </ul>
+                    </li>
+                    <li class="active treeview">
+                        <a href="#">
+                            <i class="fa fa-cube"></i>
+                            <span>Equipments</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active"><a href="/Equipments"><i class="fa fa-circle-o"></i> Index</a></li>
+                            <li class="active"><a href="/Equipments/Create"><i class="fa fa-circle-o"></i> Create</a></li>
+                        </ul>
+                    </li>
+                    <li class="active treeview">
+                        <a href="#">
+                            <i class="fa  fa-commenting-o"></i>
+                            <span>Feedbacks</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active"><a href="/Feedbacks"><i class="fa fa-circle-o"></i> Index</a></li>
+                            <li class="active"><a href="/Feedbacks/Create"><i class="fa fa-circle-o"></i> Create</a></li>
+                        </ul>
+                    </li>
+                    <li class="active treeview">
+                        <a href="#">
+                            <i class="fa  fa-building-o"></i>
+                            <span>Retail Stores</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active"><a href="/RetailStores"><i class="fa fa-circle-o"></i> Index</a></li>
+                            <li class="active"><a href="/RetailStores/Create"><i class="fa fa-circle-o"></i> Create</a></li>
+                        </ul>
+                    </li>
+                    <li class="active treeview">
+                        <a href="#">
+                            <i class="fa  fa-plus-square"></i>
+                            <span>Service Packages</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active"><a href="/ServicePackages"><i class="fa fa-circle-o"></i> Index</a></li>
+                            <li class="active"><a href="/ServicePackages/Create"><i class="fa fa-circle-o"></i> Create</a></li>
+                        </ul>
+                    </li>
+                    <li class="active treeview">
+                        <a href="#">
+                            <i class="fa  fa-plus-square-o"></i>
+                            <span>Services</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active"><a href="/Services"><i class="fa fa-circle-o"></i> Index</a></li>
+                            <li class="active"><a href="/Services/Create"><i class="fa fa-circle-o"></i> Create</a></li>
+                        </ul>
+                    </li>
+                    <li class="active treeview">
+                        <a href="#">
+                            <i class="fa fa-location-arrow"></i>
+                            <span>Vendors</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active"><a href="/Vendors"><i class="fa fa-circle-o"></i> Index</a></li>
+                            <li class="active"><a href="/Vendors/Create"><i class="fa fa-circle-o"></i> Create</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 <!-- /.sidebar-menu -->
             </section>
@@ -139,8 +261,15 @@
         <div class="content-wrapper">
 
             <!-- Main content -->
-            <section class="content container-fluid">
-                @RenderBody()
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box" style="padding: 20px;">
+                            @RenderBody()
+                        </div>
+                    </div>
+                </div>
+                
             </section>
             <!-- /.content -->
         </div>
