@@ -12,7 +12,7 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.RetailStore.Name)
+            Retail Store
         </dt>
 
         <dd>
@@ -70,6 +70,8 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    <a href="@Url.Action("Edit", "Accounts",new { id=Model.Id })" class="glyphicon glyphicon-pencil">
+    </a>
+    <a href="@Url.Action("Index", "Accounts")" class="glyphicon glyphicon-backward">
+    </a>
 </p>

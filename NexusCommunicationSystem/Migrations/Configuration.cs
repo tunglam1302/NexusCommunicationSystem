@@ -71,7 +71,7 @@ namespace NexusCommunicationSystem.Migrations
             //Internet Service Group: Broadband                                                                                                                
             listService.Add(new Service("Broadband Hourly",       "https://res.cloudinary.com/truonghusk17/image/upload/v1582201922/nyffp4guir6zey2ipvoh.jpg", 100000,  "Pay per hour used/Validity is for 1 or 6 month/Free setup Fee/Free Modem or Router/Online support 247"));
             listService.Add(new Service("Broadband Unlimited 64", "https://res.cloudinary.com/truonghusk17/image/upload/v1582201922/nyffp4guir6zey2ipvoh.jpg", 1500000,  "Unlimited 64Kbps/Free setup Fee/Free Modem or Router/Online support 247"));
-            listService.Add(new Service("Broadband Unlimited 128", "https://res.cloudinary.com/truonghusk17/image/upload/v1582201922/nyffp4guir6zey2ipvoh.jp", 2000000,  "Unlimited 128Kbps/Free setup Fee/Free Modem or Router/Online support 247"));
+            listService.Add(new Service("Broadband Unlimited 128", "https://res.cloudinary.com/truonghusk17/image/upload/v1582201922/nyffp4guir6zey2ipvoh.jpg", 2000000,  "Unlimited 128Kbps/Free setup Fee/Free Modem or Router/Online support 247"));
 
             context.Services.AddRange(listService);
             context.SaveChanges();

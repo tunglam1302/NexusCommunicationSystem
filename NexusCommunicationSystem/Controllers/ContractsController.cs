@@ -52,11 +52,11 @@ namespace NexusCommunicationSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,CreatedAt,UpdatedAt,OrderStatus,CustomerId,SecurityDeposit,TotalAmount,Quantity,Discounts,RetailStoreId,ServiceId,ServicePackageId")] Contract contract)
         {
-
             contract.CreatedAt = DateTime.Now;
             contract.UpdatedAt = DateTime.Now;
             contract.OrderStatus = OrderStatus.Pending;
-            contract.CustomerId = 1;
+            var accountId = Session["AccountId"];
+            contract.CustomerId = accountId!=null?(int)accountId:1;
             //contract.NextPaymentAt;
             //contract.AcceptedBy;
 
