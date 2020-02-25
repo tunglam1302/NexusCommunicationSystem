@@ -35,7 +35,8 @@ namespace NexusCommunicationSystem
             bundles.Add(new ScriptBundle("~/admin-lte/js").Include(
                 "~/admin-lte/js/app.js",
                 "~/admin-lte/plugins/fastclick/fastclick.js",
-                "~/admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
+                "~/admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js",
+                "~/admin-lte/js/adminlte.js"
             ));
             bundles.Add(new ScriptBundle("~/bundles/fullcalendar").Include(
                 "~/Scripts/moment.js",
