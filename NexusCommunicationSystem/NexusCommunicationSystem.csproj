@@ -147,7 +147,6 @@
     <Compile Include="Controllers\RetailStoresController.cs" />
     <Compile Include="Controllers\ServicePackagesController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
-    <Compile Include="Controllers\Service_EquipmentController.cs" />
     <Compile Include="Controllers\VendorsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -554,11 +553,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Service_Equipment\Create.cshtml" />
-    <Content Include="Views\Service_Equipment\Delete.cshtml" />
-    <Content Include="Views\Service_Equipment\Details.cshtml" />
-    <Content Include="Views\Service_Equipment\Edit.cshtml" />
-    <Content Include="Views\Service_Equipment\Index.cshtml" />
     <Content Include="Views\Billings\Create.cshtml" />
     <Content Include="Views\Billings\Delete.cshtml" />
     <Content Include="Views\Billings\Details.cshtml" />
@@ -584,11 +578,6 @@
     <Content Include="Views\RetailStores\Details.cshtml" />
     <Content Include="Views\RetailStores\Edit.cshtml" />
     <Content Include="Views\RetailStores\Index.cshtml" />
-    <Content Include="Views\Service_Equipment\Create.cshtml" />
-    <Content Include="Views\Service_Equipment\Delete.cshtml" />
-    <Content Include="Views\Service_Equipment\Details.cshtml" />
-    <Content Include="Views\Service_Equipment\Edit.cshtml" />
-    <Content Include="Views\Service_Equipment\Index.cshtml" />
     <Content Include="Views\ServicePackages\Create.cshtml" />
     <Content Include="Views\ServicePackages\Delete.cshtml" />
     <Content Include="Views\ServicePackages\Details.cshtml" />

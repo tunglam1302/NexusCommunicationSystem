@@ -10,7 +10,7 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/ckeditor")
     ;
-
+    <script src="https://use.fontawesome.com/fbfeb3d5b0.js"></script>
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
@@ -119,10 +119,6 @@
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">HEADER</li>
-                    <!-- Optionally, you can add icons to the links -->
-                    <li class="active">@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Account", "Index", "Accounts")</li>
                     <li>@Html.ActionLink("Billing", "Index", "Billings")</li>
                     <li>@Html.ActionLink("Contract", "Index", "Contracts")</li>
@@ -130,7 +126,6 @@
                     <li>@Html.ActionLink("Equipments", "Index", "Equipments")</li>
                     <li>@Html.ActionLink("Feedback", "Index", "Feedbacks")</li>
                     <li>@Html.ActionLink("RetailStore", "Index", "RetailStores")</li>
-                    <li>@Html.ActionLink("Service_Equipment", "Index", "Service_Equipment")</li>
                     <li>@Html.ActionLink("Service Package", "Index", "ServicePackages")</li>
                     <li>@Html.ActionLink("Service", "Index", "Services")</li>
                     <li>@Html.ActionLink("Vendor", "Index", "Vendors")</li>
@@ -251,6 +246,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+    
     @RenderSection("scripts", required: false)
 </body>
 </html>

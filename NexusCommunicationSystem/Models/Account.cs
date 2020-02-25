@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -8,10 +9,15 @@ namespace NexusCommunicationSystem.Models
     public class Account : IAccount
     {
         public int Id { get; set; }
+        [Required]
         public string FirstName { get; set; }
+        [Required]
         public string LastName { get; set; }
+        [Required]
         public string Email { get; set; }
+        [Required]
         public string UserPassword { get; set; }
+        [Required]
         public AccountRole UserRole { get; set; }
 
         public int RetailStoreId { get; set; }
