@@ -29,7 +29,8 @@ namespace NexusCommunicationSystem.Controllers
             {
                 limit = 10;
             }
-            var data = db.Billings.ToPagedList(page.Value, limit.Value);
+            var predicate = PredicateBuilder.New<Billing>(true);
+            var data = db.Billings.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
             return View(data);
         }
 
