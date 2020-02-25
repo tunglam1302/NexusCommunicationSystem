@@ -120,9 +120,9 @@ namespace NexusCommunicationSystem.Migrations
             context.Contracts.AddRange(listContract);
             context.SaveChanges();
 
-            listBilling.Add(new Billing());
-            listBilling.Add(new Billing());
-            listBilling.Add(new Billing());
+            listBilling.Add(new Billing(context.Contracts.Where(c=>c.Id ==1).Single()));
+            listBilling.Add(new Billing(context.Contracts.Where(c => c.Id == 2).Single()));
+            listBilling.Add(new Billing(context.Contracts.Where(c => c.Id == 3).Single()));
 
             context.Billings.AddRange(listBilling);
             context.SaveChanges();
