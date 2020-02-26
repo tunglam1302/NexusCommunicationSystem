@@ -54,7 +54,7 @@
             @Html.DisplayFor(modelItem => item.SecurityDeposit)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.TotalAmount)
+            <span class="money">@Html.DisplayFor(modelItem => item.TotalAmount)</span>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Quantity)
@@ -73,4 +73,6 @@
     </tr>
 }
 
+
 </table>
+
