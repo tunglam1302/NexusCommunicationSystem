@@ -30,6 +30,7 @@ namespace NexusCommunicationSystem.Models
         public virtual Service Service { get; set; }
         public virtual RetailStore RetailStore { get; set; }
         public virtual ServicePackage ServicePackage { get; set; }
+        public virtual ICollection<Billing> Billings { get; set; }
 
         public Contract() { }
 

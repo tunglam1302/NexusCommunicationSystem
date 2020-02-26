@@ -3,73 +3,186 @@
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var numberOfBillingEachYear = ViewBag.NumberOfBillingEachYear;
 }
 
-<h2>Details</h2>
+<h2>Billing</h2>
 
-<div>
+
+
+
+<div class="form-horizontal">
     <h4>Contract</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderStatus)
-        </dt>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id, new { @id="contractId" })
 
-        <dd>
-            @Html.DisplayFor(model => model.OrderStatus)
-        </dd>
+    <div class="form-group">
+        @Html.LabelFor(model => model.OrderStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EnumDropDownListFor(model => model.OrderStatus, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
+        </div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
+    <div class="form-group">
+        @Html.LabelFor(model => model.CreatedAt, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.CreatedAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
+        </div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
+    <div class="form-group">
+        @Html.LabelFor(model => model.UpdatedAt, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.UpdatedAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
-        <dt>
-            @Html.DisplayNameFor(model => model.SecurityDeposit)
-        </dt>
+        </div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.SecurityDeposit)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalAmount)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.TotalAmount)
-        </dd>
+    <div class="form-group">
+        @Html.LabelFor(model => model.NextPaymentAt, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.NextPaymentAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.NextPaymentAt)
-        </dt>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Service.TotalAmount, "Service Price", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Service.TotalAmount, new { htmlAttributes = new { @class = "form-control", @id = "ServicePrice", @readonly = "readonly" } })
 
-        <dd>
-            @Html.DisplayFor(model => model.NextPaymentAt)
-        </dd>
+        </div>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Discounts)
-        </dt>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @id = "Quantity", @readonly = "readonly" } })
 
-        <dd>
-            @Html.DisplayFor(model => model.Discounts)
-        </dd>
+        </div>
+    </div>
 
-    </dl>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Discounts, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Discounts, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SecurityDeposit, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.SecurityDeposit, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "SecurityDeposit" } })
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TotalAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
+
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.RetailStoreId, "RetailStore Id", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.RetailStore.Name, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
+
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ServiceId, "Service Id", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Service.Name, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ServicePackageId, "ServicePackage Id", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ServicePackage.Name, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2">
+
+            Amount each period
+        </div>
+        <div class="col-md-10">
+            <input value="@numberOfBillingEachYear" id="numberOfBillingEachYear"/>
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2">
+
+            Billing Date
+        </div>
+        <div class="col-md-10">
+            <select id="billingDate">
+                @foreach (var billingDate in ViewBag.DateToExportBill)
+                {
+                    <option>@billingDate</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div>
+        <div class="col-md-offset-2">
+            <button onclick="myFunction()" class="btn btn-default">Print</button>
+        </div>
+    </div>
+
+    <div>
+        <div class="col-md-offset-2">
+            <input type="submit" class="btn btn-default" id="createBilling" value="Billing">
+        </div>
+    </div>
 </div>
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@section Scripts {
+    <script type="text/javascript">
+        var data;
+        function myFunction() {
+            window.print();
+            window.onafterprint = function () {
+               console.log("Printing completed...");
+            }
+        }
+
+        $(document).on('click', '#createBilling', function (e) {
+            data = {
+                ContractId: $('#contractId').val(),
+                BillingAmount: $('#numberOfBillingEachYear').val(),
+                CreatedAt: $('#billingDate').val(),
+            }
+            CallAjaxForCreateBilling();
+        })
+        
+        function CallAjaxForCreateBilling() {
+                $.ajax({
+                url: '/Billings/CreateBilling',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    alert('Create billing successfully');
+                }
+            });
+        }
+    </script>
+}

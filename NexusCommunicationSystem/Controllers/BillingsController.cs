@@ -129,6 +129,23 @@ namespace NexusCommunicationSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult CreateBilling(string ContractId, string BillingAmount, string CreatedAt)
+        {
+            var contractId = Int32.Parse(ContractId);
+            var createdAt = DateTime.Parse(CreatedAt);
+            var billingAmount = Int32.Parse(BillingAmount);
+            var billing = new Billing()
+            {
+                CreatedAt = createdAt,
+                UpdatedAt = DateTime.Now,
+                BillingAmount = billingAmount,
+                ContractId = contractId
+            };
+            db.Billings.Add(billing);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

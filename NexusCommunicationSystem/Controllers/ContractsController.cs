@@ -13,6 +13,7 @@ namespace NexusCommunicationSystem.Controllers
     public class ContractsController : Controller
     {
         private NexusCommunicationSystemContext db = new NexusCommunicationSystemContext();
+        double amountPaidEachBilling = 0;
 
         // GET: Contracts
         public ActionResult Index()
@@ -23,16 +24,63 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Contracts/Details/5
         public ActionResult Details(int? id)
         {
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Contract contract = db.Contracts.Find(id);
+
             if (contract == null)
             {
                 return HttpNotFound();
             }
+            var dateToExportBill = DatesToExportBill(contract);
+            ViewBag.DateToExportBill = dateToExportBill;
+            ViewBag.NumberOfBillingEachYear = (int)amountPaidEachBilling;
             return View(contract);
+        }
+
+        public List<DateTime> DatesToExportBill(Contract contract)
+        {
+            List<DateTime> dateToExportBill = new List<DateTime>();
+            var startDate = contract.CreatedAt ?? DateTime.Now;
+            int numberOfBillingEachYear = 0;
+
+            switch (contract.ServicePackage.Name)
+            {
+                case ("Monthly"):
+                    numberOfBillingEachYear = 12;
+                    for (int i = 0; i < numberOfBillingEachYear; i++)
+                    {
+                        var billingDate = startDate.AddMonths(i);
+                        dateToExportBill.Add(billingDate);
+                    }
+                    break;
+                case ("Quaterly"):
+                    numberOfBillingEachYear = 4;
+                    for (int i = 0; i < numberOfBillingEachYear; i++)
+                    {
+                        var billingDate = startDate.AddMonths(i*3);
+                        dateToExportBill.Add(billingDate);
+                    }
+                    break;
+                case ("HalfYearly"):
+                    for (int i = 0; i < numberOfBillingEachYear; i++)
+                    {
+                        var billingDate = startDate.AddMonths(i * 6);
+                        dateToExportBill.Add(billingDate);
+                    }
+                    numberOfBillingEachYear = 2;
+                    break;
+                default:
+                    numberOfBillingEachYear = 1;
+                    dateToExportBill.Add(startDate);
+                    break;
+            }
+            amountPaidEachBilling = contract.TotalAmount/ numberOfBillingEachYear;
+            
+            return dateToExportBill;
         }
 
         // GET: Contracts/Create
