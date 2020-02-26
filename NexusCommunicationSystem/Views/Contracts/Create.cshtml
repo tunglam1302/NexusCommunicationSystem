@@ -89,11 +89,7 @@
 </div>
 }
 
-<div>
-    <div class="col-md-offset-2 col-md-6">
-        <button onclick="myFunction()" class="btn btn-default">Billing</button>
-    </div>
-</div>
+
 
 <div>
     @Html.ActionLink("Back to List", "Index")
@@ -149,7 +145,6 @@
                 Discounts: $('#Discounts').val(),
                 SecurityDeposit: $('#SecurityDeposit').val(),
             }
-            console.log(data);
 
             CallAjaxForCalculation();
         })
@@ -162,7 +157,6 @@
                 Discounts: $('#Discounts').val(),
                 SecurityDeposit: $('#SecurityDeposit').val(),
             }
-            console.log(data);
             CallAjaxForCalculation();
         })
 
@@ -190,12 +184,7 @@
             });
         }
 
-        function myFunction() {
-            window.print();
-            window.onafterprint = function () {
-               console.log("Printing completed...");
-            }
-        }
+        
 
         
     </script>

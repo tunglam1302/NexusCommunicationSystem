@@ -29,7 +29,8 @@ namespace NexusCommunicationSystem.Controllers
             {
                 limit = 10;
             }
-            var data = db.Billings.ToPagedList(page.Value, limit.Value);
+            var predicate = PredicateBuilder.New<Billing>(true);
+            var data = db.Billings.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
             return View(data);
         }
 
@@ -124,6 +125,23 @@ namespace NexusCommunicationSystem.Controllers
         {
             Billing billing = db.Billings.Find(id);
             db.Billings.Remove(billing);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult CreateBilling(string ContractId, string BillingAmount, string CreatedAt)
+        {
+            var contractId = Int32.Parse(ContractId);
+            var createdAt = DateTime.Parse(CreatedAt);
+            var billingAmount = Int32.Parse(BillingAmount);
+            var billing = new Billing()
+            {
+                CreatedAt = createdAt,
+                UpdatedAt = DateTime.Now,
+                BillingAmount = billingAmount,
+                ContractId = contractId
+            };
+            db.Billings.Add(billing);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
