@@ -48,7 +48,7 @@
                                     <img src="~/admin-lte/img/avatar04.png" class="img-circle" alt="User Image">
 
                                     <p>
-                                        Alexander Pierce - Web Developer
+                                        <span class="AccountName">Alexander Pierce - Web Developer</span>
                                         <small>Member since Nov. 2012</small>
                                     </p>
                                 </li>
@@ -73,7 +73,7 @@
                                         <a href="#" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                        <a href="~/" class="btn btn-default btn-flat" id="signOut">Sign out</a>
                                     </div>
                                 </li>
                             </ul>
@@ -369,6 +369,19 @@
                 $('.AccountName').text('User');
             }
         })
+
+        $(document).on("click", "#signOut", function () {
+            CallAjaxForSignOut();
+        });
+
+        function CallAjaxForSignOut() {
+                $.ajax({
+                url: '/Accounts/Logout',
+                type: 'POST',
+                success: function (response) {
+                }
+            });
+        }
     </script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>

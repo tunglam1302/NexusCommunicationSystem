@@ -182,9 +182,9 @@ namespace NexusCommunicationSystem.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Logout()
+        public void Logout()
         {
-            return null;
+            Session.Clear();
         }
 
         protected override void Dispose(bool disposing)
