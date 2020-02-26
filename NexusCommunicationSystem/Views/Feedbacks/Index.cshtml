@@ -35,10 +35,10 @@
                 @Html.DisplayFor(modelItem => item.Content)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
+                @Convert.ToDateTime(item.CreatedAt).ToString("dd/MM/yyyy")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
+                @Convert.ToDateTime(item.UpdatedAt).ToString("dd/MM/yyyy")
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
