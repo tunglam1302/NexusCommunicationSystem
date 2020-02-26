@@ -5,32 +5,172 @@
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
+@*Billing Number
+    Created At
+    Customer info: First Name, Last Name, email
+    Contract Info: Period
+    Equipment Info: Name, Price, Amount
+    Service Info: Total amount
+    Contract Info: Total amount, Details including: Security deposit, quantity, discounts*@
+
 <h2>Details</h2>
 
 <div>
     <h4>Billing</h4>
     <hr />
+
+
+
     <dl class="dl-horizontal">
+        <dt>
+            Billing Number
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CreatedAt)
+            Created At
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.CreatedAt)
         </dd>
-
+        <dt><b>Customer Info</b></dt>
+        <dd></dd>
         <dt>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
+            First Name
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.UpdatedAt)
+            @Html.DisplayFor(model => model.Contract.Customer.FirstName)
+        </dd>
+
+        <dt>
+            Last Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contract.Customer.LastName)
+        </dd>
+
+        <dt>
+            Email
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contract.Customer.Email)
+        </dd>
+        <dt>
+            Payment Period
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contract.ServicePackage.Name)
         </dd>
 
     </dl>
+    <table class="table">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Amount
+            </th>
+            <th>
+                Total Amount
+            </th>
+        </tr>
+
+        @foreach (var equipment in Model.Contract.Service.Service_Equipments)
+        {
+            <tr>
+                <td>@equipment.Equipment.Name</td>
+                <td>@equipment.Equipment.Price</td>
+                <td>@equipment.Equipment.Amount</td>
+                <td>@(equipment.Equipment.Price * equipment.Equipment.Amount)</td>
+            </tr>
+        }
+        <tr>
+            <th>Service Total Amount</th>
+            <th></th>
+            <th></th>
+            <th>@Html.DisplayFor(model => model.Contract.Service.TotalAmount)</th>
+        </tr>
+        <tr>
+            <td>Security Deposit</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(model => model.Contract.SecurityDeposit)</td>
+        </tr>
+        <tr>
+            <td>Quantity</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(model => model.Contract.Quantity)</td>
+        </tr>
+        <tr>
+            <td>Discounts</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(model => model.Contract.Discounts)</td>
+        </tr>
+        <tr>
+            <th>Contract Total Amount</th>
+            <th></th>
+            <th></th>
+            <th>@Html.DisplayFor(model => model.Contract.TotalAmount)</th>
+        </tr>
+        <tr>
+            <td>Paid Amount This Period</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(model => model.BillingAmount)</td>
+        </tr>
+        <tr>
+            <td>Paid Datetime This Period</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(model => model.CreatedAt)</td>
+        </tr>
+        <tr>
+            <td>Next Payment At</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(model => model.Contract.NextPaymentAt)</td>
+        </tr>
+    </table>
+    <dl class="dl-horizontal">
+        <dt>
+            Accepted By
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contract.AcceptedBy)
+        </dd>
+    </dl>
+</div>
+<div>
+    <div class="col-md-offset-2">
+        <button onclick="myFunction()" class="btn btn-default">Print</button>
+    </div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@section Scripts {
+    <script type="text/javascript">
+        function myFunction() {
+            window.print();
+            window.onafterprint = function () {
+                console.log("Printing completed...");
+            }
+        }
+    </script>
+}
