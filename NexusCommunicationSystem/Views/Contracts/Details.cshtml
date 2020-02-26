@@ -15,7 +15,7 @@
     <h4>Contract</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Id, new { @id="contractId" })
 
     <div class="form-group">
         @Html.LabelFor(model => model.OrderStatus, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -117,33 +117,39 @@
 
             Amount each period
         </div>
-            <div class="col-md-10">
-                <input value="@numberOfBillingEachYear" />
+        <div class="col-md-10">
+            <input value="@numberOfBillingEachYear" id="numberOfBillingEachYear"/>
 
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-2">
-
-                Billing Date
-            </div>
-            <div class="col-md-10">
-                <select>
-                    @foreach (var billingDate in ViewBag.DateToExportBill)
-                    {
-                        <option>@billingDate</option>
-                    }
-                </select>
-            </div>
-        </div>
-
-        <div>
-            <div class="col-md-offset-2">
-                <button onclick="myFunction()" class="btn btn-default">Print</button>
-            </div>
         </div>
     </div>
+
+    <div class="form-group">
+        <div class="col-md-2">
+
+            Billing Date
+        </div>
+        <div class="col-md-10">
+            <select id="billingDate">
+                @foreach (var billingDate in ViewBag.DateToExportBill)
+                {
+                    <option>@billingDate</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div>
+        <div class="col-md-offset-2">
+            <button onclick="myFunction()" class="btn btn-default">Print</button>
+        </div>
+    </div>
+
+    <div>
+        <div class="col-md-offset-2">
+            <input type="submit" class="btn btn-default" id="createBilling" value="Billing">
+        </div>
+    </div>
+</div>
 
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
@@ -151,11 +157,32 @@
 </p>
 @section Scripts {
     <script type="text/javascript">
+        var data;
         function myFunction() {
             window.print();
             window.onafterprint = function () {
                console.log("Printing completed...");
             }
+        }
+
+        $(document).on('click', '#createBilling', function (e) {
+            data = {
+                ContractId: $('#contractId').val(),
+                BillingAmount: $('#numberOfBillingEachYear').val(),
+                CreatedAt: $('#billingDate').val(),
+            }
+            CallAjaxForCreateBilling();
+        })
+        
+        function CallAjaxForCreateBilling() {
+                $.ajax({
+                url: '/Billings/CreateBilling',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    alert('Create billing successfully');
+                }
+            });
         }
     </script>
 }
