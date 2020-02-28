@@ -18,6 +18,7 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Contracts
         public ActionResult Index()
         {
+            
             return View(db.Contracts.ToList());
         }
 
@@ -252,6 +253,26 @@ namespace NexusCommunicationSystem.Controllers
             totalPrice = service.TotalAmount;
 
             return totalPrice;
+        }
+
+        public string AcceptContract(string contractId, string checkedStatus)
+        {
+            var contractIdValue = Int32.Parse(contractId);
+            var checkedValue = Int32.Parse(checkedStatus);
+            var contract = db.Contracts.Where(c => c.Id == contractIdValue).Single();
+            
+            if (checkedValue == 1)
+            {
+                if (!string.IsNullOrEmpty(Session["AccountName"] as string))
+                contract.AcceptedBy = Session["AccountName"].ToString();
+            }
+            else
+            {
+                contract.AcceptedBy = null;
+            }
+            db.Entry(contract).State = EntityState.Modified;
+            db.SaveChanges();
+            return contract.AcceptedBy;
         }
 
         protected override void Dispose(bool disposing)

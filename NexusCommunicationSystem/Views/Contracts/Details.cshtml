@@ -6,155 +6,182 @@
     var numberOfBillingEachYear = ViewBag.NumberOfBillingEachYear;
 }
 
+
+
+
 <h2>Billing</h2>
-
-
-
-
 <div class="form-horizontal">
-    <h4>Contract</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.Id, new { @id="contractId" })
+    
+    <div class="col-lg-5">
+        <h4>Contract</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id, new { @id = "contractId" })
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.OrderStatus, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EnumDropDownListFor(model => model.OrderStatus, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.OrderStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.OrderStatus, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
 
+            </div>
         </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CreatedAt, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CreatedAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UpdatedAt, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UpdatedAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NextPaymentAt, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NextPaymentAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Service.TotalAmount, "Service Price", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Service.TotalAmount, new { htmlAttributes = new { @class = "form-control", @id = "ServicePrice", @readonly = "readonly" } })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @id = "Quantity", @readonly = "readonly" } })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Discounts, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Discounts, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SecurityDeposit, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SecurityDeposit, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "SecurityDeposit" } })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
+
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.RetailStoreId, "RetailStore Id", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.RetailStore.Name, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
+
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ServiceId, "Service Id", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Service.Name, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ServicePackageId, "ServicePackage Id", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ServicePackage.Name, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AcceptedBy, "Accepted by", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AcceptedBy, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2">
+
+                Amount each period
+            </div>
+            <div class="col-md-10">
+                <input value="@numberOfBillingEachYear" id="numberOfBillingEachYear" />
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2">
+
+                Billing Date
+            </div>
+            <div class="col-md-10">
+                <select id="billingDate">
+                    @foreach (var billingDate in ViewBag.DateToExportBill)
+                    {
+                        <option>@billingDate</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <div class="col-md-offset-2">
+                <input type="submit" class="btn btn-default" id="createBilling" value="Billing">
+            </div>
+        </div>
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.CreatedAt, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.CreatedAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.UpdatedAt, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.UpdatedAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-
-        </div>
-    </div>
-
-
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.NextPaymentAt, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.NextPaymentAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Service.TotalAmount, "Service Price", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Service.TotalAmount, new { htmlAttributes = new { @class = "form-control", @id = "ServicePrice", @readonly = "readonly" } })
-
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @id = "Quantity", @readonly = "readonly" } })
-
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Discounts, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Discounts, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.SecurityDeposit, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.SecurityDeposit, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "SecurityDeposit" } })
-
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.TotalAmount, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
-
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.RetailStoreId, "RetailStore Id", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.RetailStore.Name, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
-
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.ServiceId, "Service Id", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Service.Name, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
-
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ServicePackageId, "ServicePackage Id", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.ServicePackage.Name, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
-
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-2">
-
-            Amount each period
-        </div>
-        <div class="col-md-10">
-            <input value="@numberOfBillingEachYear" id="numberOfBillingEachYear"/>
-
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-2">
-
-            Billing Date
-        </div>
-        <div class="col-md-10">
-            <select id="billingDate">
-                @foreach (var billingDate in ViewBag.DateToExportBill)
-                {
-                    <option>@billingDate</option>
-                }
-            </select>
-        </div>
-    </div>
-
-    <div>
-        <div class="col-md-offset-2">
-            <button onclick="myFunction()" class="btn btn-default">Print</button>
-        </div>
-    </div>
-
-    <div>
-        <div class="col-md-offset-2">
-            <input type="submit" class="btn btn-default" id="createBilling" value="Billing">
-        </div>
+    <div class="col-lg-7">
+        <table class="table">
+            <tr>
+                <th>No</th>
+                <th>CreatedAt</th>
+                <th>BillingAmount</th>
+                <th></th>
+            </tr>
+            @foreach (var billing in Model.Billings)
+            {
+                <tr>
+                    <td>@billing.Id</td>
+                    <td>@billing.CreatedAt</td>
+                    <td>@billing.BillingAmount</td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", "Billings", new { id = billing.Id },null) |
+                        @Html.ActionLink("Delete", "Delete", "Billings", new { id = billing.Id },null)
+                    </td>
+                </tr>
+            }
+        </table>
     </div>
 </div>
 
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
 @section Scripts {
     <script type="text/javascript">
         var data;
@@ -181,6 +208,7 @@
                 data: data,
                 success: function (response) {
                     alert('Create billing successfully');
+                    location.reload();
                 }
             });
         }
