@@ -10,10 +10,16 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<div>
+    <form method="post" action="/Customers/Index">
+        <p style="font-weight: bold">Search contracts</p>
+        <input style="max-width: 320px" class="form-control" type="text" name="keyword" placeholder="Search by " value="@ViewBag.Keyword" /><br />
+    </form>
+</div>
 <table class="table">
     <tr>
         <th>
-            <input type="checkbox" class="acceptAllBox" name="acceptAllBox" id="acceptAllBox" value="trung"/>
+            <input type="checkbox" class="acceptAllBox" name="acceptAllBox" id="acceptAllBox" value="trung" />
         </th>
         <th>
             @Html.DisplayNameFor(model => model.OrderStatus)
@@ -22,22 +28,19 @@
             @Html.DisplayNameFor(model => model.CreatedAt)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.SecurityDeposit)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.TotalAmount)
         </th>
         <th>
+            Customer
+        </th>
+        <th>
+            Service Name
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Quantity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NextPaymentAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Discounts)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.AcceptedBy)
@@ -47,43 +50,40 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                <input type="checkbox" class="acceptBox" name="acceptBox" value="@item.Id"/>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderStatus)
-            </td>
-            <td>
-                @Convert.ToDateTime(item.CreatedAt).ToString("dd/MM/yyyy")
-            </td>
-            <td>
-                @Convert.ToDateTime(item.UpdatedAt).ToString("dd/MM/yyyy")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SecurityDeposit)
-            </td>
-            <td>
-                <span class="money">@Html.DisplayFor(modelItem => item.TotalAmount)</span>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Convert.ToDateTime(item.NextPaymentAt).ToString("dd/MM/yyyy")
-            </td>
-            <td>
-                @String.Format("{0:0.0%}", item.Discounts)
-            </td>
-            <td class="acceptedBy">
-                @Html.DisplayFor(modelItem => item.AcceptedBy)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
+<tr>
+    <td>
+        <input type="checkbox" class="acceptBox" name="acceptBox" value="@item.Id" />
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.OrderStatus)
+    </td>
+    <td>
+        @Convert.ToDateTime(item.CreatedAt).ToString("dd/MM/yyyy")
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.SecurityDeposit)
+    </td>
+    <td>
+        <span class="money">@Html.DisplayFor(modelItem => item.TotalAmount)</span>
+    </td>
+    <th>
+        @Html.DisplayFor(modelItem => item.Customer.FirstName)
+    </th>
+    <th>
+        @Html.DisplayFor(modelItem => item.Service.Name)
+    </th>
+    <td>
+        @Html.DisplayFor(modelItem => item.Quantity)
+    </td>
+    <td class="acceptedBy">
+        @Html.DisplayFor(modelItem => item.AcceptedBy)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+    </td>
+</tr>
     }
 
 
