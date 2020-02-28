@@ -62,7 +62,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<div id="owl-demo" class="owl-carousel owl-theme">
 					<!-- owl-carousel -->
 					@{int i = 1;}
-					@{string[] detail = item.Image.Split('/');}
+					@{string[] detail = item.Description.Split('/');}
 					@foreach (var package in Model.ServicePackages)
 					{
 						<div class="item">
