@@ -178,8 +178,15 @@ namespace NexusCommunicationSystem.Controllers
             Session["AccountName"] = account.FirstName;
             Session["AccountId"] = account.Id;
             var firstName = Session["AccountName"];
-
-            return RedirectToAction("Index");
+            Session["AccountRole"] = account.UserRole;
+            if(Session["AccountRole"] is AccountRole.User)
+            {
+                return Redirect("~/Home/Index");
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         public void Logout()
