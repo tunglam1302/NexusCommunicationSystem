@@ -9,13 +9,13 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/ckeditor")
-    ;
     <script src="https://use.fontawesome.com/fbfeb3d5b0.js"></script>
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 <body class="hold-transition skin-blue sidebar-mini" style="padding: 0">
-    <div class="wrapper" style="margin-block-start: -20px;">
+    <div class="wrapper">
 
         <!-- Main Header -->
         <header class="main-header">
@@ -379,8 +379,10 @@
     <script type="text/javascript">
         $('.money').simpleMoneyFormat();
     </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     @RenderSection("scripts", required: false)
 
 </body>
 </html>
-@Scripts.Render("~/bundles/fullcalendar")
+@*@Scripts.Render("~/bundles/fullcalendar")*@

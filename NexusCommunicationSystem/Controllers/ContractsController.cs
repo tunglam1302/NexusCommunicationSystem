@@ -6,7 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using LinqKit;
+using Microsoft.Ajax.Utilities;
 using NexusCommunicationSystem.Models;
+using PagedList;
 
 namespace NexusCommunicationSystem.Controllers
 {
@@ -16,10 +19,33 @@ namespace NexusCommunicationSystem.Controllers
         double amountPaidEachBilling = 0;
 
         // GET: Contracts
-        public ActionResult Index()
+        public ActionResult Index(String keyword, int? page, int? limit)
         {
-            
-            return View(db.Contracts.ToList());
+
+            if (page == null)
+            {
+                page = 1;
+            }
+
+            if (limit == null)
+            {
+                limit = 10;
+            }
+            var predicate = PredicateBuilder.New<Contract>(true);
+            if (!keyword.IsNullOrWhiteSpace())
+            {
+                predicate = predicate.Or(f => f.AcceptedBy.Contains(keyword));
+                predicate = predicate.Or(f => f.Customer.FirstName.Contains(keyword));
+                predicate = predicate.Or(f => f.Customer.LastName.Contains(keyword));
+                ViewBag.Keyword = keyword;
+            }
+            ViewBag.limit = limit;
+            var students = db.Contracts.AsExpandable().Where(predicate).OrderByDescending(s => s.CreatedAt);
+            ViewBag.TotalPage = Math.Ceiling((double)students.Count() / limit.Value);
+            ViewBag.CurrentPage = page;
+            ViewBag.Limit = limit;
+            var list = students.Skip((page.Value - 1) * limit.Value).Take(limit.Value).ToList();
+            return View(list);
         }
 
         // GET: Contracts/Details/5
@@ -185,7 +211,7 @@ namespace NexusCommunicationSystem.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Contract contract = db.Contracts.Find(id);
-            db.Contracts.Remove(contract);
+            contract.OrderStatus = OrderStatus.Deleted;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

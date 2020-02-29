@@ -1,8 +1,14 @@
-﻿@model IEnumerable<NexusCommunicationSystem.Models.Contract>
+﻿@model List<NexusCommunicationSystem.Models.Contract>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var totalPage = ((int?)ViewBag.TotalPage).Value;
+    var currentPage = ((int?)ViewBag.CurrentPage).Value;
+    var limit = ((int?)ViewBag.Limit).Value;
+    //var currentPara = "&start=" + ViewBag.Start + "&end=" + ViewBag.End;
+    var currentPara = ViewBag.Keyword;
 }
 
 <h2>Index</h2>
@@ -11,83 +17,145 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 <div>
-    <form method="post" action="/Customers/Index">
-        <p style="font-weight: bold">Search contracts</p>
-        <input style="max-width: 320px" class="form-control" type="text" name="keyword" placeholder="Search by " value="@ViewBag.Keyword" /><br />
+    <form method="post" action="/Contracts/Index">
+        <p style="font-weight: bold">Search customers</p>
+        <input style="max-width: 320px" class="form-control" type="text" name="keyword" placeholder="Search by aceptor or customer" value="@ViewBag.Keyword" /><br />
     </form>
+
 </div>
 <table class="table">
     <tr>
         <th>
             <input type="checkbox" class="acceptAllBox" name="acceptAllBox" id="acceptAllBox" value="trung" />
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OrderStatus)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SecurityDeposit)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TotalAmount)
-        </th>
+        <th>Order Status</th>
+        <th>Created At</th>
+        <th>Security Deposit</th>
+        <th>Total Amount</th>
         <th>
             Customer
         </th>
         <th>
             Service Name
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AcceptedBy)
-        </th>
+        <th>Quantity</th>
+        <th>Accepted By</th>
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-<tr>
-    <td>
-        <input type="checkbox" class="acceptBox" name="acceptBox" value="@item.Id" />
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.OrderStatus)
-    </td>
-    <td>
-        @Convert.ToDateTime(item.CreatedAt).ToString("dd/MM/yyyy")
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.SecurityDeposit)
-    </td>
-    <td>
-        <span class="money">@Html.DisplayFor(modelItem => item.TotalAmount)</span>
-    </td>
-    <th>
-        @Html.DisplayFor(modelItem => item.Customer.FirstName)
-    </th>
-    <th>
-        @Html.DisplayFor(modelItem => item.Service.Name)
-    </th>
-    <td>
-        @Html.DisplayFor(modelItem => item.Quantity)
-    </td>
-    <td class="acceptedBy">
-        @Html.DisplayFor(modelItem => item.AcceptedBy)
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-    </td>
-</tr>
+        <tr>
+            <td>
+                <input type="checkbox" class="acceptBox" name="acceptBox" value="@item.Id" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderStatus)
+            </td>
+            <td>
+                @Convert.ToDateTime(item.CreatedAt).ToString("dd/MM/yyyy")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SecurityDeposit)
+            </td>
+            <td>
+                <span class="money">@Html.DisplayFor(modelItem => item.TotalAmount)</span>
+            </td>
+            <th>
+                @Html.DisplayFor(modelItem => item.Customer.FirstName)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.Service.Name)
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td class="acceptedBy">
+                @Html.DisplayFor(modelItem => item.AcceptedBy)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @*<a href="#myModal" class="trigger-btn" data-toggle="modal" style="margin:0">Delete</a>
+                <div id="myModal" class="modal fade">
+                    <div class="modal-dialog modal-confirm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Are you sure?</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Do you really want to delete these records? This process cannot be undone.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger">
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+            </td>
+        </tr>
     }
-
-
 </table>
+
+
+<!-- Modal HTML -->
+<br />
+@if (totalPage > 1)
+{
+    <b>Page @currentPage of @totalPage</b>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @if (currentPage > 1)
+            {
+                <li>
+                    <a href="?page=1&limit=@(limit)@(currentPara)" aria-label="First">
+                        <span aria-hidden="true">First</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="?page=@(currentPage-1)&limit=@(limit)@(currentPara)" aria-label="Previous">
+                        <span aria-hidden="true">Previous</span>
+                    </a>
+                </li>
+            }
+            @if (currentPage > 2)
+            {
+                <li><a href="?page=@(currentPage-2)&limit=@(limit)@(currentPara)">@(currentPage - 2)</a></li>
+            }
+            @if (currentPage > 1)
+            {
+                <li><a href="?page=@(currentPage-1)&limit=@(limit)@(currentPara)">@(currentPage - 1)</a></li>
+            }
+            <li class="active"><a href="?page=@(currentPage)&limit=@(limit)@(currentPara)">@currentPage</a></li>
+            @if (totalPage - currentPage > 0)
+            {
+                <li><a href="?page=@(currentPage+1)&limit=@(limit)@(currentPara)">@(currentPage + 1)</a></li>
+            }
+            @if (totalPage - currentPage > 1)
+            {
+                <li><a href="?page=@(currentPage+2)&limit=@(limit)@(currentPara)">@(currentPage + 2)</a></li>
+            }
+            @if (currentPage < totalPage)
+            {
+                <li>
+                    <a href="?page=@(currentPage+1)&limit=@(limit)@(currentPara)" aria-label="Next">
+                        <span aria-hidden="true">Next</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="?page=@totalPage&limit=@(limit)@(currentPara)" aria-label="Next">
+                        <span aria-hidden="true">Last</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
 @section Scripts {
     <script type="text/javascript">
         var data;
@@ -126,7 +194,7 @@
         $('#acceptAllBox').click(function () {
             if ($(this).is(':checked')) {
                 $('input:checkbox:not(:checked)').not(this).click();
-                
+
             }
             else {
                 $('input:checkbox:checked').not(this).click();
