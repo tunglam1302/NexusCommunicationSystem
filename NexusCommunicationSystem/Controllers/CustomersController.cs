@@ -17,7 +17,7 @@ namespace NexusCommunicationSystem.Controllers
     public class CustomersController : Controller
     {
         private NexusCommunicationSystemContext db = new NexusCommunicationSystemContext();
-
+        public SendEmailController EmailController = new SendEmailController();
         // GET: Customers
         public ActionResult Index(String keyword, int? page, int? limit)
         {
@@ -109,10 +109,24 @@ namespace NexusCommunicationSystem.Controllers
             if (foundCustomer == null)
             {
                     return JsonConvert.SerializeObject(new HttpStatusCodeResult(HttpStatusCode.BadRequest));
-                }
+            }
 
                 foundCustomer.AccountId = customer.AccountId;
                 db.SaveChanges();
+
+                SendEmailController.EmailData EmailData = new SendEmailController.EmailData();
+
+                EmailData.receiver = foundCustomer.Email;
+                EmailData.subject = "Your Passcode";
+                EmailData.message = foundCustomer.Passcode;
+
+                bool responseStatus = EmailController.SendEmailMethod(EmailData);
+                
+                if(responseStatus == false)
+                {
+                    return null;
+                }
+
                 var Obj = new
                 {
                     AccountId = foundCustomer.AccountId
@@ -247,19 +261,33 @@ namespace NexusCommunicationSystem.Controllers
             return JsonConvert.SerializeObject(FoundCustomer);
         }
         [HttpGet]
-        public string GetAccountIdByEmail(string email)
+        public Boolean GetAccountIdByEmail(string email)
         {
             var customerData = db.Customers.Where(c => c.Email == email).Select(item =>
             new {
                 item.AccountId,
-                item.FirstName
+                item.FirstName,
+                item.Passcode
             }).ToList();
 
             if (customerData == null)
             {
-                return null;
+                return false;
             }
-            return JsonConvert.SerializeObject(customerData);
+            string message = "";
+
+            customerData.ForEach(item =>
+            {
+                message = message + "<span style=\"color:green; font-size:16px\">Id: " + item.AccountId + "</span>" + " - "+ "<span style=\"color:red; font-size:16px\">Passcode: "+ item.Passcode +"</span>" + "<br />";
+            });
+            message = "We found two of your account with the following passcode: <br />" + message;
+
+            SendEmailController.EmailData EmailData = new SendEmailController.EmailData();
+            EmailData.receiver = email;
+            EmailData.subject = "Recover your AccountId";
+            EmailData.message = message;
+            bool responseStatus = EmailController.SendEmailMethod(EmailData);
+            return responseStatus;
         }
     }
 }

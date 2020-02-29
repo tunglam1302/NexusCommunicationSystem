@@ -44,7 +44,7 @@ Layout = null;
 						<input  id='submit' type="submit" class="btn" value="Track">
 						</div>
 						<div id='by-email' hidden>
-							<input type="text" name="SearchEmail" placeholder="" >
+							<input type="email" name="SearchEmail" placeholder="" >
 							<input id='forgot-submit' type="submit" class="btn" value="Search with email">
 						</div>
 
@@ -181,7 +181,7 @@ Layout = null;
 						<div>
 							<a href="#" title="Close" class="modal-close">Close</a>
 							<h1 style="color:green">SUCCESS!</h1>
-							<div style="color:black;line-height: 1.6">Your Account id and Code has been sent to the email <span id='modal-email' style="color:#06e8fc">email</span>.</div>
+							<div style="color:black;line-height: 1.6">Your Account id and Code has been sent to your email.</div>
 					</div>
 		</div>
 		    <a hidden id='open-modal-button' href="#open-modal"><span>error<span></a>
@@ -190,7 +190,7 @@ Layout = null;
 						<div>
 							<a href="#" title="Close" class="modal-close">Close</a>
 							<h1 style="color:red">ERROR!</h1>
-							<div style="color:black;line-height: 1.6; text-align:center;">Please check your Account and Passcode.</div>
+							<div style="color:black;line-height: 1.6; text-align:center;">The information you entered is not correct.</div>
 					</div>
 		</div>
 		    <a hidden id='open-modal-error-button' href="#open-modal-error"><span>error<span></a>
@@ -332,9 +332,11 @@ Layout = null;
                 type: 'GET',
                 data: {email: email},
                 success: function (response) {
-                    let customers = JSON.parse(response)
-										if(Array.isArray(customers) && customers[0])
-										alert(customers[0].AccountId +'-'+customers[0].FirstName)
+                    if(response == 'True'){
+												$('#open-modal-button').find('span').trigger('click')
+										}else{
+												$('#open-modal-error-button').find('span').trigger('click')
+										}
                 }
         })
 			}

@@ -57,6 +57,53 @@ namespace NexusCommunicationSystem.Controllers
             }
             return View();
         }
+
+        public class EmailData
+        {
+            public string receiver { get; set; }
+            public string subject { get; set; }
+            public string message { get; set; }
+        }
+        public Boolean SendEmailMethod(EmailData EmailData)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var senderEmail = new MailAddress("dotuchimlatui@gmail.com", "DoTuChim");
+                    var receiverEmail = new MailAddress(EmailData.receiver, "Receiver");
+                    var password = "qazws123";
+                    var sub = EmailData.subject;
+                    var body = EmailData.message;
+                    var smtp = new SmtpClient
+                    {
+                        Host = "smtp.gmail.com",
+                        Port = 25,
+                        EnableSsl = true,
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        UseDefaultCredentials = false,
+                        Credentials = new NetworkCredential(senderEmail.Address, password)
+                    };
+                    using (var mess = new MailMessage(senderEmail, receiverEmail)
+                    {
+                        Subject = EmailData.subject,
+                        Body = body,
+                        IsBodyHtml = true
+                    })
+                    {
+                        smtp.Send(mess);
+                    }
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+                return false;
+            }
+            
+        }
     }
 
 }
