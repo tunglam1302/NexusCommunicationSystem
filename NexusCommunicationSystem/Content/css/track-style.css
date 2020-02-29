@@ -252,17 +252,19 @@ h2.resp-accordion {
 }
 ul li b {
     font-weight: bold;
+    color:white;
 }
 ul.address li ul.address-text li {
     display: inline-block;
-    color: #fffdfd;
+    color: #06e8fc;
     margin-top: 1em;
     font-weight: 400;
     font-size: 16px;
     text-align: left;
+    font-weight: bold;
 }
 ul.address li ul.address-text li:nth-child(1) {
-    width: 28%;
+    width: 50%;
 }
 ul.address li ul.address-text.wide li:nth-child(1) {
     width: 50%;

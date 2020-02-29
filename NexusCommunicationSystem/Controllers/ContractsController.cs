@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using NexusCommunicationSystem.Models;
 
 namespace NexusCommunicationSystem.Controllers
@@ -117,6 +118,26 @@ namespace NexusCommunicationSystem.Controllers
             }
 
             return View(contract);
+        }
+
+        [HttpPost]
+        public string AjaxCreate([Bind(Include = "Id,CreatedAt,UpdatedAt,OrderStatus,CustomerId,SecurityDeposit,TotalAmount,Quantity,Discounts,RetailStoreId,ServiceId,ServicePackageId")] Contract contract)
+        {
+
+            contract.CreatedAt = DateTime.Now;
+            contract.UpdatedAt = DateTime.Now;
+            contract.OrderStatus = OrderStatus.Pending;
+            contract.CustomerId = 1;
+            //contract.NextPaymentAt;
+            //contract.AcceptedBy;
+
+            if (ModelState.IsValid)
+            {
+                db.Contracts.Add(contract);
+                db.SaveChanges();
+            }
+
+            return JsonConvert.SerializeObject(contract);
         }
 
         // GET: Contracts/Edit/5
@@ -275,6 +296,51 @@ namespace NexusCommunicationSystem.Controllers
             return contract.AcceptedBy;
         }
 
+        public class ViewContract
+        {
+
+            public int Id { get; set; }
+            public OrderStatus OrderStatus { get; set; }
+            public DateTime? CreatedAt { get; set; }
+            public double SecurityDeposit { get; set; }
+            public double TotalAmount { get; set; }
+            public int Quantity { get; set; }
+            public int CustomerId { get; set; }
+            public int ServiceId { get; set; }
+            public int RetailStoreId { get; set; }
+            public int ServicePackageId { get; set; }
+            public string ServiceName { get; set; }
+            public string RetailName { get; set; }
+            public string RetailPhone { get; set; }
+            public string PackageName { get; set; }
+        }
+        [HttpGet]
+        public string GetContractData(int Id)
+        {
+            Contract contract = db.Contracts.Find(Id);
+            ViewContract ViewContract = new ViewContract();
+            ViewContract.CreatedAt = contract.CreatedAt;
+            ViewContract.SecurityDeposit = contract.SecurityDeposit;
+            ViewContract.TotalAmount = contract.TotalAmount;
+            ViewContract.Quantity = contract.Quantity;
+            ViewContract.Id = contract.Id;
+            ViewContract.OrderStatus = contract.OrderStatus;
+            ViewContract.CustomerId = contract.CustomerId;
+            ViewContract.ServiceId = contract.ServiceId;
+            ViewContract.RetailStoreId = contract.RetailStoreId;
+            ViewContract.ServicePackageId = contract.ServicePackageId;
+            ViewContract.ServiceName = contract.Service.Name;
+            ViewContract.RetailName = contract.RetailStore.Name;
+            ViewContract.RetailPhone = contract.RetailStore.Telephone;
+            ViewContract.PackageName = contract.ServicePackage.Name;
+
+
+            if (contract == null)
+            {
+                return null;
+            }
+            return JsonConvert.SerializeObject(ViewContract);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

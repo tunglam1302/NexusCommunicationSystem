@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using LinqKit;
 using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
 using NexusCommunicationSystem.Models;
 using PagedList;
 
@@ -39,6 +40,9 @@ namespace NexusCommunicationSystem.Controllers
             return View(data);
         }
 
+        public ActionResult Track(){
+            return View();
+        }
         // GET: Customers/Details/5
         public ActionResult Details(int? id)
         {
@@ -73,10 +77,40 @@ namespace NexusCommunicationSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(customer);
         }
+        [HttpPost]
+        public string AjaxCreate([Bind(Include = "Id,FirstName,Email")] Customer customer)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Customers.Add(customer);
+                db.SaveChanges();
+            }
+            return JsonConvert.SerializeObject(customer);
+        }
+        [HttpPost]
+        public string AjaxUpdate([Bind(Include = "AccountId, Id")] Customer customer)
+        {
+            if (customer.Id == null)
+            {
+                return JsonConvert.SerializeObject(new HttpStatusCodeResult(HttpStatusCode.BadRequest));
+            }
 
+            if (ModelState.IsValid)
+            {
+                Customer foundCustomer = db.Customers.Find(customer.Id);
+            if (foundCustomer == null)
+            {
+                    return JsonConvert.SerializeObject(new HttpStatusCodeResult(HttpStatusCode.BadRequest));
+                }
+
+                foundCustomer.AccountId = customer.AccountId;
+                db.SaveChanges();
+                return JsonConvert.SerializeObject(foundCustomer);
+            }
+            return JsonConvert.SerializeObject(new HttpStatusCodeResult(HttpStatusCode.BadRequest));
+        }
         // GET: Customers/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -179,6 +213,33 @@ namespace NexusCommunicationSystem.Controllers
             Session["Customer"] = customer;
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public string GetUserData(string AccountId)
+        {
+            Customer customer = db.Customers.Where(c => c.AccountId == AccountId).Single();
+
+            if (customer == null)
+            {
+                return null;
+            }
+            return JsonConvert.SerializeObject(customer);
+        }
+        [HttpGet]
+        public string GetAccountIdByEmail(string email)
+        {
+            var customerData = db.Customers.Where(c => c.Email == email).Select(item =>
+            new {
+                item.AccountId,
+                item.FirstName
+            }).ToList();
+
+            if (customerData == null)
+            {
+                return null;
+            }
+            return JsonConvert.SerializeObject(customerData);
         }
     }
 }
