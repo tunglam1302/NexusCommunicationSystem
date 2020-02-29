@@ -95,10 +95,14 @@
 		<div id="small-dialog" class="w3_agile_main_grids mfp-hide">
 			<div class="agile_main_grid_left">
 				<div class="w3_agileits_main_grid_left_grid">
-					<h3>
-						<span id='original-price' style="text-decoration:line-through; text-decoration-color:grey;text-decoration-thickness: 1px"></span>
-						<p id='discount-price'></p>
-					</h3>
+						<div class="style-3">
+						<del>
+						<span id='original-price' class="amount">€35,00</span>
+						</del>
+						<ins>
+						<span id='discount-price' class="amount">€32,50</span>
+						</ins>
+						</div>
 					<p id='discount-text'></p>
 				</div>
 				<div class="agileinfo_main_grid_left_grid">
@@ -126,7 +130,7 @@
 						</svg>
 						<h1 style='margin-top: 20px; font-size: 18px;'>Your order is complete. </h1>
 						<h1 style='margin-top: 20px; font-size: 18px;'>
-							Use Id <span id="contract_id"></span> to track your order <a id='track-href' style='color:#00968f' href="">here</a>
+							Use Id <span id="contract_id"></span>and the Passcode sent to your email to track your order <a id='track-href' style='color:#00968f' href="">here</a>
 						</h1>
 					</div>
 					<div id='order_form'>
@@ -153,8 +157,8 @@
 								</div>
 								<div class="w3l_main_grid_right_grid_form1">
 									<label>Quantity</label>
-									<input name='Quantity' value=0 style="height:40px;padding:0" min=0 type='number' id="select-quantity" class="w3layouts_select">
-
+									<input name='Quantity' value=1 style="height:40px;padding:0" min=0 type='number' id="select-quantity" class="w3layouts_select">
+									</input>
 								</div>
 								<input type='number' name='SecurityDeposit' value=20000 hidden />
 								<input type='number' name='Discounts' value=0.2 hidden />
@@ -163,15 +167,15 @@
 								<div style="display:flex; width:100%">
 									<div style='flex:1' class="w3l_main_grid_right_grid_form2">
 										<label>Email</label>
-										<input type="email" name="Email" placeholder="Email">
+										<input type="email" name="Email" placeholder="Email" required>
 									</div>
 									<div style='flex:1' class="w3l_main_grid_right_grid_form2">
 										<label>Name</label>
-										<input type="text" name="FirstName" placeholder="Name">
+										<input type="text" name="FirstName" placeholder="Name" required>
 									</div>
 									<div style='flex:1' class="w3l_main_grid_right_grid_form2">
 										<label>Phone Number</label>
-										<input type="text" name="URL" placeholder="Phone Number">
+										<input type="text" name="Phonenumber" placeholder="Phone Number">
 									</div>
 								</div>
 								<div>
@@ -180,11 +184,11 @@
 									<div class="clear"> </div>
 									<div class="w3_main_grid_right_grid_form_textarea">
 										<label>Additional request</label>
-										<textarea name="Message" placeholder="" required=""></textarea>
+										<textarea name="Message" placeholder=""></textarea>
 									</div>
 									<div class="w3layouts_check">
 										<label class="checkbox">
-											<input type="checkbox" name="checkbox"><i> </i>I agree
+											<input required type="checkbox" name="checkbox"><i> </i>I agree
 											to the
 											terms of services
 										</label>
@@ -234,6 +238,12 @@
 								$('#order_form').show()
 								$('#success_response').hide()
 								$('#successAnimation').removeAttr('class')
+									
+									$("input[name='Email']").val('')
+									$("input[name='FirstName']").val('')
+									$("input[name='Phonenumber']").val('')
+									$("textarea").val('')
+									$("input[name='Quantity']").val(1)
 							},
 							close: function () {
 
@@ -286,74 +296,70 @@
 						const retailId = fillWithZero(RetailStoreId, 3)
 						const contractId = fillWithZero(Id, 12)
 						const serviceChar = currentService.Name.charAt(0)
-
 						return serviceChar + retailId + contractId
 					}
+    function postUser() {
+            let data = getUserData()
+            return $.ajax({
+                url: '/Customers/AjaxCreate',
+                type: 'POST',
+                data: data,								
+            });
+    }
 
-					function postUser() {
-						let data = getUserData()
-						return $.ajax({
-							url: '/Customers/AjaxCreate',
-							type: 'POST',
-							data: data,
-						});
-					}
+		function updateUser(accountId, id){
+			let data = {
+				AccountId: accountId,
+				Id:id
+			}
+			return $.ajax({
+                url: '/Customers/AjaxUpdate',
+                type: 'POST',
+                data: data,								
+      });
+		}
+		function postContract(customerId){
+            let data = getContractData()
+			data.CustomerId= customerId
+			$.ajax({
+                url: '/Contracts/AjaxCreate',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+									let accountId = makeUserId(response)
+									updateUser(accountId, customerId).then(()=>{
+										$('#order_form').hide()
+										$('#success_response').show()
+										$('#successAnimation').attr({ class: 'animated' })
+										$('#contract_id').html(accountId)
+										$('#track-href').attr({href:`/Customers/Track?AccountId=${accountId}`})
+									}).catch(e=>console.log(e))
+                },
+				error: function(er){
+					console.log(err)
+				}			
+            });
+		}
 
-					function updateUser(accountId, id) {
-						let data = {
-							AccountId: accountId,
-							Id: id
-						}
-						console.log(data, 'param ne')
-						return $.ajax({
-							url: '/Customers/AjaxUpdate',
-							type: 'POST',
-							data: data,
-						});
-					}
-					function postContract(customerId) {
-						let data = getContractData()
-						data.CustomerId = customerId
-						$.ajax({
-							url: '/Contracts/AjaxCreate',
-							type: 'POST',
-							data: data,
-							success: function (response) {
-								let accountId = makeUserId(response)
-								updateUser(accountId, customerId).then((response) => {
-									console.log(response, 'updated')
-									$('#order_form').hide()
-									$('#success_response').show()
-									$('#successAnimation').attr({ class: 'animated' })
-									$('#contract_id').html(accountId)
-									$('#track-href').attr({ href: `/Customers/Track?AccountId=${accountId}` })
-								}).catch(e => console.log(e))
-							},
-							error: function (er) {
-								console.log(err)
-							}
-						});
-					}
+						
 
-					function updateUserId(userId) {
+		
+		function CallAjaxForCalculation() {
+					let data= getContractData()
+                $.ajax({
+                url: '/Contracts/CalculateContractValue',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    $( "input[name='TotalAmount']" ).val(response)
+										$('#discount-price').html('$'+response)
+										$('#original-price').html('$'+response*120/100)
+										$('#discount-text').html(`You get ${20}% off`)
+                }
+            });
+        }
 
-					}
-					function CallAjaxForCalculation() {
-						let data = getContractData()
-						$.ajax({
-							url: '/Contracts/CalculateContractValue',
-							type: 'POST',
-							data: data,
-							success: function (response) {
-								$("input[name='TotalAmount']").val(response)
-								$('#discount-price').html('$' + response + 'USD')
-								$('#original-price').html('$' + response * 120 / 100 + 'USD')
-								$('#discount-text').html(`You get ${20}% off`)
-							}
-						});
-					}
-
-					$('.popup-with-zoom-anim').click(function () {
+					$('.popup-with-zoom-anim').click(function(){
 						serviceId = $(this).attr('service-id')
 						packageId = $(this).attr('package-id')
 						$('#select-period').val(packageId)
@@ -367,39 +373,39 @@
 							return content
 						})
 						$('#equipment-display').append(equipmentContent)
-						$('#select-quantity').val(0).change()
+												$('#select-quantity').val(1).change()
 					})
-
-					$('#order_submit_button').click((event) => {
-						event.preventDefault()
-
-						//post user then postContract with userId
-						postUser().then((response => {
-
-							postContract(JSON.parse(response).Id)
-						}))
-
-
-					})
+					
+				$('#order_form_data').submit((event) => {
+				
+event.preventDefault()
+                    //post user then postContract with userId
+                    postUser().then((response => {
+												
+                        postContract(JSON.parse(response).Id)
+                    }))
 
 
-					// const getDiscount = (originPrice, quantity) =>{
-					// 			if(0<quantity && quantity < 10)
-					// 			{
-					// 			return {
-					// 				discountPrice: Math.round(originPrice * 0.9),
-					// 				percentage: 0.1
-					// 			}
-					// 			}
-					// 			else if (quantity >=10){
-					// 				console.log(quantity)
-					// 				return{
-					// 					discountPrice: Math.round(originPrice * 0.5),
-					// 					percentage: 0.5
-					// 				}
-					// 			}
-					// 		}
-					$('#select-quantity').on('change', function () {
+				})
+
+
+		// const getDiscount = (originPrice, quantity) =>{
+		// 			if(0<quantity && quantity < 10)
+		// 			{
+		// 			return {
+		// 				discountPrice: Math.round(originPrice * 0.9),
+		// 				percentage: 0.1
+		// 			}
+		// 			}
+		// 			else if (quantity >=10){
+		// 				console.log(quantity)
+		// 				return{
+		// 					discountPrice: Math.round(originPrice * 0.5),
+		// 					percentage: 0.5
+		// 				}
+		// 			}
+		// 		}
+					$('#select-quantity').on('change', function(){
 						CallAjaxForCalculation()
 					})
 

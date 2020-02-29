@@ -17,7 +17,7 @@ namespace NexusCommunicationSystem.Models
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Contract> Orders { get; set; }
         public string AccountId { get;set; }
-
+        public string Passcode { get; set; }
         public Customer() { }
 
         public Customer(string firstName, string lastName, string email, string userPassword, AccountRole accountRole)
@@ -28,6 +28,14 @@ namespace NexusCommunicationSystem.Models
             UserPassword = userPassword;
             UserRole = accountRole;
             AccountId = this.Id.ToString();
+            Passcode = this.RandomDigits();
+        }
+        public string RandomDigits()
+        {
+            Random r = new Random();
+            var x = r.Next(0, 1000000);
+            string s = x.ToString("000000");
+            return s;
         }
     }
 }

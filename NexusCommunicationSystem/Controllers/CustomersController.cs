@@ -73,6 +73,7 @@ namespace NexusCommunicationSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                customer.Passcode = customer.RandomDigits();
                 db.Customers.Add(customer);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -84,10 +85,15 @@ namespace NexusCommunicationSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                customer.Passcode = customer.RandomDigits();
                 db.Customers.Add(customer);
                 db.SaveChanges();
             }
-            return JsonConvert.SerializeObject(customer);
+            var Obj = new
+            {
+                Id = customer.Id
+            };
+            return JsonConvert.SerializeObject(Obj);
         }
         [HttpPost]
         public string AjaxUpdate([Bind(Include = "AccountId, Id")] Customer customer)
@@ -107,7 +113,11 @@ namespace NexusCommunicationSystem.Controllers
 
                 foundCustomer.AccountId = customer.AccountId;
                 db.SaveChanges();
-                return JsonConvert.SerializeObject(foundCustomer);
+                var Obj = new
+                {
+                    AccountId = foundCustomer.AccountId
+                };
+                return JsonConvert.SerializeObject(Obj);
             }
             return JsonConvert.SerializeObject(new HttpStatusCodeResult(HttpStatusCode.BadRequest));
         }
@@ -205,7 +215,8 @@ namespace NexusCommunicationSystem.Controllers
         [HttpPost]
         public ActionResult Login(string email, string userPassword)
         {
-            Customer customer = db.Customers.Where(c=>c.Email == email && c.UserPassword == userPassword).Single();
+
+                Customer customer = db.Customers.Where(c=>c.Email == email && c.UserPassword == userPassword).Single();
             if (customer == null)
             {
                 return HttpNotFound();
@@ -215,16 +226,25 @@ namespace NexusCommunicationSystem.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public string GetUserData(string AccountId)
+        public class CustomerLogin
         {
-            Customer customer = db.Customers.Where(c => c.AccountId == AccountId).Single();
-
-            if (customer == null)
+            public string AccountId { get; set; }
+            public string Passcode { get; set; }
+        }
+        [HttpGet]
+        public string GetUserData(CustomerLogin customer)
+        {
+            if (!ModelState.IsValid)
             {
                 return null;
             }
-            return JsonConvert.SerializeObject(customer);
+            Customer FoundCustomer = db.Customers.Where(c => c.AccountId == customer.AccountId && c.Passcode == customer.Passcode).FirstOrDefault();
+
+            if (FoundCustomer == null)
+            {
+                return null;
+            }
+            return JsonConvert.SerializeObject(FoundCustomer);
         }
         [HttpGet]
         public string GetAccountIdByEmail(string email)

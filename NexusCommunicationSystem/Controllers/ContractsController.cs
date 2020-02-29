@@ -153,7 +153,6 @@ namespace NexusCommunicationSystem.Controllers
             contract.CreatedAt = DateTime.Now;
             contract.UpdatedAt = DateTime.Now;
             contract.OrderStatus = OrderStatus.Pending;
-            contract.CustomerId = 1;
             //contract.NextPaymentAt;
             //contract.AcceptedBy;
 
@@ -161,9 +160,20 @@ namespace NexusCommunicationSystem.Controllers
             {
                 db.Contracts.Add(contract);
                 db.SaveChanges();
+
+                var Obj = new
+                {
+                    Id = contract.Id,
+                    RetailStoreId = contract.RetailStoreId,
+                    ServiceId = contract.ServiceId,
+                    ServicePackageId = contract.ServicePackageId,
+                    CustomerId = contract.CustomerId
+                };
+
+                return JsonConvert.SerializeObject(Obj);
             }
 
-            return JsonConvert.SerializeObject(contract);
+            return null;
         }
 
         // GET: Contracts/Edit/5
@@ -339,11 +349,17 @@ namespace NexusCommunicationSystem.Controllers
             public string RetailName { get; set; }
             public string RetailPhone { get; set; }
             public string PackageName { get; set; }
+            public IEnumerable<dynamic> Billings { get; set; }
         }
         [HttpGet]
         public string GetContractData(int Id)
         {
             Contract contract = db.Contracts.Find(Id);
+            if (contract == null)
+            {
+                return null;
+            }
+
             ViewContract ViewContract = new ViewContract();
             ViewContract.CreatedAt = contract.CreatedAt;
             ViewContract.SecurityDeposit = contract.SecurityDeposit;
@@ -359,12 +375,8 @@ namespace NexusCommunicationSystem.Controllers
             ViewContract.RetailName = contract.RetailStore.Name;
             ViewContract.RetailPhone = contract.RetailStore.Telephone;
             ViewContract.PackageName = contract.ServicePackage.Name;
+            ViewContract.Billings = contract.Billings.Select(x => new { CreatedAt = x.CreatedAt, BillingAmount = x.BillingAmount });
 
-
-            if (contract == null)
-            {
-                return null;
-            }
             return JsonConvert.SerializeObject(ViewContract);
         }
         protected override void Dispose(bool disposing)

@@ -39,8 +39,9 @@ Layout = null;
 					<form>
 						<!-- <input type="text" name="Username" placeholder="Account id"> -->
 						<div id='by-accountid'>
-						<input type="text" name="AccountId" placeholder="">
-						<input id='submit' type="submit" class="btn" value="Track">
+						<input type="text" name="AccountId" placeholder="AccountId">
+						<input type="text" name="Passcode" placeholder="Passcode">
+						<input  id='submit' type="submit" class="btn" value="Track">
 						</div>
 						<div id='by-email' hidden>
 							<input type="text" name="SearchEmail" placeholder="" >
@@ -134,34 +135,65 @@ Layout = null;
 							<li>
 								<ul class="address-text">
 									<li><b>Type </b></li>
-									<li id='ServiceName'>Dial-up</li>
+									<li id='ServiceName'></li>
 								</ul>
 							</li>
 							<li>
 								<ul class="address-text wide ">
 									<li><b>Rent Period </b></li>
-									<li id='PackageName'>Monthly</li>
+									<li id='PackageName'></li>
 								</ul>
 							</li>
 							<li>
 								<ul class="address-text wide">
 									<li><b>Due Payment </b></li>
-									<li><a class='money' href="#">0 USD</a></li>
+									<li><a class='money' href="#"></a></li>
 								</ul>
 							</li>
 							<li>
 								<ul class="address-text wide">
 									<li><b>Check bills </b></li>
-									<li><a style='color:red' href="#">No bill</a></li>
+									<li style="width:auto;">
+											<select disabled value='' style="color:#06e8fc; padding-right:10px; padding-top:0; align-items:flex-start; height:25px; padding-bottom:0" name="select-bill" id="select-bill" class="w3layouts_select">
+												<option id='default-option' value="default" disabled selected hidden>No bill</option>
+										
+									</select>
+									</li>
 								</ul>
 							</li>
+							<div id='bill-amount-container'>
+														<li >
+								<ul class="address-text wide">
+									<li style="margin-top:10px"><b>Bill amount</b></li>
+									<li id='bill-amount' style="margin-top:10px"><a class='money' href="#">0 USD</a></li>
+								</ul>
+							</li>
+							</div>
+
+
 						</ul>
 					</div>
 				</div>
 
 			</div>
 			<div class="clear"> </div>
+								<div id="open-modal" class="modal-window">
+						<div>
+							<a href="#" title="Close" class="modal-close">Close</a>
+							<h1 style="color:green">SUCCESS!</h1>
+							<div style="color:black;line-height: 1.6">Your Account id and Code has been sent to the email <span id='modal-email' style="color:#06e8fc">email</span>.</div>
+					</div>
 		</div>
+		    <a hidden id='open-modal-button' href="#open-modal"><span>error<span></a>
+
+												<div id="open-modal-error" class="modal-window">
+						<div>
+							<a href="#" title="Close" class="modal-close">Close</a>
+							<h1 style="color:red">ERROR!</h1>
+							<div style="color:black;line-height: 1.6; text-align:center;">Please check your Account and Passcode.</div>
+					</div>
+		</div>
+		    <a hidden id='open-modal-error-button' href="#open-modal-error"><span>error<span></a>
 
 
 	</div>
@@ -170,6 +202,9 @@ Layout = null;
 	<script src="~/Content/js/easyResponsiveTabs.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function () {
+
+
+		$('#bill-amount-container').hide()
     function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1),
         sURLVariables = sPageURL.split('&'),
@@ -186,14 +221,24 @@ Layout = null;
 }
       const getUserInfo = () => {
         let AccountId = $("input[name='AccountId']").val()
+				let Passcode = $("input[name='Passcode']").val()
         $.ajax({
                 url: '/Customers/GetUserData',
                 type: 'GET',
-                data: {AccountId: AccountId},
+                data: {AccountId: AccountId, Passcode: Passcode},
                 success: function (response) {
+									if(!response)
+									{
+										$('#open-modal-error-button').find('span').trigger('click')
+                    $('#FirstName').html('')
+                    $('#Email').html('')
+										return
+								}
                     const user = JSON.parse(response)
                     $('#FirstName').html(user.FirstName)
                     $('#Email').html(user.Email)
+
+										getContractInfo()
                 }
         })
       }
@@ -214,6 +259,27 @@ Layout = null;
                 type: 'GET',
                 data: {Id: contractId},
                 success: function (response) {
+									if(!response)
+										{
+												$('#bill-amount-container').hide()
+										$('#ContractId').html('')
+                    $('#OrderStatus').html('')
+                    $('#Quantity').html('')
+                    $('#TotalAmount').html('')
+                    $('#RetailName').html('')
+                    $('#CreatedAt').html('')
+                    $('#ServiceName').html('')
+                    $('#PackageName').html('')
+										$("#select-bill option").each(function(index, i) {
+
+											if(index == 0){
+												$(this).html('No bill')
+												return
+											}
+												$(this).remove();
+											});
+								}
+									
                     const contract = JSON.parse(response)
                     let d = new Date(contract.CreatedAt)
                     createdAt =  ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + d.getFullYear()
@@ -226,14 +292,32 @@ Layout = null;
                     $('#ServiceName').html(contract.ServiceName)
                     $('#PackageName').html(contract.PackageName)
 
+										let billData = contract.Billings
+										
+										billData.forEach((bill, index) =>{
+											let d = new Date(bill.CreatedAt)
+											console.log(bill)
+											let time = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + d.getFullYear()
+											let element = `<option id='option-${index}' value="${bill.BillingAmount}">${time}</option>`
+
+											$('#select-bill').append(element)
+											$('#select-bill').removeAttr('disabled')
+											$('#default-option').html('Select a bill')
+										})
+
+										$('#select-bill').on('change', function() {
+													var value = $(this).val();
+													$('#bill-amount-container').show()
+													$('#bill-amount').html(`${value} USD`)
+										});
+
                 }
         })
       }
       const idQuery = getUrlParameter('AccountId')
       if(idQuery){
         $("input[name='AccountId']").val(idQuery)
-        getUserInfo()
-        getContractInfo()
+        
       }
 			$('#horizontalTab').easyResponsiveTabs({
 				type: 'default', //Types: default, vertical, accordion           
@@ -257,9 +341,16 @@ Layout = null;
 
 
       $('#submit').on('click', function(event){
-        event.preventDefault()
+				        event.preventDefault()
+				let accountId = $("input[name='AccountId']").val()
+				let passCode = $("input[name='Passcode']").val()
+				if(!accountId || !passCode)
+				{
+					$('#open-modal-error-button').find('span').trigger('click')
+					return
+				}
+
         getUserInfo()
-        getContractInfo()
       })
 
 			$('#forgot-submit').on('click', function(event){
