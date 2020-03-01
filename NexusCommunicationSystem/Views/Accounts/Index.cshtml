@@ -62,7 +62,7 @@
                 </a>
                 <a href="@Url.Action("Details", "Accounts",new { id=item.Id })" class="glyphicon glyphicon-list-alt">
                 </a>
-                <a href="@Url.Action("Delete", "Accounts",new { id=item.Id })" class="glyphicon glyphicon-trash">
+                <a href="#" class="glyphicon glyphicon-trash deleteItem" id=@item.Id>
                 </a>
             </td>
         </tr>
@@ -75,4 +75,30 @@
     <div>Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</div>
     @Html.PagedListPager(Model, page => Url.Action("Index",
         new { page, limit = limit, keyword }))
+}
+@section Scripts {
+    <script type="text/javascript">
+        var data;
+        $('.deleteItem').click(function () {
+
+            data = {
+                id:$(this).attr("id")
+            };
+            console.log(data);
+            alert("Do you want to delete this item");
+            CallAjaxForDeleteItem();
+        })
+
+        function CallAjaxForDeleteItem() {
+                $.ajax({
+                url: '/Accounts/DeleteConfirmed',
+                type: 'POST',
+                data: data,
+                    success: function (response) {
+                        location.reload(true);
+                }
+            });
+        }
+    </script>
+
 }

@@ -130,12 +130,10 @@ namespace NexusCommunicationSystem.Controllers
             return View(account);
         }
 
-        // POST: Accounts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        
+        public ActionResult DeleteConfirmed(string id)
         {
-            Account account = db.Accounts.Find(id);
+            Account account = db.Accounts.Find(Int32.Parse(id));
             db.Accounts.Remove(account);
             db.SaveChanges();
             return RedirectToAction("Index");
