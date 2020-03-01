@@ -80,6 +80,36 @@ namespace NexusCommunicationSystem.Controllers
             return View(feedback);
         }
 
+        public class FeedbackView {
+            public string Content { get; set; }
+            public string AccountId { get; set; }
+        }
+        [HttpPost]
+        public Boolean AjaxCreate(FeedbackView feedbackview)
+        {
+            if (ModelState.IsValid)
+            {
+                Customer FoundCustomer = db.Customers.Where(c => c.AccountId == feedbackview.AccountId).FirstOrDefault();
+                if(FoundCustomer == null)
+                {
+                    return false;
+                }
+
+                Feedback Feedback = new Feedback();
+                Feedback.CreatedAt = DateTime.Now;
+                Feedback.UpdatedAt = DateTime.Now;
+                Feedback.Content = feedbackview.Content;
+                Feedback.Customer = FoundCustomer;
+                Feedback.CustomerId = FoundCustomer.Id;
+
+                db.Feedbacks.Add(Feedback);
+                db.SaveChanges();
+                return true;
+            }
+
+            return false;
+        }
+
         // GET: Feedbacks/Edit/5
         public ActionResult Edit(int? id)
         {

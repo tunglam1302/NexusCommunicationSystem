@@ -70,9 +70,9 @@ namespace NexusCommunicationSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var senderEmail = new MailAddress("dotuchimlatui@gmail.com", "DoTuChim");
+                    var senderEmail = new MailAddress("nexus.fpt.project@gmail.com", "Nexus Communication System");
                     var receiverEmail = new MailAddress(EmailData.receiver, "Receiver");
-                    var password = "qazws123";
+                    var password = "nexusfptproject123";
                     var sub = EmailData.subject;
                     var body = EmailData.message;
                     var smtp = new SmtpClient
