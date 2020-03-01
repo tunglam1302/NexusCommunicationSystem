@@ -7,8 +7,7 @@
     var totalPage = ((int?)ViewBag.TotalPage).Value;
     var currentPage = ((int?)ViewBag.CurrentPage).Value;
     var limit = ((int?)ViewBag.Limit).Value;
-    //var currentPara = "&start=" + ViewBag.Start + "&end=" + ViewBag.End;
-    var currentPara = ViewBag.Keyword;
+    var currentPara = "&start=" + ViewBag.Start + "&end=" + ViewBag.End;
 }
 
 <h2>Index</h2>
@@ -16,12 +15,12 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<div>
-    <form method="post" action="/Contracts/Index">
-        <p style="font-weight: bold">Search customers</p>
-        <input style="max-width: 320px" class="form-control" type="text" name="keyword" placeholder="Search by aceptor or customer" value="@ViewBag.Keyword" /><br />
-    </form>
+<input type="text" name="datefilter" value="" class="form-control" />
 
+<div class="row">
+    <div class="col-md-12">
+        <div id="curve_chart" style="height: 500px"></div>
+    </div>
 </div>
 <table class="table">
     <tr>
@@ -78,25 +77,25 @@
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                 @*<a href="#myModal" class="trigger-btn" data-toggle="modal" style="margin:0">Delete</a>
-                <div id="myModal" class="modal fade">
-                    <div class="modal-dialog modal-confirm">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Are you sure?</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Do you really want to delete these records? This process cannot be undone.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-danger">
-                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                                </button>
+                    <div id="myModal" class="modal fade">
+                        <div class="modal-dialog modal-confirm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Are you sure?</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Do you really want to delete these records? This process cannot be undone.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-danger">
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>*@
+                    </div>*@
             </td>
         </tr>
     }
@@ -156,6 +155,7 @@
         </ul>
     </nav>
 }
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 @section Scripts {
     <script type="text/javascript">
         var data;
@@ -215,5 +215,73 @@
             });
         }
     </script>
+
+    <script type="text/javascript">
+        $(function () {
+            var startDate = new Date();
+            startDate.setFullYear(startDate.getFullYear() - 1);
+            var endDate = new Date();
+            var startPara = getParameterFromUrl('start');
+            if (startPara != null) {
+                startDate = new Date(startPara);
+            }
+            var endPara = getParameterFromUrl('end');
+            if (endPara != null) {
+                endDate = new Date(endPara);
+            }
+            $('input[name="datefilter"]').daterangepicker({
+                autoUpdateInput: true,
+                startDate: startDate,
+                endDate: endDate,
+                locale: {
+                    cancelLabel: 'Clear'
+                },
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            });
+            $('input[name="datefilter"]').on('apply.daterangepicker',
+                function (ev, picker) {
+                    var start = picker.startDate.format('YYYY-MM-DD');
+                    var end = picker.endDate.format('YYYY-MM-DD');
+                    window.location.href = window.location.href.split('?')[0] + '?start=' + start + '&end=' + end;
+                });
+
+            $.ajax({
+                url: `/Contracts/GetChartData?start=${startPara}&end=${endPara}`,
+                type: 'GET',
+                success: function (responseData) {
+                    google.charts.load('current', { 'packages': ['corechart'] });
+                    google.charts.setOnLoadCallback(drawChart);
+                    function drawChart() {
+                        var datas = new google.visualization.DataTable();
+                        datas.addColumn('date', 'Time');
+                        datas.addColumn('number', 'Money');
+                        for (var i = 0; i < responseData.length; i++) {
+                            datas.addRow([new Date(responseData[i].Date), responseData[i].Count]);
+                        }
+                        var options = {
+                            title: 'Thống kê số tiền theo thời gian',
+                            curveType: 'function',
+                            legend: { position: 'bottom' }
+                        };
+                        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+                        chart.draw(datas, options);
+                    }
+                }
+            });
+        });
+        function getParameterFromUrl(parameter) {
+            var url_string = window.location.href;
+            var url = new URL(url_string);
+            return url.searchParams.get(parameter);
+        }
+    </script>
+
 }
 
