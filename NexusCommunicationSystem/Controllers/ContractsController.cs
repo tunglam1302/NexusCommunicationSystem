@@ -205,9 +205,7 @@ namespace NexusCommunicationSystem.Controllers
         {
             contract.UpdatedAt = DateTime.Now;
             contract.OrderStatus = OrderStatus.DirectTransfer;
-            contract.CustomerId = 1;
-            //contract.AcceptedBy;
-
+            contract.CustomerId = Session["AccountId"]==null?1: (int)Session["AccountId"];
             if (ModelState.IsValid)
             {
                 db.Entry(contract).State = EntityState.Modified;

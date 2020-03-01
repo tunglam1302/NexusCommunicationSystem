@@ -20,8 +20,14 @@
     </form>
 
 </div>
+<p>
+    <a href="#" class="deleteAll" id="deleteAll">Delete All</a>
+</p>
 <table class="table">
     <tr>
+        <th>
+            <input type="checkbox" class="selectAllBox" name="selectAllBox" id="selectAllBox" />
+        </th>
         <th>Content</th>
         <th>CreatedAt</th>
         <th>UpdatedAt</th>
@@ -31,6 +37,9 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                <input type="checkbox" class="selectBox" name="selectBox" id="@item.Id" />
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Content)
             </td>
@@ -56,3 +65,60 @@
     @Html.PagedListPager(Model, page => Url.Action("Index",
         new { page, limit = limit, keyword }))
 }
+@section Scripts {
+    <script type="text/javascript">
+        var data;
+
+        $('.selectBox').change(function () {
+            if ($(this).is(':checked')) {
+                
+                $(this).closest('tr').children('td,th').css('background-color', '#a0f2e7');
+            }
+            else {
+                $('#selectAllBox').prop( "checked", false );
+                $(this).closest('tr').children('td,th').css('background-color', '#ffffff');
+            }
+        });
+
+        $('#selectAllBox').click(function () {
+            if ($(this).is(':checked')) {
+                alert("Do you want to select all these contract")
+                $('input:checkbox:not(:checked)').not(this).click();
+
+            }
+            else {
+                $('input:checkbox:checked').not(this).click();
+            }
+        });
+
+        $('#deleteAll').click(function () {
+            deleteAllSelectedFeedback();
+        })
+
+        function deleteAllSelectedFeedback() {
+            var feedbackList = []
+            $('.selectBox').each(function () {
+                if ($(this).is(':checked')) {
+                    var id = $(this).attr("id");
+                    feedbackList.push(id);
+                }
+            })
+
+            data = {
+                feedbacks: feedbackList
+            };
+            CallAjaxForDeleteAllSelectedFeedback();
+        }
+
+        function CallAjaxForDeleteAllSelectedFeedback() {
+                $.ajax({
+                url: '/Feedbacks/DeleteAllSelectedFeedback',
+                type: 'POST',
+                data: data,
+                    success: function (response) {
+                        location.reload(true);
+                }
+            });
+        }
+    </script>
+    }

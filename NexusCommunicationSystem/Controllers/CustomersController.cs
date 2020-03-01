@@ -61,6 +61,7 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Customers/Create
         public ActionResult Create()
         {
+            
             return View();
         }
 
@@ -147,6 +148,7 @@ namespace NexusCommunicationSystem.Controllers
             {
                 return HttpNotFound();
             }
+            
             return View(customer);
         }
 

@@ -26,7 +26,7 @@
 <table class="table">
     <tr>
         <th>
-            <input type="checkbox" class="acceptAllBox" name="acceptAllBox" id="acceptAllBox" value="trung" />
+            <input type="checkbox" class="acceptAllBox" name="acceptAllBox" id="acceptAllBox" />
         </th>
         <th>Order Status</th>
         <th>Created At</th>
@@ -172,6 +172,7 @@
 
         $('.acceptBox').change(function () {
             if ($(this).is(':checked')) {
+                
                 data = {
                     contractId: $(this).val(),
                     checkedStatus: 1,
@@ -181,6 +182,7 @@
                 CallAjaxForAccept();
             }
             else {
+                $('#acceptAllBox').prop( "checked", false );
                 data = {
                     contractId: $(this).val(),
                     checkedStatus: 0,
@@ -193,6 +195,7 @@
 
         $('#acceptAllBox').click(function () {
             if ($(this).is(':checked')) {
+                alert("Do you want to accept all these contract")
                 $('input:checkbox:not(:checked)').not(this).click();
 
             }
