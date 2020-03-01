@@ -34,10 +34,10 @@ namespace NexusCommunicationSystem.Models
 
         public Contract() { }
 
-        public Contract(OrderStatus orderStatus, double securityDeposit, double totalAmount, int quantity, DateTime nextPaymentAt, double discounts, Customer customer, Service service, RetailStore retailStore, ServicePackage servicePackage) {
+        public Contract(OrderStatus orderStatus, double securityDeposit, double totalAmount, int quantity, DateTime nextPaymentAt, double discounts, Customer customer, Service service, RetailStore retailStore, ServicePackage servicePackage, DateTime? createdAt = null, DateTime? updatedAt = null) {
             OrderStatus = orderStatus;
-            CreatedAt = DateTime.Now;
-            UpdatedAt = DateTime.Now;
+            CreatedAt = createdAt??DateTime.Now;
+            UpdatedAt = updatedAt ?? DateTime.Now;
             SecurityDeposit = securityDeposit;
             TotalAmount = totalAmount;
             Quantity = quantity;

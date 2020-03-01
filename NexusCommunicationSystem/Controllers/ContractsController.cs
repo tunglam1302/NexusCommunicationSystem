@@ -100,14 +100,14 @@ namespace NexusCommunicationSystem.Controllers
                 ).Select(s => new
                 {
                     Date = s.FirstOrDefault().CreatedAt,
-                    Count = s.Count()
+                    TotalAmount = s.FirstOrDefault().TotalAmount
                 }).OrderBy(s => s.Date).ToList();
             return new JsonResult()
             {
                 Data = data.Select(s => new
                 {
                     Date = s.Date.ToString("MM/dd/yyyy"),
-                    Count = s.Count
+                    TotalAmount = s.TotalAmount
                 }),
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };

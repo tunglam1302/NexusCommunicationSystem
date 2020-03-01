@@ -254,7 +254,7 @@
 
             $.ajax({
                 url: `/Contracts/GetChartData?start=${startPara}&end=${endPara}`,
-                type: 'GET',
+                type: 'POST',
                 success: function (responseData) {
                     google.charts.load('current', { 'packages': ['corechart'] });
                     google.charts.setOnLoadCallback(drawChart);
@@ -263,7 +263,7 @@
                         datas.addColumn('date', 'Time');
                         datas.addColumn('number', 'Money');
                         for (var i = 0; i < responseData.length; i++) {
-                            datas.addRow([new Date(responseData[i].Date), responseData[i].Count]);
+                            datas.addRow([new Date(responseData[i].Date), responseData[i].TotalAmount]);
                         }
                         var options = {
                             title: 'Thống kê số tiền theo thời gian',
