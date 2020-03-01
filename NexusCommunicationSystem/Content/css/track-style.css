@@ -282,7 +282,7 @@ h4 {
 }
 .agile-tab-top {
     text-align: center;
-    padding: 3em 0;
+    padding: 2em 0;
 }
 ul.address-text{
     display:flex;
@@ -547,4 +547,58 @@ ul.address-text li a {
  small {
 	 color: #aaa;
 }
- 
+
+.w3_main_grid_right_grid_form_textarea label{
+	font-size: 16px;
+    color: #00968f;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+textarea{
+    outline: none;
+    padding: 10px 0;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-bottom: 2px solid #f2f2f2;
+    background: none;
+    font-weight: 600;
+    font-family: 'Raleway', sans-serif;
+	width:100%;
+	height: 40px;
+}
+
+textarea::-webkit-input-placeholder{
+	color: grey !important;
+}
+
+textarea{
+	min-height:120px;
+}
+
+
+#feedback_submit, #feedback_open{
+	outline: none;
+    padding: 10px 0;
+    font-size: 1em;
+    font-weight: 600;
+    color: #fff;
+    border: none;
+    width: 50%;
+    background: #f1a700;
+    cursor: pointer;
+}
+#feedback_submit:hover, #feedback_open:hover{
+	background:#00968f;
+}
+
+.submit_wrapper{
+    display:flex;
+    width:100%;
+    height:auto;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}

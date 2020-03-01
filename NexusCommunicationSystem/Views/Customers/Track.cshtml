@@ -11,7 +11,7 @@ Layout = null;
 <html>
 
 <head>
-	<title>Personalities Test Widget Flat Responsive Widget Template :: w3layouts</title>
+	<title>Nexus account tracking</title>
 	<!-- for-mobile-apps -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -50,6 +50,7 @@ Layout = null;
 
 					</form>
 					<h6 id='by-email-text'><a id='toggle-by-email' href="#">Forgot Account Id?</a></h6>
+					
 					<h6 hidden id='by-accountid-text'><a id='toggle-by-accountid' href="#">Track with Accound Id</a></h6>
 				</div>
 			</div>
@@ -110,9 +111,12 @@ Layout = null;
 											<li>
 												<ul class="address-text wide">
 													<li><b>Order Status </b></li>
-													<li><a id="OrderStatus" style='color:red' href="#">PENDING</a></li>
+													<li><a id="OrderStatus" style='color:red' href="#"></a></li>
 												</ul>
 											</li>
+											<div style="margin-top:20px" class='submit_wrapper'>
+											<input hidden id='feedback_open' type='submit' value='Send feedback'/>
+											</div>
 										</ul>
 									</div>
 								</div>
@@ -178,23 +182,41 @@ Layout = null;
 			</div>
 			<div class="clear"> </div>
 								<div id="open-modal" class="modal-window">
-						<div>
+						<div style="background-color:rgb(0,0,0,0.7)">
 							<a href="#" title="Close" class="modal-close">Close</a>
 							<h1 style="color:green">SUCCESS!</h1>
-							<div style="color:black;line-height: 1.6">Your Account id and Code has been sent to your email.</div>
+							<div id='success-content' style="color:white;line-height: 1.6">Your Account id and Code has been sent to your email.</div>
 					</div>
 		</div>
 		    <a hidden id='open-modal-button' href="#open-modal"><span>error<span></a>
 
 												<div id="open-modal-error" class="modal-window">
-						<div>
+						<div style="background-color:rgb(0,0,0,0.7)">
 							<a href="#" title="Close" class="modal-close">Close</a>
 							<h1 style="color:red">ERROR!</h1>
-							<div style="color:black;line-height: 1.6; text-align:center;">The information you entered is not correct.</div>
+							<div style="color:white;line-height: 1.6; text-align:center;">The information you entered is not correct.</div>
 					</div>
 		</div>
 		    <a hidden id='open-modal-error-button' href="#open-modal-error"><span>error<span></a>
 
+		<div  id="open-modal-feedback" class="modal-window">
+						<div style="background-color:rgb(0,0,0,0.7)">
+							<a href="#" title="Close" class="modal-close">Close</a>
+
+<form id='feedback_form' href='#' action='POST'>
+
+					<div class="w3_main_grid_right_grid_form_textarea">
+										<label>Send us your feedback</label>
+										<textarea required id='feedback_content' placeholder=""></textarea>
+									</div>
+									<div class="submit_wrapper">
+									<input id='feedback_submit' type="submit" value="Submit">
+					</div>
+									</form>
+					</div>
+					
+		</div>
+		    <a hidden id='open-modal-feedback-button' href="#open-modal-feedback"><span>feedback<span></a>
 
 	</div>
 	<!-- js -->
@@ -203,7 +225,7 @@ Layout = null;
 	<script type="text/javascript">
 		$(document).ready(function () {
 
-
+		let validAccountId = null;
 		$('#bill-amount-container').hide()
     function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1),
@@ -232,12 +254,14 @@ Layout = null;
 										$('#open-modal-error-button').find('span').trigger('click')
                     $('#FirstName').html('')
                     $('#Email').html('')
+										$('#feedback_open').hide()
 										return
 								}
                     const user = JSON.parse(response)
                     $('#FirstName').html(user.FirstName)
                     $('#Email').html(user.Email)
-
+										$('#feedback_open').show()
+										validAccountId = AccountId
 										getContractInfo()
                 }
         })
@@ -334,6 +358,7 @@ Layout = null;
                 success: function (response) {
                     if(response == 'True'){
 												$('#open-modal-button').find('span').trigger('click')
+												$('#success-content').html('Your Account id and Code has been sent to your email.')
 										}else{
 												$('#open-modal-error-button').find('span').trigger('click')
 										}
@@ -371,6 +396,31 @@ Layout = null;
 				$('#by-accountid').show()
 				$('#by-email-text').show()
 				$('#by-accountid-text').hide()
+			})
+
+			$('#feedback_form').submit((event)=>{
+				event.preventDefault()
+				let data={
+					AccountId: validAccountId,
+					Content: $('#feedback_content').val()
+				}
+
+				$.ajax({
+                url: '/Feedbacks/AjaxCreate',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    if(response == 'True'){
+												$('#open-modal-button').find('span').trigger('click')
+												$('#success-content').html('Your feedback has been sent.')
+										}else{
+												$('#open-modal-error-button').find('span').trigger('click')
+										}
+                }
+        })
+			})
+			$('#feedback_open').click(()=>{
+				$('#open-modal-feedback-button').find('span').trigger('click')
 			})
 		});
 	</script>

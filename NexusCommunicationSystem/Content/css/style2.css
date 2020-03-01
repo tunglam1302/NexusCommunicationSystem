@@ -317,7 +317,9 @@ input[type="submit"],a{
     border: none;
     width: 50%;
     background: #f1a700;
-    cursor: pointer;
+		cursor: pointer;
+		margin-left:'auto';
+		margin-right:'auto'
 }
 .w3ls_main_grid_right_grid_form input[type="submit"]:hover{
 	background:#00968f;
