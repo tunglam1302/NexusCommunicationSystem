@@ -212,7 +212,7 @@ namespace NexusCommunicationSystem.Controllers
         [HttpPost]
         public ActionResult Login(string email, string userPassword)
         {
-            var account = db.Accounts.Where(c => c.Email == email && c.UserPassword == userPassword).Single();
+            var account = db.Accounts.Where(c => c.Email == email && c.UserPassword == userPassword).FirstOrDefault();
             if (account == null)
             {
                 return HttpNotFound();
