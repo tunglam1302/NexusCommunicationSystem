@@ -19,7 +19,7 @@
         @Html.HiddenFor(model => model.Id, new { @id = "contractId" })
 
         <div class="form-group">
-            @Html.LabelFor(model => model.OrderStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Order Status</label>
             <div class="col-md-10">
                 @Html.EnumDropDownListFor(model => model.OrderStatus, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
 
@@ -27,7 +27,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CreatedAt, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Created At</label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.CreatedAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
@@ -35,7 +35,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UpdatedAt, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Updated At</label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.UpdatedAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
@@ -45,14 +45,14 @@
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.NextPaymentAt, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Next Payment At</label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.NextPaymentAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Service.TotalAmount, "Service Price", htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Total Amount</label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Service.TotalAmount, new { htmlAttributes = new { @class = "form-control", @id = "ServicePrice", @readonly = "readonly" } })
 
@@ -76,7 +76,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SecurityDeposit, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Security Deposit</label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.SecurityDeposit, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "SecurityDeposit" } })
 
@@ -84,21 +84,21 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.TotalAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Total Amount</label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
 
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.RetailStoreId, "RetailStore Id", htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Retail Store</label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.RetailStore.Name, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
 
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.ServiceId, "Service Id", htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Service</label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Service.Name, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
 
@@ -106,7 +106,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ServicePackageId, "ServicePackage Id", htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Service Package</label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.ServicePackage.Name, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
 

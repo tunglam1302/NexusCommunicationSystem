@@ -53,7 +53,11 @@ namespace NexusCommunicationSystem.Controllers
                 {
                     Console.WriteLine(e);
                 }
-
+                var account = (Account)Session["Accounts"];
+                if (account != null) { 
+                
+                    ViewBag.RetailStoreId = account.RetailStoreId;
+                }
                 ViewBag.limit = limit;
                 var contracts = db.Contracts.OrderByDescending(s => s.CreatedAt).Where(s => s.CreatedAt >= startTime && s.CreatedAt <= endTime);
                 ViewBag.TotalPage = Math.Ceiling((double)contracts.Count() / limit.Value);
@@ -421,16 +425,18 @@ namespace NexusCommunicationSystem.Controllers
         {
             var contractIdValue = Int32.Parse(contractId);
             var checkedValue = Int32.Parse(checkedStatus);
-            var contract = db.Contracts.Where(c => c.Id == contractIdValue).Single();
+            var contract = db.Contracts.Where(c => c.Id == contractIdValue).FirstOrDefault();
             
             if (checkedValue == 1)
             {
                 if (!string.IsNullOrEmpty(Session["AccountName"] as string))
                 contract.AcceptedBy = Session["AccountName"].ToString();
+                contract.OrderStatus = OrderStatus.Confirmed;
             }
             else
             {
                 contract.AcceptedBy = null;
+                contract.OrderStatus = OrderStatus.Pending;
             }
             db.Entry(contract).State = EntityState.Modified;
             db.SaveChanges();
