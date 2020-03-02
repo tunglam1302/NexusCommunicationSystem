@@ -57,6 +57,7 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Equipments/Create
         public ActionResult Create()
         {
+            ViewBag.VendorId = new SelectList(db.Vendors, "Id", "Name");
             return View();
         }
 
@@ -65,8 +66,9 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Price,Amount")] Equipment equipment)
+        public ActionResult Create([Bind(Include = "Id,Name,Price,Amount,VendorId")] Equipment equipment)
         {
+            equipment.Vendor = db.Vendors.Find(equipment.VendorId);
             if (ModelState.IsValid)
             {
                 db.Equipments.Add(equipment);
@@ -89,6 +91,7 @@ namespace NexusCommunicationSystem.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.VendorId = new SelectList(db.Vendors, "Id", "Name", equipment.VendorId);
             return View(equipment);
         }
 
@@ -97,8 +100,9 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Price,Amount")] Equipment equipment)
+        public ActionResult Edit([Bind(Include = "Id,Name,Price,Amount,VendorId")] Equipment equipment)
         {
+            equipment.Vendor = db.Vendors.Find(equipment.VendorId);
             if (ModelState.IsValid)
             {
                 db.Entry(equipment).State = EntityState.Modified;

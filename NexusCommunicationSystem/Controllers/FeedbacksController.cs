@@ -57,6 +57,7 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Feedbacks/Create
         public ActionResult Create()
         {
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName");
             return View();
         }
 
@@ -65,8 +66,10 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Content,CreatedAt,UpdatedAt")] Feedback feedback)
+        public ActionResult Create([Bind(Include = "Id,Content,CustomerId")] Feedback feedback)
         {
+            feedback.CreatedAt = DateTime.Now;
+            feedback.UpdatedAt = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Feedbacks.Add(feedback);
@@ -75,6 +78,36 @@ namespace NexusCommunicationSystem.Controllers
             }
 
             return View(feedback);
+        }
+
+        public class FeedbackView {
+            public string Content { get; set; }
+            public string AccountId { get; set; }
+        }
+        [HttpPost]
+        public Boolean AjaxCreate(FeedbackView feedbackview)
+        {
+            if (ModelState.IsValid)
+            {
+                Customer FoundCustomer = db.Customers.Where(c => c.AccountId == feedbackview.AccountId).FirstOrDefault();
+                if(FoundCustomer == null)
+                {
+                    return false;
+                }
+
+                Feedback Feedback = new Feedback();
+                Feedback.CreatedAt = DateTime.Now;
+                Feedback.UpdatedAt = DateTime.Now;
+                Feedback.Content = feedbackview.Content;
+                Feedback.Customer = FoundCustomer;
+                Feedback.CustomerId = FoundCustomer.Id;
+
+                db.Feedbacks.Add(Feedback);
+                db.SaveChanges();
+                return true;
+            }
+
+            return false;
         }
 
         // GET: Feedbacks/Edit/5
@@ -89,6 +122,7 @@ namespace NexusCommunicationSystem.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName", feedback.CustomerId);
             return View(feedback);
         }
 
@@ -97,14 +131,17 @@ namespace NexusCommunicationSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Content,CreatedAt,UpdatedAt")] Feedback feedback)
+        public ActionResult Edit([Bind(Include = "Id,Content,CreatedAt,CustomerId")] Feedback feedback)
         {
+            feedback.UpdatedAt = DateTime.Now;
+            feedback.Customer = db.Customers.Find(feedback.CustomerId);
             if (ModelState.IsValid)
             {
                 db.Entry(feedback).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            
             return View(feedback);
         }
 
@@ -132,6 +169,16 @@ namespace NexusCommunicationSystem.Controllers
             db.Feedbacks.Remove(feedback);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public void DeleteAllSelectedFeedback(List<string> feedbacks)
+        {
+            foreach (var feedbackId in feedbacks)
+            {
+                Feedback feedback = db.Feedbacks.Find(Int32.Parse(feedbackId));
+                db.Feedbacks.Remove(feedback);
+                db.SaveChanges();
+            }
         }
 
         protected override void Dispose(bool disposing)

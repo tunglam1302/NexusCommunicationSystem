@@ -1,17 +1,14 @@
-﻿<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
+﻿
 @{
     Layout = null;
  }
+
+     @Html.AntiForgeryToken()
 <!DOCTYPE html>
 <html>
 
 <head>
-	<title>Spa Pricing Table Flat Responsive Widget Template :: w3layouts</title>
+	<title>Nexus communication system</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="keywords"
@@ -35,50 +32,53 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<!-- main -->
 	<nav style="position: relative;" class="sm-navbar">
 		<ul class="sm-nav-menu">
-			<li><a href="~/Accounts/Login" class="nav-links">admin</a></li>
-			<li><a href="#" class="nav-links">work</a></li>
-			<li><a href="#" class="nav-links">services</a></li>
-			<li><a href="#" class="nav-links">contact</a></li>
 			<li style='position:absolute; right:0'>
-				<a href="/Accounts/Track" class="nav-links full-border">
+				<a href="/Customers/Track" class="nav-links full-border">
 					Track your
 					order
 				</a>
 			</li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li><a href="~/Accounts/Login" class="nav-links">admin</a></li>
+			
 		</ul>
 	</nav>
 	<div class="main">
 		@{
 			string serviceJson = Model.GetServiceJSON();
 		}
-
 		<input id="serviceJson" type="hidden" value="@serviceJson" />
-		<input id="currentService" type="hidden" value=""/>
-		<input id="surrentPackage" type="hidden" value=""/>
-		@foreach (var item in Model.Services)
-		{
-			<h1>@item.Name</h1>
+		<input id="currentService" type="hidden" value="" />
+		<input id="surrentPackage" type="hidden" value="" />
+		@foreach (var serviceType in Model.ServiceClassified)
+        { 
+		
+		<div id="LandlineService">
+			<h1>@serviceType[0].Name.Substring(0,serviceType[0].Name.IndexOf(" "))</h1>
 			<div class="main-agileinfo">
 				<div id="owl-demo" class="owl-carousel owl-theme">
 					<!-- owl-carousel -->
 					@{int i = 1;}
-					@{string[] detail = item.Description.Split('/');}
-					@foreach (var package in Model.ServicePackages)
+					@foreach (var item in serviceType)
 					{
+						string[] detail = @item.Description.Split('/');
 						<div class="item">
 							<div class="pricing pricing-@i">
 								<div class="pricing-top top-@i">
-									<h3>@package.Name</h3>
-									<p>$50 / month</p>
+									<h3>@item.Name</h3>
+									<p>$@item.TotalAmount.ToString("#,##0") / month</p>
 								</div>
 								@{i++;
 								}
 								<div class="pricing-bottom">
-								@foreach(var detailLine in detail){
-									<p>@detailLine</p>
-								}
+									@foreach (var detailLine in detail)
+									{
+										<p>@detailLine</p>
+									}
 									<div class="agileits-buy">
-										<a class="popup-with-zoom-anim" href="#small-dialog" service-id="@item.Id" package-id="@package.Id">Buy Now</a>
+										<a class="popup-with-zoom-anim" href="#small-dialog" service-id="@item.Id" package-id="@item.Id">Buy Now</a>
 									</div>
 								</div>
 							</div>
@@ -87,25 +87,28 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				</div>
 				<!-- //owl-carousel -->
 			</div>
+		</div>
 		}
-
 
 		<!-- //main -->
 		<!-- pop-up-grid -->
 		<div id="small-dialog" class="w3_agile_main_grids mfp-hide">
 			<div class="agile_main_grid_left">
 				<div class="w3_agileits_main_grid_left_grid">
-					<h3>
-					<span id='original-price' style="text-decoration:line-through; text-decoration-color:grey;text-decoration-thickness: 1px"></span>
-					<p id='discount-price'></p>
-					</h3>
+						<div class="style-3">
+						<del>
+						<span id='original-price' class="amount">€35,00</span>
+						</del>
+						<ins>
+						<span id='discount-price' class="amount">€32,50</span>
+						</ins>
+						</div>
 					<p id='discount-text'></p>
 				</div>
 				<div class="agileinfo_main_grid_left_grid">
 					<h3>These equipments are included</h3>
 					<p>(Already in price)</p>
 					<ul id='equipment-display'>
-						
 					</ul>
 					<a href="#" class="agileits_questions">If you have any questions ?</a>
 					<div class="w3layouts_help_desk">
@@ -127,35 +130,40 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						</svg>
 						<h1 style='margin-top: 20px; font-size: 18px;'>Your order is complete. </h1>
 						<h1 style='margin-top: 20px; font-size: 18px;'>
-							Use Id D000001 to track your order <a style='color:#00968f' href="/Accounts/Track">here</a>
+							Use Id <span id="contract_id"></span> and the Passcode sent to your email to track your order <a id='track-href' style='color:#00968f' href="">here</a>
 						</h1>
 					</div>
 					<div id='order_form'>
 						<h3>fill the fields and proceed to payment</h3>
 						<div class="w3ls_main_grid_right_grid_form">
-							<form action="#" method="post">
+							<form id='order_form_data' action="#" method="post">
 								<div class="w3l_main_grid_right_grid_form1">
 									<label>Retail Store</label>
-									<select id="select-store" class="w3layouts_select">
-										@foreach(var item in Model.RetailStores){
-										<option value="@item.Id">@item.Name</option>
+									<select name="RetailStoreId" id="select-store" class="w3layouts_select">
+										@foreach (var item in Model.RetailStores)
+										{
+											<option value="@item.Id">@item.Name</option>
 										}
 									</select>
 								</div>
 								<div class="w3l_main_grid_right_grid_form1">
 									<label>Rent Period</label>
-									<select id="select-period" class="w3layouts_select">
-									@foreach(var item in Model.ServicePackages){
-										<option value="@item.Id">@item.Name</option>
-									}
+									<select name="ServicePackageID" id="select-period" class="w3layouts_select">
+										@foreach (var item in Model.ServicePackages)
+										{
+											<option value="@item.Id">@item.Name</option>
+										}
 									</select>
 								</div>
-																<div class="w3l_main_grid_right_grid_form1">
+								<div class="w3l_main_grid_right_grid_form1">
 									<label>Quantity</label>
-									<input style="height:40px;padding:0" min=0 type='number' id="select-quantity" class="w3layouts_select">
-
+									<input name='Quantity' value=1 style="height:40px;padding:0" min=0 type='number' id="select-quantity" class="w3layouts_select">
 									</input>
 								</div>
+								<input type='number' name='SecurityDeposit' value=20000 hidden />
+								<input type='number' name='Discounts' value=0.2 hidden />
+								<input type'number' name='ServicePrice' value=20000 hidden />
+								<input type'number' name='TotalAmount' hidden />
 								<div style="display:flex; width:100%">
 									<div style='flex:1' class="w3l_main_grid_right_grid_form2">
 										<label>Email</label>
@@ -163,11 +171,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 									</div>
 									<div style='flex:1' class="w3l_main_grid_right_grid_form2">
 										<label>Name</label>
-										<input type="text" name="Number" placeholder="Name" required>
+										<input type="text" name="FirstName" placeholder="Name" required>
 									</div>
 									<div style='flex:1' class="w3l_main_grid_right_grid_form2">
 										<label>Phone Number</label>
-										<input type="text" name="URL" placeholder="Phone Number" required>
+										<input type="text" name="Phonenumber" placeholder="Phone Number">
 									</div>
 								</div>
 								<div>
@@ -176,11 +184,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 									<div class="clear"> </div>
 									<div class="w3_main_grid_right_grid_form_textarea">
 										<label>Additional request</label>
-										<textarea name="Message" placeholder="" required=""></textarea>
+										<textarea name="Message" placeholder=""></textarea>
 									</div>
 									<div class="w3layouts_check">
 										<label class="checkbox">
-											<input type="checkbox" name="checkbox"><i> </i>I agree
+											<input required type="checkbox" name="checkbox"><i> </i>I agree
 											to the
 											terms of services
 										</label>
@@ -230,6 +238,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								$('#order_form').show()
 								$('#success_response').hide()
 								$('#successAnimation').removeAttr('class')
+									
+									$("input[name='Email']").val('')
+									$("input[name='FirstName']").val('')
+									$("input[name='Phonenumber']").val('')
+									$("textarea").val('')
+									$("input[name='Quantity']").val(1)
 							},
 							close: function () {
 
@@ -239,75 +253,172 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					});
 				});
 			</script>
-			<script>
-				$(document).ready(function () {
-					$('#order_submit_button').click(() => {
-						$('#order_form').hide()
-						$('#success_response').show()
-						$('#successAnimation').attr({ class: 'animated' })
-					})
-
-				});
-			</script>
 			<!-- //popup js -->
 			<script>
-					$(document).ready(function () {
+				$(document).ready(function () {
 					const serviceData = JSON.parse($('#serviceJson').val())
 					let serviceId = null
 					let packageId = null
-					console.log(serviceData)
+					let currentService = null
+
+					const getContractData = () => {
+
+						let contractData = {
+							ServiceId: serviceId,
+							ServicePackageId: packageId,
+							Quantity: $("input[name='Quantity']").val(),
+							Discounts: $("input[name='Discounts']").val(),
+							SecurityDeposit: currentService.TotalAmount,
+							TotalAmount: $("input[name='TotalAmount']").val(),
+							RetailStoreId: $("select[name='RetailStoreId']").val(),
+						}
+						return contractData
+					}
+
+					const getUserData = () => {
+						let userData = {
+							FirstName: $("input[name='FirstName']").val(),
+							Email: $("input[name='Email']").val(),
+						}
+						return userData
+					}
+
+					function fillWithZero(string, digitCount) {
+						let toFillLength = digitCount - string.toString().length
+						if (toFillLength == 0)
+							return string
+						let preString = Array(toFillLength).fill(0).join('')
+						return preString + string
+					}
+
+					function makeUserId(contract) {
+						const { RetailStoreId, Id, ServiceId } = JSON.parse(contract)
+						const retailId = fillWithZero(RetailStoreId, 3)
+						const contractId = fillWithZero(Id, 12)
+						const serviceChar = currentService.Name.charAt(0)
+						return serviceChar + retailId + contractId
+					}
+    function postUser() {
+            let data = getUserData()
+            return $.ajax({
+                url: '/Customers/AjaxCreate',
+                type: 'POST',
+                data: data,								
+            });
+    }
+
+		function updateUser(accountId, id){
+			let data = {
+				AccountId: accountId,
+				Id:id
+			}
+			return $.ajax({
+                url: '/Customers/AjaxUpdate',
+                type: 'POST',
+                data: data,								
+      });
+		}
+		function postContract(customerId){
+            let data = getContractData()
+			data.CustomerId= customerId
+			$.ajax({
+                url: '/Contracts/AjaxCreate',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+									let accountId = makeUserId(response)
+									updateUser(accountId, customerId).then(()=>{
+										$('#order_form').hide()
+										$('#success_response').show()
+										$('#successAnimation').attr({ class: 'animated' })
+										$('#contract_id').html(accountId)
+										$('#track-href').attr({href:`/Customers/Track?AccountId=${accountId}`})
+									}).catch(e=>console.log(e))
+                },
+				error: function(er){
+					console.log(err)
+				}			
+            });
+		}
+
+						
+
+		
+		function CallAjaxForCalculation() {
+					let data= getContractData()
+                $.ajax({
+                url: '/Contracts/CalculateContractValue',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    $( "input[name='TotalAmount']" ).val(response)
+										$('#discount-price').html('$'+response)
+										$('#original-price').html('$'+response*120/100)
+										$('#discount-text').html(`You get ${20}% off`)
+                }
+            });
+        }
+
 					$('.popup-with-zoom-anim').click(function(){
 						serviceId = $(this).attr('service-id')
 						packageId = $(this).attr('package-id')
 						$('#select-period').val(packageId)
-						let currentService = serviceData.find(service => service.Id ==serviceId)
-						let equipmentContent = currentService.Service_Equipments.map(({Equipment}) =>{
+						currentService = serviceData.find(service => service.Id == serviceId)
+						let equipmentContent = currentService.Service_Equipments.map(({ Equipment }) => {
 							let content = `<li style="font-size:20px">
-							<i style="font-size:20px" class="fa fa-arrow-circle-o-right" aria-hidden="true">
-							</i>
-							<span style="padding-top:3px">${Equipment.Amount} ${Equipment.Name} - ${Equipment.Price} USD</span>
-							</li>`
+										<i style="font-size:20px" class="fa fa-arrow-circle-o-right" aria-hidden="true">
+										</i>
+										<span style="padding-top:3px">${Equipment.Amount} ${Equipment.Name} - ${Equipment.Price} USD</span>
+										</li>`
 							return content
 						})
 						$('#equipment-display').append(equipmentContent)
-
-						$('#select-quantity').on('change', function(){
-							let value =$('#select-quantity').val()
-							let originPrice = 89
-							if(value == 0){
-								$('#discount-text').html('Total price')
-								$('#discount-price').html('$'+originPrice+'USD')
-								$('#original-price').html('')
-							}else{
-								const {discountPrice, percentage} = getDiscount(originPrice, value)
-								$('#discount-text').html(`You get ${percentage*100}% off`)
-								$('#discount-price').html('$'+discountPrice+'USD')
-								$('#original-price').html('$'+originPrice+'USD')
-							}
-						})
-						$('#select-quantity').val(0).change()
+												$('#select-quantity').val(1).change()
 					})
+					
+				$('#order_form_data').submit((event) => {
+				
+event.preventDefault()
+                    //post user then postContract with userId
+                    postUser().then((response => {
+												
+                        postContract(JSON.parse(response).Id)
+                    }))
+
+
+				})
+
+
+		// const getDiscount = (originPrice, quantity) =>{
+		// 			if(0<quantity && quantity < 10)
+		// 			{
+		// 			return {
+		// 				discountPrice: Math.round(originPrice * 0.9),
+		// 				percentage: 0.1
+		// 			}
+		// 			}
+		// 			else if (quantity >=10){
+		// 				console.log(quantity)
+		// 				return{
+		// 					discountPrice: Math.round(originPrice * 0.5),
+		// 					percentage: 0.5
+		// 				}
+		// 			}
+		// 		}
+					$('#select-quantity').on('change', function(){
+						CallAjaxForCalculation()
+					})
+
+
+
+
 
 				});
 
-				const getDiscount = (originPrice, quantity) =>{
-					
-					if(0<quantity && quantity < 10)
-					{
-					return {
-						discountPrice: Math.round(originPrice * 0.9),
-						percentage: 0.1
-					}
-					}
-					else if (quantity >=10){
-						console.log(quantity)
-						return{
-							discountPrice: Math.round(originPrice * 0.5),
-							percentage: 0.5
-						}
-					}
-				}
+
 			</script>
+	</div>
+	</div>
 </body>
 
 </html>

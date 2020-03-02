@@ -145,11 +145,16 @@
     <Compile Include="Controllers\FeedbacksController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RetailStoresController.cs" />
+    <Compile Include="Controllers\SendEmailController.cs" />
     <Compile Include="Controllers\ServicePackagesController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\VendorsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003010633036_InitialCreate.cs" />
+    <Compile Include="Migrations\202003010633036_InitialCreate.Designer.cs">
+      <DependentUpon>202003010633036_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Billing.cs" />
@@ -626,6 +631,11 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202003010633036_InitialCreate.resx">
+      <DependentUpon>202003010633036_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

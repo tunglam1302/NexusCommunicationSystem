@@ -1,0 +1,430 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+@{
+Layout = null;
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Nexus account tracking</title>
+	<!-- for-mobile-apps -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<!-- //for-mobile-apps -->
+
+	<!-- font-awesome icons -->
+	<link rel="stylesheet" href="~/Content/css/font-awesome.min.css" />
+	<!-- //font-awesome icons -->
+	<link href="~/Content/css/track-style.css" rel="stylesheet" type="text/css" media="all" />
+	<link
+		href="//fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext"
+		rel="stylesheet">
+</head>
+
+<body>
+	<div class="main">
+		<h1>TRACK YOUR ACCOUNT</h1>
+		<div class="w3layouts_main_grids">
+			<div class="w3layouts_main_grid">
+				<div class="w3-agile-info"></div>
+				<div class="w3layouts_main_grid1_w3">
+					<div class="w3-user">
+						<i class="fa fa-search" aria-hidden="true"></i>
+					</div>
+					<form>
+						<!-- <input type="text" name="Username" placeholder="Account id"> -->
+						<div id='by-accountid'>
+						<input type="text" name="AccountId" placeholder="AccountId">
+						<input type="text" name="Passcode" placeholder="Passcode">
+						<input  id='submit' type="submit" class="btn" value="Track">
+						</div>
+						<div id='by-email' hidden>
+							<input type="email" name="SearchEmail" placeholder="" >
+							<input id='forgot-submit' type="submit" class="btn" value="Search with email">
+						</div>
+
+					</form>
+					<h6 id='by-email-text'><a id='toggle-by-email' href="#">Forgot Account Id?</a></h6>
+					
+					<h6 hidden id='by-accountid-text'><a id='toggle-by-accountid' href="#">Track with Accound Id</a></h6>
+				</div>
+			</div>
+			<div class="w3_agile_main_grid">
+				<div class="w3-agile-info"></div>
+				<div class="sap_tabs">
+					<div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
+						<ul class="resp-tabs-list">
+							<li style='display:none' class="resp-tab-item" aria-controls="tab_item-0" role="tab">
+								<span></span>
+
+						</ul>
+						<div class="resp-tabs-container">
+							<div class="tab-1 resp-tab-content" aria-labelledby="tab_item-0">
+								<div class="agile-tab-top">
+									<div class="w3-user">
+										<i class="fa fa-user" aria-hidden="true"></i>
+									</div>
+									<h4>Contract id<span id="ContractId"></span></h4>
+									<div class="left-w3ls">
+										<ul class="address">
+                    	<li>
+												<ul class="address-text">
+													<li><b>Order date </b></li>
+													<li id='CreatedAt'></li>
+												</ul>
+											</li>
+                      <li>
+												<ul class="address-text">
+													<li><b>Store </b></li>
+													<li id='RetailName'></li>
+												</ul>
+											</li>
+                      <li>
+												<ul class="address-text">
+													<li><b>Quantity </b></li>
+													<li id='Quantity'></li>
+												</ul>
+											</li>
+                          <li>
+												<ul class="address-text">
+													<li><b>Amount </b></li>
+													<li id='TotalAmount'></li>
+												</ul>
+											</li>
+											<li>
+												<ul class="address-text">
+													<li><b>Name</b></li>
+													<li id="FirstName"></li>
+												</ul>
+											</li>
+											<li>
+												<ul class="address-text">
+													<li><b>Email</b></li>
+													<li style="width:60%;overflow-wrap:break-word" id='Email'></li>
+												</ul>
+											</li>
+											<li>
+												<ul class="address-text wide">
+													<li><b>Order Status </b></li>
+													<li><a id="OrderStatus" style='color:red' href="#"></a></li>
+												</ul>
+											</li>
+											<div style="margin-top:20px" class='submit_wrapper'>
+											<input hidden id='feedback_open' type='submit' value='Send feedback'/>
+											</div>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+			</div>
+			<div class="agile_quick_search">
+				<div class="w3-agile-info"></div>
+				<div class="wthree-info">
+					<div class="w3-user">
+						<i class="fa fa-info" aria-hidden="true"></i>
+					</div>
+					<h4>Service info</h4>
+					<div class="left-w3ls">
+						<ul class="address">
+							<li>
+								<ul class="address-text">
+									<li><b>Type </b></li>
+									<li id='ServiceName'></li>
+								</ul>
+							</li>
+							<li>
+								<ul class="address-text wide ">
+									<li><b>Rent Period </b></li>
+									<li id='PackageName'></li>
+								</ul>
+							</li>
+							<li>
+								<ul class="address-text wide">
+									<li><b>Due Payment </b></li>
+									<li><a class='money' href="#"></a></li>
+								</ul>
+							</li>
+							<li>
+								<ul class="address-text wide">
+									<li><b>Check bills </b></li>
+									<li style="width:auto;">
+											<select disabled value='' style="color:#06e8fc; padding-right:10px; padding-top:0; align-items:flex-start; height:25px; padding-bottom:0" name="select-bill" id="select-bill" class="w3layouts_select">
+												<option id='default-option' value="default" disabled selected hidden>No bill</option>
+										
+									</select>
+									</li>
+								</ul>
+							</li>
+							<div id='bill-amount-container'>
+														<li >
+								<ul class="address-text wide">
+									<li style="margin-top:10px"><b>Bill amount</b></li>
+									<li id='bill-amount' style="margin-top:10px"><a class='money' href="#">0 USD</a></li>
+								</ul>
+							</li>
+							</div>
+
+
+						</ul>
+					</div>
+				</div>
+
+			</div>
+			<div class="clear"> </div>
+								<div id="open-modal" class="modal-window">
+						<div style="background-color:rgb(0,0,0,0.7)">
+							<a href="#" title="Close" class="modal-close">Close</a>
+							<h1 style="color:green">SUCCESS!</h1>
+							<div id='success-content' style="color:white;line-height: 1.6">Your Account id and Code has been sent to your email.</div>
+					</div>
+		</div>
+		    <a hidden id='open-modal-button' href="#open-modal"><span>error<span></a>
+
+												<div id="open-modal-error" class="modal-window">
+						<div style="background-color:rgb(0,0,0,0.7)">
+							<a href="#" title="Close" class="modal-close">Close</a>
+							<h1 style="color:red">ERROR!</h1>
+							<div style="color:white;line-height: 1.6; text-align:center;">The information you entered is not correct.</div>
+					</div>
+		</div>
+		    <a hidden id='open-modal-error-button' href="#open-modal-error"><span>error<span></a>
+
+		<div  id="open-modal-feedback" class="modal-window">
+						<div style="background-color:rgb(0,0,0,0.7)">
+							<a href="#" title="Close" class="modal-close">Close</a>
+
+<form id='feedback_form' href='#' action='POST'>
+
+					<div class="w3_main_grid_right_grid_form_textarea">
+										<label>Send us your feedback</label>
+										<textarea required id='feedback_content' placeholder=""></textarea>
+									</div>
+									<div class="submit_wrapper">
+									<input id='feedback_submit' type="submit" value="Submit">
+					</div>
+									</form>
+					</div>
+					
+		</div>
+		    <a hidden id='open-modal-feedback-button' href="#open-modal-feedback"><span>feedback<span></a>
+
+	</div>
+	<!-- js -->
+	<script type="text/javascript" src="~/Content/js/jquery-2.1.4.min.js"></script>
+	<script src="~/Content/js/easyResponsiveTabs.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+		let validAccountId = null;
+		$('#bill-amount-container').hide()
+    function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+}
+      const getUserInfo = () => {
+        let AccountId = $("input[name='AccountId']").val()
+				let Passcode = $("input[name='Passcode']").val()
+        $.ajax({
+                url: '/Customers/GetUserData',
+                type: 'GET',
+                data: {AccountId: AccountId, Passcode: Passcode},
+                success: function (response) {
+									if(!response)
+									{
+										$('#open-modal-error-button').find('span').trigger('click')
+                    $('#FirstName').html('')
+                    $('#Email').html('')
+										$('#feedback_open').hide()
+										return
+								}
+                    const user = JSON.parse(response)
+                    $('#FirstName').html(user.FirstName)
+                    $('#Email').html(user.Email)
+										$('#feedback_open').show()
+										validAccountId = AccountId
+										getContractInfo()
+                }
+        })
+      }
+      const status =    {
+        0: 'Pending',
+        4:'Confirmed',
+        3:'DirectTransfer',
+        1: 'Done',
+        2:'Shipping',
+        5: 'Cancel',
+        '-1': 'Deleted',
+    }
+      const getContractInfo = () => {
+        let AccountId = $("input[name='AccountId']").val()
+        let contractId = parseInt(AccountId.substring(4))
+                $.ajax({
+                url: '/Contracts/GetContractData',
+                type: 'GET',
+                data: {Id: contractId},
+                success: function (response) {
+									if(!response)
+										{
+												$('#bill-amount-container').hide()
+										$('#ContractId').html('')
+                    $('#OrderStatus').html('')
+                    $('#Quantity').html('')
+                    $('#TotalAmount').html('')
+                    $('#RetailName').html('')
+                    $('#CreatedAt').html('')
+                    $('#ServiceName').html('')
+                    $('#PackageName').html('')
+										$("#select-bill option").each(function(index, i) {
+
+											if(index == 0){
+												$(this).html('No bill')
+												return
+											}
+												$(this).remove();
+											});
+								}
+									
+                    const contract = JSON.parse(response)
+                    let d = new Date(contract.CreatedAt)
+                    createdAt =  ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + d.getFullYear()
+                    $('#ContractId').html(contract.Id)
+                    $('#OrderStatus').html(status[contract.OrderStatus])
+                    $('#Quantity').html(contract.Quantity)
+                    $('#TotalAmount').html(contract.TotalAmount+' USD')
+                    $('#RetailName').html(contract.RetailName)
+                    $('#CreatedAt').html(createdAt)
+                    $('#ServiceName').html(contract.ServiceName)
+                    $('#PackageName').html(contract.PackageName)
+
+										let billData = contract.Billings
+										
+										billData.forEach((bill, index) =>{
+											let d = new Date(bill.CreatedAt)
+											console.log(bill)
+											let time = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + d.getFullYear()
+											let element = `<option id='option-${index}' value="${bill.BillingAmount}">${time}</option>`
+
+											$('#select-bill').append(element)
+											$('#select-bill').removeAttr('disabled')
+											$('#default-option').html('Select a bill')
+										})
+
+										$('#select-bill').on('change', function() {
+													var value = $(this).val();
+													$('#bill-amount-container').show()
+													$('#bill-amount').html(`${value} USD`)
+										});
+
+                }
+        })
+      }
+      const idQuery = getUrlParameter('AccountId')
+      if(idQuery){
+        $("input[name='AccountId']").val(idQuery)
+        
+      }
+			$('#horizontalTab').easyResponsiveTabs({
+				type: 'default', //Types: default, vertical, accordion           
+				width: 'auto', //auto or any width like 600px
+				fit: true   // 100% fit in a container
+			});
+
+			const searchByEmail = () =>{
+				let email = $("input[name='SearchEmail']").val()
+				        $.ajax({
+                url: '/Customers/GetAccountIdByEmail',
+                type: 'GET',
+                data: {email: email},
+                success: function (response) {
+                    if(response == 'True'){
+												$('#open-modal-button').find('span').trigger('click')
+												$('#success-content').html('Your Account id and Code has been sent to your email.')
+										}else{
+												$('#open-modal-error-button').find('span').trigger('click')
+										}
+                }
+        })
+			}
+
+
+      $('#submit').on('click', function(event){
+				        event.preventDefault()
+				let accountId = $("input[name='AccountId']").val()
+				let passCode = $("input[name='Passcode']").val()
+				if(!accountId || !passCode)
+				{
+					$('#open-modal-error-button').find('span').trigger('click')
+					return
+				}
+
+        getUserInfo()
+      })
+
+			$('#forgot-submit').on('click', function(event){
+				event.preventDefault()
+				searchByEmail()
+			})
+
+			$('#toggle-by-email').on('click', function(event){
+				$('#by-email').show()
+				$('#by-accountid').hide()
+				$('#by-email-text').hide()
+				$('#by-accountid-text').show()
+			})
+						$('#toggle-by-accountid').on('click', function(event){
+				$('#by-email').hide()
+				$('#by-accountid').show()
+				$('#by-email-text').show()
+				$('#by-accountid-text').hide()
+			})
+
+			$('#feedback_form').submit((event)=>{
+				event.preventDefault()
+				let data={
+					AccountId: validAccountId,
+					Content: $('#feedback_content').val()
+				}
+
+				$.ajax({
+                url: '/Feedbacks/AjaxCreate',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    if(response == 'True'){
+												$('#open-modal-button').find('span').trigger('click')
+												$('#success-content').html('Your feedback has been sent.')
+										}else{
+												$('#open-modal-error-button').find('span').trigger('click')
+										}
+                }
+        })
+			})
+			$('#feedback_open').click(()=>{
+				$('#open-modal-feedback-button').find('span').trigger('click')
+			})
+		});
+	</script>
+	<!-- //js -->
+</body>
+
+</html>

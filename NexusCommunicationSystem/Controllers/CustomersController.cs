@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using LinqKit;
 using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
 using NexusCommunicationSystem.Models;
 using PagedList;
 
@@ -16,7 +17,7 @@ namespace NexusCommunicationSystem.Controllers
     public class CustomersController : Controller
     {
         private NexusCommunicationSystemContext db = new NexusCommunicationSystemContext();
-
+        public SendEmailController EmailController = new SendEmailController();
         // GET: Customers
         public ActionResult Index(String keyword, int? page, int? limit)
         {
@@ -39,6 +40,9 @@ namespace NexusCommunicationSystem.Controllers
             return View(data);
         }
 
+        public ActionResult Track(){
+            return View();
+        }
         // GET: Customers/Details/5
         public ActionResult Details(int? id)
         {
@@ -57,6 +61,7 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Customers/Create
         public ActionResult Create()
         {
+            
             return View();
         }
 
@@ -69,14 +74,68 @@ namespace NexusCommunicationSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                customer.Passcode = customer.RandomDigits();
                 db.Customers.Add(customer);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(customer);
         }
+        [HttpPost]
+        public string AjaxCreate([Bind(Include = "Id,FirstName,Email")] Customer customer)
+        {
+            if (ModelState.IsValid)
+            {
+                customer.Passcode = customer.RandomDigits();
+                db.Customers.Add(customer);
+                db.SaveChanges();
+            }
+            var Obj = new
+            {
+                Id = customer.Id
+            };
+            return JsonConvert.SerializeObject(Obj);
+        }
+        [HttpPost]
+        public string AjaxUpdate([Bind(Include = "AccountId, Id")] Customer customer)
+        {
+            if (customer.Id == null)
+            {
+                return JsonConvert.SerializeObject(new HttpStatusCodeResult(HttpStatusCode.BadRequest));
+            }
 
+            if (ModelState.IsValid)
+            {
+                Customer foundCustomer = db.Customers.Find(customer.Id);
+            if (foundCustomer == null)
+            {
+                    return JsonConvert.SerializeObject(new HttpStatusCodeResult(HttpStatusCode.BadRequest));
+            }
+
+                foundCustomer.AccountId = customer.AccountId;
+                db.SaveChanges();
+
+                SendEmailController.EmailData EmailData = new SendEmailController.EmailData();
+
+                EmailData.receiver = foundCustomer.Email;
+                EmailData.subject = "Your Passcode";
+                EmailData.message = foundCustomer.Passcode;
+
+                bool responseStatus = EmailController.SendEmailMethod(EmailData);
+                
+                if(responseStatus == false)
+                {
+                    return null;
+                }
+
+                var Obj = new
+                {
+                    AccountId = foundCustomer.AccountId
+                };
+                return JsonConvert.SerializeObject(Obj);
+            }
+            return JsonConvert.SerializeObject(new HttpStatusCodeResult(HttpStatusCode.BadRequest));
+        }
         // GET: Customers/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -89,6 +148,7 @@ namespace NexusCommunicationSystem.Controllers
             {
                 return HttpNotFound();
             }
+            
             return View(customer);
         }
 
@@ -171,7 +231,8 @@ namespace NexusCommunicationSystem.Controllers
         [HttpPost]
         public ActionResult Login(string email, string userPassword)
         {
-            Customer customer = db.Customers.Where(c=>c.Email == email && c.UserPassword == userPassword).Single();
+
+                Customer customer = db.Customers.Where(c=>c.Email == email && c.UserPassword == userPassword).Single();
             if (customer == null)
             {
                 return HttpNotFound();
@@ -179,6 +240,56 @@ namespace NexusCommunicationSystem.Controllers
             Session["Customer"] = customer;
 
             return RedirectToAction("Index");
+        }
+
+        public class CustomerLogin
+        {
+            public string AccountId { get; set; }
+            public string Passcode { get; set; }
+        }
+        [HttpGet]
+        public string GetUserData(CustomerLogin customer)
+        {
+            if (!ModelState.IsValid)
+            {
+                return null;
+            }
+            Customer FoundCustomer = db.Customers.Where(c => c.AccountId == customer.AccountId && c.Passcode == customer.Passcode).FirstOrDefault();
+
+            if (FoundCustomer == null)
+            {
+                return null;
+            }
+            return JsonConvert.SerializeObject(FoundCustomer);
+        }
+        [HttpGet]
+        public Boolean GetAccountIdByEmail(string email)
+        {
+            var customerData = db.Customers.Where(c => c.Email == email).Select(item =>
+            new {
+                item.AccountId,
+                item.FirstName,
+                item.Passcode
+            }).ToList();
+
+            if (customerData == null)
+            {
+                return false;
+            }
+            string message = "";
+
+            customerData.ForEach(item =>
+            {
+                message = message + "<span style=\"color:green; font-size:16px\">Id: " + item.AccountId + "</span>" + " - "+ "<span style=\"color:red; font-size:16px\">Passcode: "+ item.Passcode +"</span>" + "<br />";
+            });
+            message = "We found two of your account with the following passcode: <br />" + message;
+
+            SendEmailController.EmailData EmailData = new SendEmailController.EmailData();
+            EmailData.receiver = email;
+            EmailData.subject = "Recover your AccountId";
+            EmailData.message = message;
+            bool responseStatus = EmailController.SendEmailMethod(EmailData);
+            return responseStatus;
         }
     }
 }
