@@ -20,45 +20,72 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Feedbacks
         public ActionResult Index(String keyword, int? page, int? limit)
         {
-            if (page == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                page = 1;
-            }
+                if (page == null)
+                {
+                    page = 1;
+                }
 
-            if (limit == null)
-            {
-                limit = 10;
+                if (limit == null)
+                {
+                    limit = 10;
+                }
+                var predicate = PredicateBuilder.New<Feedback>(true);
+                if (!keyword.IsNullOrWhiteSpace())
+                {
+                    predicate = predicate.Or(f => f.Customer.Email.Contains(keyword));
+                    ViewBag.Keyword = keyword;
+                }
+                var data = db.Feedbacks.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
+                return View(data);
             }
-            var predicate = PredicateBuilder.New<Feedback>(true);
-            if (!keyword.IsNullOrWhiteSpace())
+            else
             {
-                predicate = predicate.Or(f => f.Customer.Email.Contains(keyword));
-                ViewBag.Keyword = keyword;
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            var data = db.Feedbacks.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
-            return View(data);
         }
 
         // GET: Feedbacks/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Feedback feedback = db.Feedbacks.Find(id);
+                if (feedback == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(feedback);
             }
-            Feedback feedback = db.Feedbacks.Find(id);
-            if (feedback == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(feedback);
         }
 
         // GET: Feedbacks/Create
         public ActionResult Create()
         {
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName");
-            return View();
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
+            {
+                ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName");
+                return View();
+            }
+            else
+            {
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
+            }
         }
 
         // POST: Feedbacks/Create
@@ -113,17 +140,26 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Feedbacks/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Feedback feedback = db.Feedbacks.Find(id);
+                if (feedback == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName", feedback.CustomerId);
+                return View(feedback);
             }
-            Feedback feedback = db.Feedbacks.Find(id);
-            if (feedback == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName", feedback.CustomerId);
-            return View(feedback);
+            
         }
 
         // POST: Feedbacks/Edit/5
@@ -148,16 +184,25 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Feedbacks/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Feedback feedback = db.Feedbacks.Find(id);
+                if (feedback == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(feedback);
             }
-            Feedback feedback = db.Feedbacks.Find(id);
-            if (feedback == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(feedback);
         }
 
         // POST: Feedbacks/Delete/5

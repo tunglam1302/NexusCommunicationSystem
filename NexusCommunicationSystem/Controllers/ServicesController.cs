@@ -20,56 +20,83 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Services
         public ActionResult Index(String keyword, int? page, int? limit)
         {
-            if (page == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                page = 1;
-            }
+                if (page == null)
+                {
+                    page = 1;
+                }
 
-            if (limit == null)
-            {
-                limit = 10;
+                if (limit == null)
+                {
+                    limit = 10;
+                }
+                var predicate = PredicateBuilder.New<Service>(true);
+                if (!keyword.IsNullOrWhiteSpace())
+                {
+                    predicate = predicate.Or(f => f.Name.Contains(keyword));
+                    ViewBag.Keyword = keyword;
+                }
+                var data = db.Services.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
+                return View(data);
             }
-            var predicate = PredicateBuilder.New<Service>(true);
-            if (!keyword.IsNullOrWhiteSpace())
+            else
             {
-                predicate = predicate.Or(f => f.Name.Contains(keyword));
-                ViewBag.Keyword = keyword;
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            var data = db.Services.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
-            return View(data);
         }
 
         // GET: Services/Details/5
         public ActionResult Details(int? id)
         {
-            var myService_Equipments = db.Service_Equipments.Where(e => e.Service.Id == id).ToList();
-            var myService_EquipmentsIEnumrable = myService_Equipments.AsEnumerable();
-            ViewBag.MyService_EquipmentsJsonString = myService_EquipmentsIEnumrable;
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
+            {
+                var myService_Equipments = db.Service_Equipments.Where(e => e.Service.Id == id).ToList();
+                var myService_EquipmentsIEnumrable = myService_Equipments.AsEnumerable();
+                ViewBag.MyService_EquipmentsJsonString = myService_EquipmentsIEnumrable;
 
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Service service = db.Services.Find(id);
+                if (service == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(service);
             }
-            Service service = db.Services.Find(id);
-            if (service == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(service);
         }
 
         // GET: Services/Create
         public ActionResult Create()
         {
-            var id = db.Services.OrderByDescending(s => s.Id).FirstOrDefault().Id + 1;
-            ViewBag.Id = id;
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
+            {
+                var id = db.Services.OrderByDescending(s => s.Id).FirstOrDefault().Id + 1;
+                ViewBag.Id = id;
 
-            var myEquipments = db.Equipments.ToList();
-            var myEquipmentJsonString = Newtonsoft.Json.JsonConvert.SerializeObject(myEquipments.ToDictionary(x => x.Id, x => x.Name));
-            ViewBag.MyEquipmentJsonString = myEquipmentJsonString;
+                var myEquipments = db.Equipments.ToList();
+                var myEquipmentJsonString = Newtonsoft.Json.JsonConvert.SerializeObject(myEquipments.ToDictionary(x => x.Id, x => x.Name));
+                ViewBag.MyEquipmentJsonString = myEquipmentJsonString;
 
-            ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name");
-            return View();
+                ViewBag.ServicePackageId = new SelectList(db.ServicePackages, "Id", "Name");
+                return View();
+            }
+            else
+            {
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
+            }
         }
 
         // POST: Services/Create
@@ -131,24 +158,34 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Services/Edit/5
         public ActionResult Edit(int? id)
         {
-            var myEquipments = db.Equipments.ToList();
-            var myEquipmentJsonString = Newtonsoft.Json.JsonConvert.SerializeObject(myEquipments.ToDictionary(x => x.Id, x => x.Name));
-            ViewBag.MyEquipmentJsonString = myEquipmentJsonString;
+           
 
-            var myService_Equipments = db.Service_Equipments.Where(e => e.Service.Id == id).ToList();
-            var myService_EquipmentsIEnumrable = myService_Equipments.AsEnumerable();
-            ViewBag.MyService_EquipmentsJsonString = myService_EquipmentsIEnumrable;
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
+            {
+                var myEquipments = db.Equipments.ToList();
+                var myEquipmentJsonString = Newtonsoft.Json.JsonConvert.SerializeObject(myEquipments.ToDictionary(x => x.Id, x => x.Name));
+                ViewBag.MyEquipmentJsonString = myEquipmentJsonString;
 
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var myService_Equipments = db.Service_Equipments.Where(e => e.Service.Id == id).ToList();
+                var myService_EquipmentsIEnumrable = myService_Equipments.AsEnumerable();
+                ViewBag.MyService_EquipmentsJsonString = myService_EquipmentsIEnumrable;
+
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Service service = db.Services.Find(id);
+                if (service == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(service);
             }
-            Service service = db.Services.Find(id);
-            if (service == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(service);
         }
 
         // POST: Services/Edit/5
@@ -190,16 +227,25 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Services/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Service service = db.Services.Find(id);
+                if (service == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(service);
             }
-            Service service = db.Services.Find(id);
-            if (service == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(service);
         }
 
         // POST: Services/Delete/5

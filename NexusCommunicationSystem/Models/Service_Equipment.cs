@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace NexusCommunicationSystem.Models
 {
@@ -7,7 +8,9 @@ namespace NexusCommunicationSystem.Models
         [Key]
         public int Id { get; set; }
         public int Quantity { get; set; }
+        [DisplayName("Service Id")]
         public int ServiceId { get; set; }
+        [DisplayName("Equipment Id")]
         public int EquipmentId { get; set; }
         public virtual Service Service { get; set; }
         public virtual Equipment Equipment { get; set; }

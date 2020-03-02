@@ -20,45 +20,72 @@ namespace NexusCommunicationSystem.Controllers
         // GET: RetailStores
         public ActionResult Index(String keyword, int? page, int? limit)
         {
-            if (page == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                page = 1;
-            }
+                if (page == null)
+                {
+                    page = 1;
+                }
 
-            if (limit == null)
-            {
-                limit = 10;
+                if (limit == null)
+                {
+                    limit = 10;
+                }
+                var predicate = PredicateBuilder.New<RetailStore>(true);
+                if (!keyword.IsNullOrWhiteSpace())
+                {
+                    predicate = predicate.Or(f => f.Name.Contains(keyword));
+                    predicate = predicate.Or(f => f.Address.Contains(keyword));
+                    ViewBag.Keyword = keyword;
+                }
+                var data = db.RetailStores.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
+                return View(data);
             }
-            var predicate = PredicateBuilder.New<RetailStore>(true);
-            if (!keyword.IsNullOrWhiteSpace())
+            else
             {
-                predicate = predicate.Or(f => f.Name.Contains(keyword));
-                predicate = predicate.Or(f => f.Address.Contains(keyword));
-                ViewBag.Keyword = keyword;
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            var data = db.RetailStores.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
-            return View(data);
         }
 
         // GET: RetailStores/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                RetailStore retailStore = db.RetailStores.Find(id);
+                if (retailStore == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(retailStore);
             }
-            RetailStore retailStore = db.RetailStores.Find(id);
-            if (retailStore == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(retailStore);
         }
 
         // GET: RetailStores/Create
         public ActionResult Create()
         {
-            return View();
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
+            {
+                return View();
+            }
+            else
+            {
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
+            }
         }
 
         // POST: RetailStores/Create
@@ -81,16 +108,25 @@ namespace NexusCommunicationSystem.Controllers
         // GET: RetailStores/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                RetailStore retailStore = db.RetailStores.Find(id);
+                if (retailStore == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(retailStore);
             }
-            RetailStore retailStore = db.RetailStores.Find(id);
-            if (retailStore == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(retailStore);
         }
 
         // POST: RetailStores/Edit/5
@@ -112,16 +148,25 @@ namespace NexusCommunicationSystem.Controllers
         // GET: RetailStores/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                RetailStore retailStore = db.RetailStores.Find(id);
+                if (retailStore == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(retailStore);
             }
-            RetailStore retailStore = db.RetailStores.Find(id);
-            if (retailStore == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(retailStore);
         }
 
         // POST: RetailStores/Delete/5

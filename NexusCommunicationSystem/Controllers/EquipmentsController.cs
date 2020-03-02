@@ -20,45 +20,72 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Equipments
         public ActionResult Index(String keyword, int? page, int? limit)
         {
-            if (page == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                page = 1;
-            }
+                if (page == null)
+                {
+                    page = 1;
+                }
 
-            if (limit == null)
-            {
-                limit = 10;
+                if (limit == null)
+                {
+                    limit = 10;
+                }
+                var predicate = PredicateBuilder.New<Equipment>(true);
+                if (!keyword.IsNullOrWhiteSpace())
+                {
+                    predicate = predicate.Or(f => f.Name.Contains(keyword));
+                    ViewBag.Keyword = keyword;
+                }
+                var data = db.Equipments.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
+                return View(data);
             }
-            var predicate = PredicateBuilder.New<Equipment>(true);
-            if (!keyword.IsNullOrWhiteSpace())
+            else
             {
-                predicate = predicate.Or(f => f.Name.Contains(keyword));
-                ViewBag.Keyword = keyword;
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            var data = db.Equipments.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
-            return View(data);
         }
 
         // GET: Equipments/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Equipment equipment = db.Equipments.Find(id);
+                if (equipment == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(equipment);
             }
-            Equipment equipment = db.Equipments.Find(id);
-            if (equipment == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(equipment);
+            
         }
 
         // GET: Equipments/Create
         public ActionResult Create()
         {
-            ViewBag.VendorId = new SelectList(db.Vendors, "Id", "Name");
-            return View();
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
+            {
+                ViewBag.VendorId = new SelectList(db.Vendors, "Id", "Name");
+                return View();
+            }
+            else
+            {
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
+            }
         }
 
         // POST: Equipments/Create
@@ -82,17 +109,26 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Equipments/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Equipment equipment = db.Equipments.Find(id);
+                if (equipment == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.VendorId = new SelectList(db.Vendors, "Id", "Name", equipment.VendorId);
+                return View(equipment);
             }
-            Equipment equipment = db.Equipments.Find(id);
-            if (equipment == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            ViewBag.VendorId = new SelectList(db.Vendors, "Id", "Name", equipment.VendorId);
-            return View(equipment);
         }
 
         // POST: Equipments/Edit/5
@@ -115,16 +151,25 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Equipments/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Equipment equipment = db.Equipments.Find(id);
+                if (equipment == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(equipment);
             }
-            Equipment equipment = db.Equipments.Find(id);
-            if (equipment == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(equipment);
+            
         }
 
         // POST: Equipments/Delete/5

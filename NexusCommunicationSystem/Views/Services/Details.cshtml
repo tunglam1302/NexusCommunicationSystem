@@ -7,11 +7,10 @@
 }
 
 <h2>Details</h2>
-
-<div class="col-md-5">
+<div class="form-horizontal container">
     <h4>Service</h4>
     <hr />
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal col-md-6">
 
         <dt>
             @Html.DisplayNameFor(model => model.Name)
@@ -26,7 +25,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Image)
+            <img src="@Html.DisplayFor(model => model.Image)" alt="Alternate Text" />
         </dd>
 
         <dt>
@@ -46,41 +45,42 @@
         </dd>
 
     </dl>
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
-</div>
-
-<div class="col-md-7">
-    <input class="btn btn-primary" type="button" value="Insert Equipmnet" name="equipmentInsert" id="equipmentInsert" />
-    <table class="myTable" id="myTable">
-        <tr>
-            <th>
-                Quantity
-            </th>
-            <th>
-                Equipment
-            </th>
-            <th></th>
-        </tr>
-        @foreach (var item in myService_Equipments)
-        {
+    <div class="col-md-6">
+        <input class="btn btn-primary" type="button" value="Insert Equipmnet" name="equipmentInsert" id="equipmentInsert" />
+        <table class="myTable" id="myTable">
             <tr>
-                <td>
-                    <input type="number" class="quantity" value="@item.Quantity" />
-                </td>
-                <td>
-                    <input class="tags" value="@item.Equipment.Name">
-                </td>
-                <td>
-                    <input type="button" value="Delete" name="deleteRow" id="deleteRow" />
-                </td>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Equipment
+                </th>
+                <th></th>
             </tr>
-        }
+            @foreach (var item in myService_Equipments)
+            {
+                <tr>
+                    <td>
+                        <input type="number" class="quantity" value="@item.Quantity" />
+                    </td>
+                    <td>
+                        <input class="tags" value="@item.Equipment.Name">
+                    </td>
+                    <td>
+                        <input type="button" value="Delete" name="deleteRow" id="deleteRow" />
+                    </td>
+                </tr>
+            }
 
 
-    </table>
+        </table>
+    </div>
+
 </div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
 
 

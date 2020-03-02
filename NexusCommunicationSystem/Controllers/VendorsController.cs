@@ -20,45 +20,73 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Vendors
         public ActionResult Index(String keyword, int? page, int? limit)
         {
-            if (page == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                page = 1;
-            }
+                if (page == null)
+                {
+                    page = 1;
+                }
 
-            if (limit == null)
-            {
-                limit = 10;
+                if (limit == null)
+                {
+                    limit = 10;
+                }
+                var predicate = PredicateBuilder.New<Vendor>(true);
+                if (!keyword.IsNullOrWhiteSpace())
+                {
+                    predicate = predicate.Or(f => f.Name.Contains(keyword));
+                    predicate = predicate.Or(f => f.Address.Contains(keyword));
+                    ViewBag.Keyword = keyword;
+                }
+                var data = db.Vendors.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
+                return View(data);
             }
-            var predicate = PredicateBuilder.New<Vendor>(true);
-            if (!keyword.IsNullOrWhiteSpace())
+            else
             {
-                predicate = predicate.Or(f => f.Name.Contains(keyword));
-                predicate = predicate.Or(f => f.Address.Contains(keyword));
-                ViewBag.Keyword = keyword;
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            var data = db.Vendors.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
-            return View(data);
         }
 
         // GET: Vendors/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Vendor vendor = db.Vendors.Find(id);
+                if (vendor == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(vendor);
             }
-            Vendor vendor = db.Vendors.Find(id);
-            if (vendor == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(vendor);
         }
 
         // GET: Vendors/Create
         public ActionResult Create()
         {
-            return View();
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
+            {
+                return View();
+            }
+            else
+            {
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
+            }
+
         }
 
         // POST: Vendors/Create
@@ -81,16 +109,25 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Vendors/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Vendor vendor = db.Vendors.Find(id);
+                if (vendor == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(vendor);
             }
-            Vendor vendor = db.Vendors.Find(id);
-            if (vendor == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(vendor);
+            
         }
 
         // POST: Vendors/Edit/5
@@ -112,16 +149,25 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Vendors/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Vendor vendor = db.Vendors.Find(id);
+                if (vendor == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(vendor);
             }
-            Vendor vendor = db.Vendors.Find(id);
-            if (vendor == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(vendor);
         }
 
         // POST: Vendors/Delete/5

@@ -13,12 +13,12 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal col-md-5">
-        <h4>Service</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-
+<div class="form-horizontal container">
+    <h4>Service</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    <div class="col-md-6">
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -62,8 +62,7 @@
             </div>
         </div>
     </div>
-
-    <div class="col-md-7">
+    <div class="col-md-6">
         <input class="btn btn-primary" type="button" value="Insert Equipmnet" name="equipmentInsert" id="equipmentInsert" />
         <table class="myTable" id="myTable">
             <tr>
@@ -93,36 +92,38 @@
 
         </table>
     </div>
-
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
+    
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script type="text/javascript">
-        var myWidget = cloudinary.createUploadWidget({
-            cloudName: 'truonghusk17',
-            uploadPreset: 'bk9ejmql'
-        }, (error, result) => {
-            if (!error && result && result.event === "success") {
-                var imgLink = result.info.secure_url;
-                document.querySelector("input[name='Image']").value = imgLink;
-                var imgPreview = document.getElementById("preview");
-                imgPreview.src = imgLink;
-                imgPreview.classList.remove("hidden");
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script type="text/javascript">
+            var myWidget = cloudinary.createUploadWidget({
+                cloudName: 'truonghusk17',
+                uploadPreset: 'bk9ejmql'
+            }, (error, result) => {
+                if (!error && result && result.event === "success") {
+                    var imgLink = result.info.secure_url;
+                    document.querySelector("input[name='Image']").value = imgLink;
+                    var imgPreview = document.getElementById("preview");
+                    imgPreview.src = imgLink;
+                    imgPreview.classList.remove("hidden");
+                }
             }
-        }
-        )
+            )
 
-        document.getElementById("upload_widget").addEventListener("click", function () {
-            myWidget.open();
-        }, false);
-    </script>
+            document.getElementById("upload_widget").addEventListener("click", function () {
+                myWidget.open();
+            }, false);
+        </script>
 
-    <script type="text/javascript">
+        <script type="text/javascript">
         $(document).ready(function () {
 
             $(document).on('click', '#equipmentInsert', function () {
@@ -144,9 +145,9 @@
                 $(this).closest('tr').remove();
             });
         });
-    </script>
+        </script>
 
-    <script>
+        <script>
         $(document).ready(function () {
             var myEquipments = @Html.Raw(equipments);
             var avaiableEquipments = [];
@@ -194,5 +195,5 @@
                 };
             }
         })
-    </script>
-}
+        </script>
+    }

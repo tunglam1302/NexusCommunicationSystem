@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace NexusCommunicationSystem.Models
@@ -12,8 +13,10 @@ namespace NexusCommunicationSystem.Models
         [Required]
         public string Image { get; set; }
         public string Description { get; set; }
+        [DisplayName("Total Amount")]
         public int TotalAmount { get; set; }
         public virtual ICollection<Contract> Contracts { get; set; }
+        [DisplayName("Service Equipments")]
         public virtual ICollection<Service_Equipment> Service_Equipments { get; set; }
 
         public Service() { }

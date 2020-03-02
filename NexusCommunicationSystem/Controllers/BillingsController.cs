@@ -20,39 +20,66 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Billings
         public ActionResult Index(int? page, int? limit)
         {
-            if (page == null)
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                page = 1;
-            }
+                if (page == null)
+                {
+                    page = 1;
+                }
 
-            if (limit == null)
-            {
-                limit = 10;
+                if (limit == null)
+                {
+                    limit = 10;
+                }
+                var predicate = PredicateBuilder.New<Billing>(true);
+                var data = db.Billings.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
+                return View(data);
             }
-            var predicate = PredicateBuilder.New<Billing>(true);
-            var data = db.Billings.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
-            return View(data);
+            else
+            {
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
+            }
+            
         }
 
         // GET: Billings/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Billing billing = db.Billings.Find(id);
+                if (billing == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(billing);
             }
-            Billing billing = db.Billings.Find(id);
-            if (billing == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(billing);
+            
         }
 
         // GET: Billings/Create
         public ActionResult Create()
         {
-            return View();
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
+            {
+                return View();
+            }
+            else
+            {
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
+            }
         }
 
         // POST: Billings/Create
@@ -75,16 +102,25 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Billings/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Billing billing = db.Billings.Find(id);
+                if (billing == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(billing);
             }
-            Billing billing = db.Billings.Find(id);
-            if (billing == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(billing);
+            
         }
 
         // POST: Billings/Edit/5
@@ -106,16 +142,25 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Billings/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Billing billing = db.Billings.Find(id);
+                if (billing == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(billing);
             }
-            Billing billing = db.Billings.Find(id);
-            if (billing == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(billing);
+            
         }
 
         // POST: Billings/Delete/5

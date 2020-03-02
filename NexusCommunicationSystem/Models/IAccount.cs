@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -12,18 +13,22 @@ namespace NexusCommunicationSystem.Models
         [Key]
          int Id { get; set; }
         [Required]
+        [DisplayName("Account Id")]
         string AccountId { get; set; }
         [Required]
-        
-         string FirstName { get; set; }
+        [DisplayName("Firt Name")]
+        string FirstName { get; set; }
         [Required]
-         string LastName { get; set; }
+        [DisplayName("Last Name")]
+        string LastName { get; set; }
         [Required]
          string Email { get; set; }
         [Required]
-         string UserPassword { get; set; }
+        [DisplayName("Password")]
+        string UserPassword { get; set; }
         [Required]
-         AccountRole UserRole { get; set; }
+        [DisplayName("User Role")]
+        AccountRole UserRole { get; set; }
     }
     public enum AccountRole
     {

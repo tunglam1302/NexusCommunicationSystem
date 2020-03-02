@@ -20,48 +20,75 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Accounts
         public ActionResult Index(String keyword, int? page, int? limit)
         {
-            var accounts = db.Accounts.Include(a => a.RetailStore);
-            if (page == null)
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                page = 1;
-            }
+                var accounts = db.Accounts.Include(a => a.RetailStore);
+                if (page == null)
+                {
+                    page = 1;
+                }
 
-            if (limit == null)
-            {
-                limit = 10;
+                if (limit == null)
+                {
+                    limit = 10;
+                }
+                var predicate = PredicateBuilder.New<Account>(true);
+                if (!keyword.IsNullOrWhiteSpace())
+                {
+                    predicate = predicate.Or(f => f.Email.Contains(keyword));
+                    predicate = predicate.Or(f => f.FirstName.Contains(keyword));
+                    predicate = predicate.Or(f => f.LastName.Contains(keyword));
+                    ViewBag.Keyword = keyword;
+                }
+                var data = db.Accounts.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
+                return View(data);
             }
-            var predicate = PredicateBuilder.New<Account>(true);
-            if (!keyword.IsNullOrWhiteSpace())
+            else
             {
-                predicate = predicate.Or(f => f.Email.Contains(keyword));
-                predicate = predicate.Or(f => f.FirstName.Contains(keyword));
-                predicate = predicate.Or(f => f.LastName.Contains(keyword));
-                ViewBag.Keyword = keyword;
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            var data = db.Accounts.AsExpandable().Where(predicate).OrderByDescending(a => a.Id).ToPagedList(page.Value, limit.Value);
-            return View(data);
+            
         }
 
         // GET: Accounts/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Account account = db.Accounts.Find(id);
+                if (account == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(account);
             }
-            Account account = db.Accounts.Find(id);
-            if (account == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(account);
         }
 
         // GET: Accounts/Create
         public ActionResult Create()
         {
-            ViewBag.RetailStoreId = new SelectList(db.RetailStores, "Id", "Name");
-            return View();
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
+            {
+                ViewBag.RetailStoreId = new SelectList(db.RetailStores, "Id", "Name");
+                return View();
+            }
+            else
+            {
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
+            }
         }
 
         // POST: Accounts/Create
@@ -85,17 +112,26 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Accounts/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Account account = db.Accounts.Find(id);
+                if (account == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.RetailStoreId = new SelectList(db.RetailStores, "Id", "Name", account.RetailStoreId);
+                return View(account);
             }
-            Account account = db.Accounts.Find(id);
-            if (account == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            ViewBag.RetailStoreId = new SelectList(db.RetailStores, "Id", "Name", account.RetailStoreId);
-            return View(account);
         }
 
         // POST: Accounts/Edit/5
@@ -118,16 +154,25 @@ namespace NexusCommunicationSystem.Controllers
         // GET: Accounts/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            
+            if (Session["AccountRole"] is AccountRole.Admin || Session["AccountRole"] is AccountRole.AccountDepartment || Session["AccountRole"] is AccountRole.EmployeeOfRetailOutlet || Session["AccountRole"] is AccountRole.TechnicalPeople)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Account account = db.Accounts.Find(id);
+                if (account == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(account);
             }
-            Account account = db.Accounts.Find(id);
-            if (account == null)
+            else
             {
-                return HttpNotFound();
+                Session.Clear();
+                return Redirect("~/Accounts/Login");
             }
-            return View(account);
         }
 
         
