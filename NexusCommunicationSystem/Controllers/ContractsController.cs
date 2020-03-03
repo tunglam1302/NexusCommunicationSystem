@@ -53,7 +53,11 @@ namespace NexusCommunicationSystem.Controllers
                 {
                     Console.WriteLine(e);
                 }
-
+                var account = (Account)Session["Accounts"];
+                if (account != null) { 
+                
+                    ViewBag.RetailStoreId = account.RetailStoreId;
+                }
                 ViewBag.limit = limit;
                 var contracts = db.Contracts.OrderByDescending(s => s.CreatedAt).Where(s => s.CreatedAt >= startTime && s.CreatedAt <= endTime);
                 ViewBag.TotalPage = Math.Ceiling((double)contracts.Count() / limit.Value);
@@ -97,7 +101,7 @@ namespace NexusCommunicationSystem.Controllers
             }
             endTime = new DateTime(endTime.Year, endTime.Month, endTime.Day, 23, 59, 59, 0);
 
-            var data = db.Contracts.Where(s => s.CreatedAt >= startTime && s.CreatedAt <= endTime)
+            var data = db.Contracts.Where(s => s.OrderStatus != OrderStatus.Deleted && (s.CreatedAt >= startTime && s.CreatedAt <= endTime))
                 .GroupBy(
                     s => new
                     {
@@ -302,7 +306,7 @@ namespace NexusCommunicationSystem.Controllers
         public ActionResult Edit([Bind(Include = "Id,CreatedAt,NextPaymentAt,UpdatedAt,OrderStatus,CustomerId,SecurityDeposit,TotalAmount,Quantity,Discounts,RetailStoreId,ServiceId,ServicePackageId")] Contract contract)
         {
             contract.UpdatedAt = DateTime.Now;
-            contract.OrderStatus = OrderStatus.DirectTransfer;
+            contract.OrderStatus = contract.OrderStatus;
             contract.CustomerId = Session["AccountId"]==null?1: (int)Session["AccountId"];
             if (ModelState.IsValid)
             {
@@ -380,25 +384,25 @@ namespace NexusCommunicationSystem.Controllers
             switch (servicePackage.Name)
             {
                 case ("Monthly"):
-                    servicePrice += 5000;
+                    servicePrice += 5;
                     break;
                 case ("Quaterly"):
-                    servicePrice += 4000;
+                    servicePrice += 4;
                     break;
                 case ("HalfYearly"):
-                    servicePrice += 3000;
+                    servicePrice += 3;
                     break;
                 case ("Yearly"):
-                    servicePrice += 2000;
+                    servicePrice += 2;
                     break;
                 case ("HourlyBasis10"):
-                    servicePrice += 6000;
+                    servicePrice += 6;
                     break;
                 case ("HourlyBasis30"):
-                    servicePrice += 6300;
+                    servicePrice += 6;
                     break;
                 case ("HourlyBasis60"):
-                    servicePrice += 65000;
+                    servicePrice += 6;
                     break;
                 default:
                     break;
@@ -421,16 +425,18 @@ namespace NexusCommunicationSystem.Controllers
         {
             var contractIdValue = Int32.Parse(contractId);
             var checkedValue = Int32.Parse(checkedStatus);
-            var contract = db.Contracts.Where(c => c.Id == contractIdValue).Single();
+            var contract = db.Contracts.Where(c => c.Id == contractIdValue).FirstOrDefault();
             
             if (checkedValue == 1)
             {
                 if (!string.IsNullOrEmpty(Session["AccountName"] as string))
                 contract.AcceptedBy = Session["AccountName"].ToString();
+                contract.OrderStatus = OrderStatus.Confirmed;
             }
             else
             {
                 contract.AcceptedBy = null;
+                contract.OrderStatus = OrderStatus.Pending;
             }
             db.Entry(contract).State = EntityState.Modified;
             db.SaveChanges();

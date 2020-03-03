@@ -23,7 +23,17 @@ namespace NexusCommunicationSystem.Controllers
             public List<IEnumerable<Service>> ServiceClassified { get; set; }
             public string GetServiceJSON()
             {
-                return JsonConvert.SerializeObject(this.Services);
+                var settings = new JsonSerializerSettings
+                {
+                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                    DateTimeZoneHandling = DateTimeZoneHandling.Local,
+                    Formatting = Newtonsoft.Json.Formatting.None,
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    NullValueHandling = NullValueHandling.Include,
+                    PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                };
+
+                return JsonConvert.SerializeObject(this.Services,settings);
             }
         }
         public ActionResult Index()

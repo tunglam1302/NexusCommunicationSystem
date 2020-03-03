@@ -187,6 +187,7 @@
 										</label>
 									</div>
 									<input id='order_submit_button' type="submit" value="Submit Payment Form">
+								</div>
 							</form>
 						</div>
 					</div>
@@ -253,7 +254,7 @@
 					let packageId = null
 					let currentService = null
 
-					const getContractData = () => {
+					function getContractData(){
 
 						let contractData = {
 							ServiceId: serviceId,
@@ -267,7 +268,7 @@
 						return contractData
 					}
 
-					const getUserData = () => {
+					function getUserData() {
 						let userData = {
 							FirstName: $("input[name='FirstName']").val(),
 							Email: $("input[name='Email']").val(),

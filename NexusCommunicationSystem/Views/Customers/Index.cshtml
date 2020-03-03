@@ -32,9 +32,6 @@
             Email
         </th>
         <th>
-            UserPassword
-        </th>
-        <th>
             UserRole
         </th>
         <th></th>
@@ -53,15 +50,31 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserPassword)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.UserRole)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                <a href="#myModal_@Html.DisplayFor(modelItem => item.Id)" class="trigger-btn" data-toggle="modal" style="margin:0">Delete</a>
+                <div id="myModal_@Html.DisplayFor(modelItem => item.Id)" class="modal fade">
+                    <div class="modal-dialog modal-confirm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Are you sure?</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Do you really want to delete these records? This process cannot be undone.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger">
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </td>
         </tr>
     }
