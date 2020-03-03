@@ -384,25 +384,25 @@ namespace NexusCommunicationSystem.Controllers
             switch (servicePackage.Name)
             {
                 case ("Monthly"):
-                    servicePrice += 5000;
+                    servicePrice += 5;
                     break;
                 case ("Quaterly"):
-                    servicePrice += 4000;
+                    servicePrice += 4;
                     break;
                 case ("HalfYearly"):
-                    servicePrice += 3000;
+                    servicePrice += 3;
                     break;
                 case ("Yearly"):
-                    servicePrice += 2000;
+                    servicePrice += 2;
                     break;
                 case ("HourlyBasis10"):
-                    servicePrice += 6000;
+                    servicePrice += 6;
                     break;
                 case ("HourlyBasis30"):
-                    servicePrice += 6300;
+                    servicePrice += 6;
                     break;
                 case ("HourlyBasis60"):
-                    servicePrice += 65000;
+                    servicePrice += 6;
                     break;
                 default:
                     break;
