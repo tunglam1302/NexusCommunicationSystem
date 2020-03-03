@@ -33,7 +33,24 @@ namespace NexusCommunicationSystem.Controllers
                     PreserveReferencesHandling = PreserveReferencesHandling.Objects
                 };
 
-                return JsonConvert.SerializeObject(this.Services,settings);
+                IEnumerable<dynamic> ViewServices = this.Services.Select(x => new
+                {
+                    Id = x.Id,
+                    Service_Equipments = x.Service_Equipments.Select(k =>
+                    new {
+                        Equipment = new
+                        {
+                            Name = k.Equipment.Name,
+                            Amount = k.Equipment.Amount,
+                            Price = k.Equipment.Price
+                        }
+                    }),
+                    Name = x.Name,
+                    Description = x.Description,
+                    TotalAmount = x.TotalAmount,
+
+                });
+                return JsonConvert.SerializeObject(ViewServices, settings);
             }
         }
         public ActionResult Index()
