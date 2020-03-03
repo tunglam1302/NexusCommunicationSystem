@@ -23,7 +23,24 @@ namespace NexusCommunicationSystem.Controllers
             public List<IEnumerable<Service>> ServiceClassified { get; set; }
             public string GetServiceJSON()
             {
-                return JsonConvert.SerializeObject(this.Services);
+                IEnumerable<dynamic> ViewServices = this.Services.Select(x => new
+                {
+                    Id = x.Id,
+                    Service_Equipments = x.Service_Equipments.Select(k =>
+                    new {
+                        Equipment = new
+                        {
+                            Name = k.Equipment.Name,
+                            Amount = k.Equipment.Amount,
+                            Price = k.Equipment.Price
+                        }
+                    }),
+                    Name = x.Name,
+                    Description = x.Description,
+                    TotalAmount = x.TotalAmount,
+
+                });
+                return JsonConvert.SerializeObject(ViewServices);
             }
         }
         public ActionResult Index()
