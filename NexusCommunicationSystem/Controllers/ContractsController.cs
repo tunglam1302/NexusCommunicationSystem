@@ -306,7 +306,7 @@ namespace NexusCommunicationSystem.Controllers
         public ActionResult Edit([Bind(Include = "Id,CreatedAt,NextPaymentAt,UpdatedAt,OrderStatus,CustomerId,SecurityDeposit,TotalAmount,Quantity,Discounts,RetailStoreId,ServiceId,ServicePackageId")] Contract contract)
         {
             contract.UpdatedAt = DateTime.Now;
-            contract.OrderStatus = OrderStatus.DirectTransfer;
+            contract.OrderStatus = contract.OrderStatus;
             contract.CustomerId = Session["AccountId"]==null?1: (int)Session["AccountId"];
             if (ModelState.IsValid)
             {
