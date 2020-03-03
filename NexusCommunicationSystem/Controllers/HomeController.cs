@@ -64,8 +64,9 @@ namespace NexusCommunicationSystem.Controllers
             var landlineService = db.Services.Where(s => s.Name.Contains("Landline")).ToList();
             var dialupService = db.Services.Where(s => s.Name.Contains("Dialup")).ToList();
             var broadbandService = db.Services.Where(s => s.Name.Contains("Broadband")).ToList();
+            var comboService = db.Services.Where(s => s.Name.Contains("Combo")).ToList();
 
-            model.ServiceClassified = new List<IEnumerable<Service>>() { landlineService, dialupService, broadbandService };
+            model.ServiceClassified = new List<IEnumerable<Service>>() { landlineService, dialupService, broadbandService, comboService };
             return View(model);
         }
         public ActionResult About()
