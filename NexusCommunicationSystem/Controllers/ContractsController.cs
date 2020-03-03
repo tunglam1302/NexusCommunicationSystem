@@ -101,7 +101,7 @@ namespace NexusCommunicationSystem.Controllers
             }
             endTime = new DateTime(endTime.Year, endTime.Month, endTime.Day, 23, 59, 59, 0);
 
-            var data = db.Contracts.Where(s => s.CreatedAt >= startTime && s.CreatedAt <= endTime)
+            var data = db.Contracts.Where(s => s.OrderStatus != OrderStatus.Deleted && (s.CreatedAt >= startTime && s.CreatedAt <= endTime))
                 .GroupBy(
                     s => new
                     {
