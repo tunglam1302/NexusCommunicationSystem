@@ -364,13 +364,28 @@ namespace NexusCommunicationSystem.Controllers
             var servicePackage = db.ServicePackages.Where(sp => sp.Id == servicePackageId).Single();
 
             var quantity = Int32.Parse(Quantity);
-            var discount = double.Parse(Discounts);
-            var securityDeposit = double.Parse(SecurityDeposit);
+
+            double discount = 0;
+
+            if (quantity > 10 && quantity<=15)
+            {
+                discount = 0.25;
+            }
+            else if (quantity > 15 && quantity <= 25)
+            {
+                discount = 0.5;
+            }
+            else if (quantity > 25)
+            {
+                discount = 0.75;
+            }
+
+            var securityDeposit = 325;
+
 
             var serviceId = Int32.Parse(ServiceId);
             var service = db.Services.Where(s => s.Id == serviceId).Single();
             var servicePrice = CalculateServicePriceBasedOnServicePackage(service, servicePackage);
-                
 
             totalAmount = securityDeposit + servicePrice * quantity * (1 - discount);
 

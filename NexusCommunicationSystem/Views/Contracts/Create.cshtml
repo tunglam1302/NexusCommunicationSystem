@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" style="display:none">
         @Html.LabelFor(model => model.Discounts, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.Discounts, new { htmlAttributes = new { @class = "form-control", @Value = 0.2, @readonly = "readonly", @id = "Discounts" } })
@@ -64,7 +64,7 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" style="display:none">
         <label class="control-label col-md-2">Security Deposit</label>
         <div class="col-md-10">
             @Html.EditorFor(model => model.SecurityDeposit, new { htmlAttributes = new { @class = "form-control", @Value = "20000", @readonly = "readonly", @id = "SecurityDeposit" } })
@@ -72,7 +72,7 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" >
         <label class="control-label col-md-2">Total Amount</label>
         <div class="col-md-10">
             @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control", @id = "TotalAmount", @readonly = "readonly" } })
