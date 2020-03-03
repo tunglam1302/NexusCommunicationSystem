@@ -269,7 +269,14 @@ namespace NexusCommunicationSystem.Controllers
             {
                 return null;
             }
-            return JsonConvert.SerializeObject(FoundCustomer);
+            var ViewCustomer = new
+            {
+                AccountId = FoundCustomer.AccountId,
+                Id = FoundCustomer.Id,
+                Email = FoundCustomer.Email,
+                FirstName = FoundCustomer.FirstName,
+            };
+            return JsonConvert.SerializeObject(ViewCustomer);
         }
         [HttpGet]
         public Boolean GetAccountIdByEmail(string email)

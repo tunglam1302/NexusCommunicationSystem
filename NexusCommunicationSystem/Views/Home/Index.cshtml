@@ -364,7 +364,7 @@
                     $( "input[name='TotalAmount']" ).val(response)
 										$('#discount-price').html('$'+response)
 										if(discounts < 1){
-										$('#original-price').html('$'+response/discounts)
+										$('#original-price').html('$'+Math.round(response/(1-discounts)))
 										$('#discount-text').html(`You get ${discounts*100}% off`)
 										}else{
 										$('#original-price').html('')
