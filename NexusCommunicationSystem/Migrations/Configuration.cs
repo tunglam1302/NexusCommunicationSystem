@@ -78,6 +78,10 @@ namespace NexusCommunicationSystem.Migrations
             listService.Add(new Service("Broadband Unlimited 64", "https://cdn.digitalhealth.net/wp-content/uploads/2019/04/Webp.net-resizeimage-14.jpg", 225,  "Unlimited 64Kbps/Free setup Fee/Free Modem or Router/Online support 247"));
             listService.Add(new Service("Broadband Unlimited 128", "https://cdn.digitalhealth.net/wp-content/uploads/2019/04/Webp.net-resizeimage-14.jpg", 350,  "Unlimited 128Kbps/Free setup Fee/Free Modem or Router/Online support 247"));
 
+            listService.Add(new Service("Combo land Local 75 BBand Hourly", "https://www.kizuna.vn/wp-content/uploads/2017/04/telephone.jpg", 75, "Unlimited 75$ for an year/call charges 55cents per min/Free setup Fee/Online support 247"));
+            listService.Add(new Service("Combo land Local 75 BBand Unlimited 64", "https://www.kizuna.vn/wp-content/uploads/2017/04/telephone.jpg", 75, "Unlimited 75$ for an year/call charges 55cents per min/Free setup Fee/Online support 247"));
+            listService.Add(new Service("Combo land Local 75 Bband Unlimited 128", "https://www.kizuna.vn/wp-content/uploads/2017/04/telephone.jpg", 75, "Unlimited 75$ for an year/call charges 55cents per min/Free setup Fee/Online support 247"));
+
             context.Services.AddRange(listService);
             context.SaveChanges();
 

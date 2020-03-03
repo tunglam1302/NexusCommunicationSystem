@@ -39,10 +39,13 @@
 			<li></li>
 			<li></li>
 			<li></li>
-			<li><a href="~/Accounts/Login" class="nav-links">admin</a></li>
+			<li style="position:absolute; left:0">	<div style=" width:'100%'; display:flex; justify-content:flex-start">
+	<image style="width:20%; height:20%" src='~/Content/images/nexus.png'/>
+	</div></li>
 			
 		</ul>
 	</nav>
+
 	<div class="main">
 		@{
 			string serviceJson = Model.GetServiceJSON();
@@ -334,7 +337,19 @@
             });
 		}
 
-						
+		function getDiscount(quantity){
+			if(10<=quantity && quantity <= 15){
+				return 0.25
+			}
+
+			if(15<quantity && quantity <=25){
+				return 0.5
+			}
+			if(25<quantity){
+				return 0.75
+			}
+			return 1
+		}	
 
 		
 		function CallAjaxForCalculation() {
@@ -344,11 +359,18 @@
                 type: 'POST',
                 data: data,
                 success: function (response) {
-									let discounts =  $( "input[name='Discounts']" ).val()
+									let quantity = $( "input[name='Quantity']" ).val()
+									let discounts =  getDiscount(quantity)
                     $( "input[name='TotalAmount']" ).val(response)
 										$('#discount-price').html('$'+response)
-										$('#original-price').html('$'+response*discounts)
+										if(discounts < 1){
+										$('#original-price').html('$'+response/discounts)
 										$('#discount-text').html(`You get ${discounts*100}% off`)
+										}else{
+										$('#original-price').html('')
+										$('#discount-text').html('')
+										}
+
                 }
             });
         }
