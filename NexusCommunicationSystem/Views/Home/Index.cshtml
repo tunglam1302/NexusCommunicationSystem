@@ -11,8 +11,6 @@
 	<title>Nexus communication system</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="keywords"
-		  content="Spa Pricing Table template Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login sign up Responsive web template, SmartPhone Compatible web template, free Web designs for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 	<!-- Custom Theme files -->
 	<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" media="all" />
@@ -162,20 +160,15 @@
 								</div>
 								<input type='number' name='SecurityDeposit' value=20000 hidden />
 								<input type='number' name='Discounts' value=0.2 hidden />
-								<input type'number' name='ServicePrice' value=20000 hidden />
 								<input type'number' name='TotalAmount' hidden />
 								<div style="display:flex; width:100%">
 									<div style='flex:1' class="w3l_main_grid_right_grid_form2">
 										<label>Email</label>
 										<input type="email" name="Email" placeholder="Email" required>
 									</div>
-									<div style='flex:1' class="w3l_main_grid_right_grid_form2">
+									<div style='flex:1; margin-right:0' class="w3l_main_grid_right_grid_form2">
 										<label>Name</label>
 										<input type="text" name="FirstName" placeholder="Name" required>
-									</div>
-									<div style='flex:1' class="w3l_main_grid_right_grid_form2">
-										<label>Phone Number</label>
-										<input type="text" name="Phonenumber" placeholder="Phone Number">
 									</div>
 								</div>
 								<div>
@@ -187,8 +180,8 @@
 										<textarea name="Message" placeholder=""></textarea>
 									</div>
 									<div class="w3layouts_check">
-										<label class="checkbox">
-											<input required type="checkbox" name="checkbox"><i> </i>I agree
+										<label for='checkbox' class="checkbox">
+											<input unchecked required type="checkbox" name="checkbox" id='checkbox' value='accepted'><i> </i>I agree
 											to the
 											terms of services
 										</label>
@@ -241,7 +234,6 @@
 									
 									$("input[name='Email']").val('')
 									$("input[name='FirstName']").val('')
-									$("input[name='Phonenumber']").val('')
 									$("textarea").val('')
 									$("input[name='Quantity']").val(1)
 							},
@@ -268,7 +260,7 @@
 							ServicePackageId: packageId,
 							Quantity: $("input[name='Quantity']").val(),
 							Discounts: $("input[name='Discounts']").val(),
-							SecurityDeposit: currentService.TotalAmount,
+							SecurityDeposit:  $("input[name='SecurityDeposit']").val(),
 							TotalAmount: $("input[name='TotalAmount']").val(),
 							RetailStoreId: $("select[name='RetailStoreId']").val(),
 						}
@@ -351,10 +343,11 @@
                 type: 'POST',
                 data: data,
                 success: function (response) {
+									let discounts =  $( "input[name='Discounts']" ).val()
                     $( "input[name='TotalAmount']" ).val(response)
 										$('#discount-price').html('$'+response)
-										$('#original-price').html('$'+response*120/100)
-										$('#discount-text').html(`You get ${20}% off`)
+										$('#original-price').html('$'+response*discounts)
+										$('#discount-text').html(`You get ${discounts*100}% off`)
                 }
             });
         }
@@ -363,7 +356,9 @@
 						serviceId = $(this).attr('service-id')
 						packageId = $(this).attr('package-id')
 						$('#select-period').val(packageId)
+						
 						currentService = serviceData.find(service => service.Id == serviceId)
+
 						let equipmentContent = currentService.Service_Equipments.map(({ Equipment }) => {
 							let content = `<li style="font-size:20px">
 										<i style="font-size:20px" class="fa fa-arrow-circle-o-right" aria-hidden="true">
@@ -375,7 +370,8 @@
 						$('#equipment-display').append(equipmentContent)
 												$('#select-quantity').val(1).change()
 					})
-					
+				
+
 				$('#order_form_data').submit((event) => {
 				
 event.preventDefault()
