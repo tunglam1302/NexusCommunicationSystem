@@ -13,7 +13,7 @@ namespace NexusCommunicationSystem.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202003031206515_init"; }
+            get { return "202003041011157_init"; }
         }
         
         string IMigrationMetadata.Source

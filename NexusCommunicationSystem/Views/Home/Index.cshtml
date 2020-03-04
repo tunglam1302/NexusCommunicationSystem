@@ -52,7 +52,7 @@
 		}
 		<input id="serviceJson" type="hidden" value="@serviceJson" />
 		<input id="currentService" type="hidden" value="" />
-		<input id="surrentPackage" type="hidden" value="" />
+		<input id="currentPackage" type="hidden" value="" />
 		@foreach (var serviceType in Model.ServiceClassified)
         { 
 		
@@ -375,10 +375,14 @@
             });
         }
 
+					$('#select-period').on('change', function(){
+						packageId =$('#select-period').val()
+					})
+
 					$('.popup-with-zoom-anim').click(function(){
 						serviceId = $(this).attr('service-id')
-						packageId = $(this).attr('package-id')
-						$('#select-period').val(packageId)
+						$("#select-period").val($("#select-period option:first").val()).change();
+						
 						
 						currentService = serviceData.find(service => service.Id == serviceId)
 
@@ -425,6 +429,9 @@ event.preventDefault()
 		// 			}
 		// 		}
 					$('#select-quantity').on('change', function(){
+						CallAjaxForCalculation()
+					})
+					$('#select-period').on('change', function(){
 						CallAjaxForCalculation()
 					})
 
